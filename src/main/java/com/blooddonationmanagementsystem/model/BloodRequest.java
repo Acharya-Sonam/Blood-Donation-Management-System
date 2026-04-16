@@ -18,40 +18,64 @@ public class BloodRequest {
         return id; 
     }
 
-    public void setId(int id) {
-         this.id = id; 
-        }
-
     public int getPatientId() {
-         return patientId; 
+        return patientId; 
         }
+        
+    public String getBloodGroup() { 
+        return bloodGroup; 
+    }
+
+    public void setId(int id) {
+        this.id = id; 
+        }
+ 
+    public int getQuantity() { 
+        return quantity; 
+    }
 
     public void setPatientId(int patientId) {
-         this.patientId = patientId; 
+        this.patientId = patientId; 
         }
 
-    public String getBloodGroup() { return bloodGroup; }
+    public void setBloodGroup(String bloodGroup) { 
+        this.bloodGroup = bloodGroup; 
+    }
 
-    public void setBloodGroup(String bloodGroup) { this.bloodGroup = bloodGroup; }
+    public String getUrgency() { 
+        return urgency; 
+    }
 
-    public int getQuantity() { return quantity; }
+    public String getStatus() { 
+        return status; 
+    }
 
-    public void setQuantity(int quantity) { this.quantity = quantity; }
+    public String getRequestDate() { 
+        return requestDate; 
+    }
 
-    public String getUrgency() { return urgency; }
+    public String getPatientName() { 
+        return patientName; 
+    }
 
-    public void setUrgency(String urgency) { this.urgency = urgency; }
+    public void setQuantity(int quantity) { 
+        this.quantity = quantity; 
+    }
 
-    public String getStatus() { return status; }
+    public void setUrgency(String urgency) { 
+        this.urgency = urgency; 
+    }
 
-    public void setStatus(String status) { this.status = status; }
+    public void setStatus(String status) { 
+        this.status = status; 
+    }
 
-    public String getRequestDate() { return requestDate; }
+    public void setRequestDate(String requestDate) { 
+        this.requestDate = requestDate; 
+    }
 
-    public void setRequestDate(String requestDate) { this.requestDate = requestDate; }
-
-    public String getPatientName() { return patientName; }
-
-    public void setPatientName(String patientName) { this.patientName = patientName; }
+    public void setPatientName(String patientName) { 
+        this.patientName = patientName; 
+    }
 
 }
