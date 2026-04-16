@@ -1,0 +1,558 @@
+<html>
+<head>
+<title>compatibility.jsp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #bcbec4;}
+.s1 { color: #cf8e6d; font-weight: bold;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #bcbec4;}
+.s5 { color: #d5b778;}
+.s6 { color: #bababa;}
+.s7 { color: #6aab73;}
+.s8 { color: #2aacb8;}
+.s9 { color: #56a8f5;}
+.s10 { color: #7a7e85;}
+.s11 { color: #cf8e6d;}
+.s12 { color: #cf8e6d;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+compatibility.jsp</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;%@ </span><span class="s1">page </span><span class="s2">contentType</span><span class="s0">=&quot;</span><span class="s3">text/html;charset=UTF-8</span><span class="s0">&quot; </span><span class="s2">language</span><span class="s0">=&quot;</span><span class="s3">java</span><span class="s0">&quot; %&gt;</span>
+<span class="s5">&lt;!DOCTYPE </span><span class="s6">html</span><span class="s5">&gt;</span>
+<span class="s5">&lt;html </span><span class="s6">lang</span><span class="s7">=&quot;en&quot;</span><span class="s5">&gt;</span>
+<span class="s5">&lt;head&gt;</span>
+    <span class="s5">&lt;meta </span><span class="s6">charset</span><span class="s7">=&quot;UTF-8&quot;</span><span class="s5">&gt;</span>
+    <span class="s5">&lt;meta </span><span class="s6">name</span><span class="s7">=&quot;viewport&quot; </span><span class="s6">content</span><span class="s7">=&quot;width=device-width, initial-scale=1.0&quot;</span><span class="s5">&gt;</span>
+    <span class="s5">&lt;title&gt;</span><span class="s4">Blood Compatibility Chart — Blood Bridge</span><span class="s5">&lt;/title&gt;</span>
+    <span class="s5">&lt;style&gt;</span>
+        <span class="s5">* </span><span class="s4">{ </span><span class="s6">box-sizing</span><span class="s4">: </span><span class="s7">border-box</span><span class="s4">; </span><span class="s6">margin</span><span class="s4">: </span><span class="s8">0</span><span class="s4">; </span><span class="s6">padding</span><span class="s4">: </span><span class="s8">0</span><span class="s4">; }</span>
+
+        <span class="s5">body </span><span class="s4">{</span>
+            <span class="s6">font-family</span><span class="s4">: </span><span class="s7">'Segoe UI'</span><span class="s4">, </span><span class="s7">sans-serif</span><span class="s4">;</span>
+            <span class="s6">background</span><span class="s4">: </span><span class="s9">#f7f7f7</span><span class="s4">;</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s9">#333</span><span class="s4">;</span>
+        <span class="s4">}</span>
+
+        <span class="s4">.</span><span class="s5">navbar </span><span class="s4">{</span>
+            <span class="s6">background</span><span class="s4">: </span><span class="s9">#c0392b</span><span class="s4">;</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s7">white</span><span class="s4">;</span>
+            <span class="s6">padding</span><span class="s4">: </span><span class="s8">14</span><span class="s7">px </span><span class="s8">30</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">display</span><span class="s4">: </span><span class="s7">flex</span><span class="s4">;</span>
+            <span class="s6">align-items</span><span class="s4">: </span><span class="s7">center</span><span class="s4">;</span>
+            <span class="s6">justify-content</span><span class="s4">: </span><span class="s7">space-between</span><span class="s4">;</span>
+            <span class="s6">box-shadow</span><span class="s4">: </span><span class="s8">0 2</span><span class="s7">px </span><span class="s8">8</span><span class="s7">px </span><span class="s5">rgba</span><span class="s4">(</span><span class="s8">0</span><span class="s4">,</span><span class="s8">0</span><span class="s4">,</span><span class="s8">0</span><span class="s4">,</span><span class="s8">0.15</span><span class="s4">);</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">navbar h1 </span><span class="s4">{ </span><span class="s6">font-size</span><span class="s4">: </span><span class="s8">20</span><span class="s7">px</span><span class="s4">; </span><span class="s6">font-weight</span><span class="s4">: </span><span class="s8">700</span><span class="s4">; }</span>
+        <span class="s4">.</span><span class="s5">navbar a </span><span class="s4">{</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s7">white</span><span class="s4">;</span>
+            <span class="s6">text-decoration</span><span class="s4">: </span><span class="s7">none</span><span class="s4">;</span>
+            <span class="s6">font-size</span><span class="s4">: </span><span class="s8">14</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">opacity</span><span class="s4">: </span><span class="s8">0.85</span><span class="s4">;</span>
+            <span class="s6">margin-left</span><span class="s4">: </span><span class="s8">20</span><span class="s7">px</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">navbar a</span><span class="s4">:</span><span class="s5">hover </span><span class="s4">{ </span><span class="s6">opacity</span><span class="s4">: </span><span class="s8">1</span><span class="s4">; }</span>
+
+        <span class="s4">.</span><span class="s5">container </span><span class="s4">{</span>
+            <span class="s6">max-width</span><span class="s4">: </span><span class="s8">960</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">margin</span><span class="s4">: </span><span class="s8">30</span><span class="s7">px auto</span><span class="s4">;</span>
+            <span class="s6">padding</span><span class="s4">: </span><span class="s8">0 20</span><span class="s7">px</span><span class="s4">;</span>
+        <span class="s4">}</span>
+
+        <span class="s4">.</span><span class="s5">page-title </span><span class="s4">{</span>
+            <span class="s6">font-size</span><span class="s4">: </span><span class="s8">24</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">font-weight</span><span class="s4">: </span><span class="s8">700</span><span class="s4">;</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s9">#c0392b</span><span class="s4">;</span>
+            <span class="s6">margin-bottom</span><span class="s4">: </span><span class="s8">4</span><span class="s7">px</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">page-subtitle </span><span class="s4">{</span>
+            <span class="s6">font-size</span><span class="s4">: </span><span class="s8">14</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s9">#888</span><span class="s4">;</span>
+            <span class="s6">margin-bottom</span><span class="s4">: </span><span class="s8">30</span><span class="s7">px</span><span class="s4">;</span>
+        <span class="s4">}</span>
+
+        <span class="s10">/* ---- Info cards ---- */</span>
+        <span class="s4">.</span><span class="s5">info-row </span><span class="s4">{</span>
+            <span class="s6">display</span><span class="s4">: </span><span class="s7">flex</span><span class="s4">;</span>
+            <span class="s6">gap</span><span class="s4">: </span><span class="s8">14</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">margin-bottom</span><span class="s4">: </span><span class="s8">30</span><span class="s7">px</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">info-card </span><span class="s4">{</span>
+            <span class="s6">flex</span><span class="s4">: </span><span class="s8">1</span><span class="s4">;</span>
+            <span class="s6">background</span><span class="s4">: </span><span class="s7">white</span><span class="s4">;</span>
+            <span class="s6">border-radius</span><span class="s4">: </span><span class="s8">12</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">padding</span><span class="s4">: </span><span class="s8">18</span><span class="s7">px </span><span class="s8">20</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">border</span><span class="s4">: </span><span class="s8">1</span><span class="s7">px solid </span><span class="s9">#eee</span><span class="s4">;</span>
+            <span class="s6">text-align</span><span class="s4">: </span><span class="s7">center</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">info-icon </span><span class="s4">{ </span><span class="s6">font-size</span><span class="s4">: </span><span class="s8">28</span><span class="s7">px</span><span class="s4">; </span><span class="s6">margin-bottom</span><span class="s4">: </span><span class="s8">8</span><span class="s7">px</span><span class="s4">; }</span>
+        <span class="s4">.</span><span class="s5">info-title </span><span class="s4">{</span>
+            <span class="s6">font-size</span><span class="s4">: </span><span class="s8">14</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">font-weight</span><span class="s4">: </span><span class="s8">700</span><span class="s4">;</span>
+            <span class="s6">margin-bottom</span><span class="s4">: </span><span class="s8">4</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s9">#222</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">info-desc </span><span class="s4">{</span>
+            <span class="s6">font-size</span><span class="s4">: </span><span class="s8">12</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s9">#999</span><span class="s4">;</span>
+            <span class="s6">line-height</span><span class="s4">: </span><span class="s8">1.6</span><span class="s4">;</span>
+        <span class="s4">}</span>
+
+        <span class="s10">/* ---- Compatibility grid ---- */</span>
+        <span class="s4">.</span><span class="s5">chart-card </span><span class="s4">{</span>
+            <span class="s6">background</span><span class="s4">: </span><span class="s7">white</span><span class="s4">;</span>
+            <span class="s6">border-radius</span><span class="s4">: </span><span class="s8">12</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">padding</span><span class="s4">: </span><span class="s8">24</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">border</span><span class="s4">: </span><span class="s8">1</span><span class="s7">px solid </span><span class="s9">#eee</span><span class="s4">;</span>
+            <span class="s6">margin-bottom</span><span class="s4">: </span><span class="s8">24</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">overflow-x</span><span class="s4">: </span><span class="s7">auto</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">chart-title </span><span class="s4">{</span>
+            <span class="s6">font-size</span><span class="s4">: </span><span class="s8">16</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">font-weight</span><span class="s4">: </span><span class="s8">700</span><span class="s4">;</span>
+            <span class="s6">margin-bottom</span><span class="s4">: </span><span class="s8">18</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s9">#222</span><span class="s4">;</span>
+        <span class="s4">}</span>
+
+        <span class="s5">table </span><span class="s4">{</span>
+            <span class="s6">width</span><span class="s4">: </span><span class="s8">100</span><span class="s4">%;</span>
+            <span class="s6">border-collapse</span><span class="s4">: </span><span class="s7">collapse</span><span class="s4">;</span>
+            <span class="s6">min-width</span><span class="s4">: </span><span class="s8">500</span><span class="s7">px</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s5">th</span><span class="s4">, </span><span class="s5">td </span><span class="s4">{</span>
+            <span class="s6">padding</span><span class="s4">: </span><span class="s8">12</span><span class="s7">px </span><span class="s8">14</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">text-align</span><span class="s4">: </span><span class="s7">center</span><span class="s4">;</span>
+            <span class="s6">font-size</span><span class="s4">: </span><span class="s8">13</span><span class="s7">px</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s5">thead th </span><span class="s4">{</span>
+            <span class="s6">background</span><span class="s4">: </span><span class="s9">#c0392b</span><span class="s4">;</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s7">white</span><span class="s4">;</span>
+            <span class="s6">font-weight</span><span class="s4">: </span><span class="s8">600</span><span class="s4">;</span>
+            <span class="s6">font-size</span><span class="s4">: </span><span class="s8">13</span><span class="s7">px</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s5">thead th</span><span class="s4">:</span><span class="s5">first-child </span><span class="s4">{</span>
+            <span class="s6">border-radius</span><span class="s4">: </span><span class="s8">8</span><span class="s7">px </span><span class="s8">0 0 0</span><span class="s4">;</span>
+            <span class="s6">text-align</span><span class="s4">: </span><span class="s7">left</span><span class="s4">;</span>
+            <span class="s6">min-width</span><span class="s4">: </span><span class="s8">120</span><span class="s7">px</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s5">thead th</span><span class="s4">:</span><span class="s5">last-child </span><span class="s4">{</span>
+            <span class="s6">border-radius</span><span class="s4">: </span><span class="s8">0 8</span><span class="s7">px </span><span class="s8">0 0</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s5">tbody tr</span><span class="s4">:</span><span class="s5">nth-child</span><span class="s4">(</span><span class="s5">even</span><span class="s4">) { </span><span class="s6">background</span><span class="s4">: </span><span class="s9">#fafafa</span><span class="s4">; }</span>
+        <span class="s5">tbody tr</span><span class="s4">:</span><span class="s5">hover </span><span class="s4">{ </span><span class="s6">background</span><span class="s4">: </span><span class="s9">#fdecea</span><span class="s4">; }</span>
+        <span class="s5">tbody td</span><span class="s4">:</span><span class="s5">first-child </span><span class="s4">{</span>
+            <span class="s6">font-weight</span><span class="s4">: </span><span class="s8">700</span><span class="s4">;</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s9">#c0392b</span><span class="s4">;</span>
+            <span class="s6">text-align</span><span class="s4">: </span><span class="s7">left</span><span class="s4">;</span>
+            <span class="s6">font-size</span><span class="s4">: </span><span class="s8">14</span><span class="s7">px</span><span class="s4">;</span>
+        <span class="s4">}</span>
+
+        <span class="s4">.</span><span class="s5">check </span><span class="s4">{</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s9">#1e8449</span><span class="s4">;</span>
+            <span class="s6">font-size</span><span class="s4">: </span><span class="s8">16</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">font-weight</span><span class="s4">: </span><span class="s8">700</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">cross </span><span class="s4">{</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s9">#ddd</span><span class="s4">;</span>
+            <span class="s6">font-size</span><span class="s4">: </span><span class="s8">16</span><span class="s7">px</span><span class="s4">;</span>
+        <span class="s4">}</span>
+
+        <span class="s10">/* ---- Blood type cards ---- */</span>
+        <span class="s4">.</span><span class="s5">blood-grid </span><span class="s4">{</span>
+            <span class="s6">display</span><span class="s4">: </span><span class="s7">grid</span><span class="s4">;</span>
+            <span class="s6">grid-template-columns</span><span class="s4">: </span><span class="s5">repeat</span><span class="s4">(</span><span class="s8">4</span><span class="s4">, </span><span class="s8">1</span><span class="s7">fr</span><span class="s4">);</span>
+            <span class="s6">gap</span><span class="s4">: </span><span class="s8">14</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">margin-bottom</span><span class="s4">: </span><span class="s8">24</span><span class="s7">px</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">blood-card </span><span class="s4">{</span>
+            <span class="s6">background</span><span class="s4">: </span><span class="s7">white</span><span class="s4">;</span>
+            <span class="s6">border-radius</span><span class="s4">: </span><span class="s8">12</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">border</span><span class="s4">: </span><span class="s8">1</span><span class="s7">px solid </span><span class="s9">#eee</span><span class="s4">;</span>
+            <span class="s6">padding</span><span class="s4">: </span><span class="s8">18</span><span class="s7">px </span><span class="s8">14</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">text-align</span><span class="s4">: </span><span class="s7">center</span><span class="s4">;</span>
+            <span class="s6">transition</span><span class="s4">: </span><span class="s7">all </span><span class="s8">0.2</span><span class="s7">s</span><span class="s4">;</span>
+            <span class="s6">cursor</span><span class="s4">: </span><span class="s7">pointer</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">blood-card</span><span class="s4">:</span><span class="s5">hover </span><span class="s4">{</span>
+            <span class="s6">border-color</span><span class="s4">: </span><span class="s9">#c0392b</span><span class="s4">;</span>
+            <span class="s6">transform</span><span class="s4">: </span><span class="s5">translateY</span><span class="s4">(-</span><span class="s8">2</span><span class="s7">px</span><span class="s4">);</span>
+            <span class="s6">box-shadow</span><span class="s4">: </span><span class="s8">0 4</span><span class="s7">px </span><span class="s8">12</span><span class="s7">px </span><span class="s5">rgba</span><span class="s4">(</span><span class="s8">192</span><span class="s4">,</span><span class="s8">57</span><span class="s4">,</span><span class="s8">43</span><span class="s4">,</span><span class="s8">0.1</span><span class="s4">);</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">blood-card</span><span class="s4">.</span><span class="s5">selected </span><span class="s4">{</span>
+            <span class="s6">border-color</span><span class="s4">: </span><span class="s9">#c0392b</span><span class="s4">;</span>
+            <span class="s6">background</span><span class="s4">: </span><span class="s9">#fdecea</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">blood-type-big </span><span class="s4">{</span>
+            <span class="s6">font-size</span><span class="s4">: </span><span class="s8">28</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">font-weight</span><span class="s4">: </span><span class="s8">700</span><span class="s4">;</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s9">#c0392b</span><span class="s4">;</span>
+            <span class="s6">margin-bottom</span><span class="s4">: </span><span class="s8">6</span><span class="s7">px</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">blood-label </span><span class="s4">{</span>
+            <span class="s6">font-size</span><span class="s4">: </span><span class="s8">11</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s9">#999</span><span class="s4">;</span>
+            <span class="s6">margin-bottom</span><span class="s4">: </span><span class="s8">10</span><span class="s7">px</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">blood-stat </span><span class="s4">{</span>
+            <span class="s6">font-size</span><span class="s4">: </span><span class="s8">11</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s9">#555</span><span class="s4">;</span>
+            <span class="s6">line-height</span><span class="s4">: </span><span class="s8">1.8</span><span class="s4">;</span>
+        <span class="s4">}</span>
+
+        <span class="s10">/* ---- Detail panel ---- */</span>
+        <span class="s4">.</span><span class="s5">detail-panel </span><span class="s4">{</span>
+            <span class="s6">background</span><span class="s4">: </span><span class="s7">white</span><span class="s4">;</span>
+            <span class="s6">border-radius</span><span class="s4">: </span><span class="s8">12</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">border</span><span class="s4">: </span><span class="s8">1</span><span class="s7">px solid </span><span class="s9">#eee</span><span class="s4">;</span>
+            <span class="s6">padding</span><span class="s4">: </span><span class="s8">22</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">margin-bottom</span><span class="s4">: </span><span class="s8">24</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">display</span><span class="s4">: </span><span class="s7">none</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">detail-panel</span><span class="s4">.</span><span class="s5">show </span><span class="s4">{ </span><span class="s6">display</span><span class="s4">: </span><span class="s7">block</span><span class="s4">; }</span>
+        <span class="s4">.</span><span class="s5">detail-title </span><span class="s4">{</span>
+            <span class="s6">font-size</span><span class="s4">: </span><span class="s8">16</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">font-weight</span><span class="s4">: </span><span class="s8">700</span><span class="s4">;</span>
+            <span class="s6">margin-bottom</span><span class="s4">: </span><span class="s8">16</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s9">#222</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">detail-row </span><span class="s4">{</span>
+            <span class="s6">display</span><span class="s4">: </span><span class="s7">flex</span><span class="s4">;</span>
+            <span class="s6">gap</span><span class="s4">: </span><span class="s8">14</span><span class="s7">px</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">detail-box </span><span class="s4">{</span>
+            <span class="s6">flex</span><span class="s4">: </span><span class="s8">1</span><span class="s4">;</span>
+            <span class="s6">border-radius</span><span class="s4">: </span><span class="s8">10</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">padding</span><span class="s4">: </span><span class="s8">16</span><span class="s7">px</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">detail-box</span><span class="s4">.</span><span class="s5">can-give </span><span class="s4">{</span>
+            <span class="s6">background</span><span class="s4">: </span><span class="s9">#eafaf1</span><span class="s4">;</span>
+            <span class="s6">border</span><span class="s4">: </span><span class="s8">1</span><span class="s7">px solid </span><span class="s9">#a9dfbf</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">detail-box</span><span class="s4">.</span><span class="s5">can-receive </span><span class="s4">{</span>
+            <span class="s6">background</span><span class="s4">: </span><span class="s9">#eaf4fd</span><span class="s4">;</span>
+            <span class="s6">border</span><span class="s4">: </span><span class="s8">1</span><span class="s7">px solid </span><span class="s9">#a9cce3</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">detail-box-title </span><span class="s4">{</span>
+            <span class="s6">font-size</span><span class="s4">: </span><span class="s8">13</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">font-weight</span><span class="s4">: </span><span class="s8">700</span><span class="s4">;</span>
+            <span class="s6">margin-bottom</span><span class="s4">: </span><span class="s8">10</span><span class="s7">px</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">detail-box</span><span class="s4">.</span><span class="s5">can-give </span><span class="s4">.</span><span class="s5">detail-box-title </span><span class="s4">{ </span><span class="s6">color</span><span class="s4">: </span><span class="s9">#1e8449</span><span class="s4">; }</span>
+        <span class="s4">.</span><span class="s5">detail-box</span><span class="s4">.</span><span class="s5">can-receive </span><span class="s4">.</span><span class="s5">detail-box-title </span><span class="s4">{ </span><span class="s6">color</span><span class="s4">: </span><span class="s9">#1a5276</span><span class="s4">; }</span>
+        <span class="s4">.</span><span class="s5">type-pills </span><span class="s4">{</span>
+            <span class="s6">display</span><span class="s4">: </span><span class="s7">flex</span><span class="s4">;</span>
+            <span class="s6">flex-wrap</span><span class="s4">: </span><span class="s7">wrap</span><span class="s4">;</span>
+            <span class="s6">gap</span><span class="s4">: </span><span class="s8">7</span><span class="s7">px</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">type-pill </span><span class="s4">{</span>
+            <span class="s6">padding</span><span class="s4">: </span><span class="s8">5</span><span class="s7">px </span><span class="s8">14</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">border-radius</span><span class="s4">: </span><span class="s8">20</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">font-size</span><span class="s4">: </span><span class="s8">13</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">font-weight</span><span class="s4">: </span><span class="s8">700</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">pill-green </span><span class="s4">{</span>
+            <span class="s6">background</span><span class="s4">: </span><span class="s9">#1e8449</span><span class="s4">;</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s7">white</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">pill-blue </span><span class="s4">{</span>
+            <span class="s6">background</span><span class="s4">: </span><span class="s9">#1a5276</span><span class="s4">;</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s7">white</span><span class="s4">;</span>
+        <span class="s4">}</span>
+
+        <span class="s10">/* ---- Search by type button ---- */</span>
+        <span class="s4">.</span><span class="s5">btn-search-type </span><span class="s4">{</span>
+            <span class="s6">background</span><span class="s4">: </span><span class="s9">#c0392b</span><span class="s4">;</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s7">white</span><span class="s4">;</span>
+            <span class="s6">border</span><span class="s4">: </span><span class="s7">none</span><span class="s4">;</span>
+            <span class="s6">padding</span><span class="s4">: </span><span class="s8">10</span><span class="s7">px </span><span class="s8">24</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">border-radius</span><span class="s4">: </span><span class="s8">8</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">font-size</span><span class="s4">: </span><span class="s8">14</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">font-weight</span><span class="s4">: </span><span class="s8">600</span><span class="s4">;</span>
+            <span class="s6">cursor</span><span class="s4">: </span><span class="s7">pointer</span><span class="s4">;</span>
+            <span class="s6">margin-top</span><span class="s4">: </span><span class="s8">16</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">transition</span><span class="s4">: </span><span class="s7">background </span><span class="s8">0.2</span><span class="s7">s</span><span class="s4">;</span>
+        <span class="s4">}</span>
+        <span class="s4">.</span><span class="s5">btn-search-type</span><span class="s4">:</span><span class="s5">hover </span><span class="s4">{ </span><span class="s6">background</span><span class="s4">: </span><span class="s9">#a93226</span><span class="s4">; }</span>
+
+        <span class="s4">.</span><span class="s5">footer </span><span class="s4">{</span>
+            <span class="s6">text-align</span><span class="s4">: </span><span class="s7">center</span><span class="s4">;</span>
+            <span class="s6">padding</span><span class="s4">: </span><span class="s8">30</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">font-size</span><span class="s4">: </span><span class="s8">12</span><span class="s7">px</span><span class="s4">;</span>
+            <span class="s6">color</span><span class="s4">: </span><span class="s9">#bbb</span><span class="s4">;</span>
+            <span class="s6">margin-top</span><span class="s4">: </span><span class="s8">20</span><span class="s7">px</span><span class="s4">;</span>
+        <span class="s4">}</span>
+    <span class="s5">&lt;/style&gt;</span>
+<span class="s5">&lt;/head&gt;</span>
+<span class="s5">&lt;body&gt;</span>
+
+<span class="s10">&lt;!-- Navbar --&gt;</span>
+<span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;navbar&quot;</span><span class="s5">&gt;</span>
+    <span class="s5">&lt;h1&gt;</span><span class="s4">🩸 Blood Bridge</span><span class="s5">&lt;/h1&gt;</span>
+    <span class="s5">&lt;div&gt;</span>
+        <span class="s5">&lt;a </span><span class="s6">href</span><span class="s7">=&quot;http://localhost:8081/searchDonors&quot;</span><span class="s5">&gt;</span><span class="s4">🔍 Search Donors</span><span class="s5">&lt;/a&gt;</span>
+        <span class="s5">&lt;a </span><span class="s6">href</span><span class="s7">=&quot;http://localhost:8081/views/patient/compatibility.jsp&quot;</span><span class="s5">&gt;</span><span class="s4">🩸 Compatibility Chart</span><span class="s5">&lt;/a&gt;</span>
+        <span class="s5">&lt;a </span><span class="s6">href</span><span class="s7">=&quot;#&quot;</span><span class="s5">&gt;</span><span class="s4">📋 My Requests</span><span class="s5">&lt;/a&gt;</span>
+        <span class="s5">&lt;a </span><span class="s6">href</span><span class="s7">=&quot;http://localhost:8081/logout&quot;</span><span class="s5">&gt;</span><span class="s4">🚪 Logout</span><span class="s5">&lt;/a&gt;</span>
+    <span class="s5">&lt;/div&gt;</span>
+<span class="s5">&lt;/div&gt;</span>
+
+<span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;container&quot;</span><span class="s5">&gt;</span>
+
+    <span class="s5">&lt;p </span><span class="s6">class</span><span class="s7">=&quot;page-title&quot;</span><span class="s5">&gt;</span><span class="s4">Blood Compatibility Chart</span><span class="s5">&lt;/p&gt;</span>
+    <span class="s5">&lt;p </span><span class="s6">class</span><span class="s7">=&quot;page-subtitle&quot;</span><span class="s5">&gt;</span><span class="s4">Find out which blood types are compatible for donation and transfusion</span><span class="s5">&lt;/p&gt;</span>
+
+    <span class="s10">&lt;!-- Info cards --&gt;</span>
+    <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;info-row&quot;</span><span class="s5">&gt;</span>
+        <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;info-card&quot;</span><span class="s5">&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;info-icon&quot;</span><span class="s5">&gt;</span><span class="s4">⭐</span><span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;info-title&quot;</span><span class="s5">&gt;</span><span class="s4">Universal Donor</span><span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;info-desc&quot;</span><span class="s5">&gt;</span><span class="s4">O− can donate to all 8 blood types. Most valuable in emergencies.</span><span class="s5">&lt;/div&gt;</span>
+        <span class="s5">&lt;/div&gt;</span>
+        <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;info-card&quot;</span><span class="s5">&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;info-icon&quot;</span><span class="s5">&gt;</span><span class="s4">💉</span><span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;info-title&quot;</span><span class="s5">&gt;</span><span class="s4">Universal Recipient</span><span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;info-desc&quot;</span><span class="s5">&gt;</span><span class="s4">AB+ can receive from all 8 blood types. Most flexible recipient.</span><span class="s5">&lt;/div&gt;</span>
+        <span class="s5">&lt;/div&gt;</span>
+        <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;info-card&quot;</span><span class="s5">&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;info-icon&quot;</span><span class="s5">&gt;</span><span class="s4">⏳</span><span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;info-title&quot;</span><span class="s5">&gt;</span><span class="s4">Donation Gap</span><span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;info-desc&quot;</span><span class="s5">&gt;</span><span class="s4">Donors must wait 56 days between whole blood donations.</span><span class="s5">&lt;/div&gt;</span>
+        <span class="s5">&lt;/div&gt;</span>
+        <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;info-card&quot;</span><span class="s5">&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;info-icon&quot;</span><span class="s5">&gt;</span><span class="s4">🏥</span><span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;info-title&quot;</span><span class="s5">&gt;</span><span class="s4">Always Verify</span><span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;info-desc&quot;</span><span class="s5">&gt;</span><span class="s4">Always confirm compatibility with a medical professional before transfusion.</span><span class="s5">&lt;/div&gt;</span>
+        <span class="s5">&lt;/div&gt;</span>
+    <span class="s5">&lt;/div&gt;</span>
+
+    <span class="s10">&lt;!-- Blood type cards --&gt;</span>
+    <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;chart-card&quot;</span><span class="s5">&gt;</span>
+        <span class="s5">&lt;p </span><span class="s6">class</span><span class="s7">=&quot;chart-title&quot;</span><span class="s5">&gt;</span><span class="s4">Select a blood type to see compatibility details</span><span class="s5">&lt;/p&gt;</span>
+        <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-grid&quot;</span><span class="s5">&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-card&quot; </span><span class="s6">onclick</span><span class="s7">=&quot;</span><span class="s4">showDetail(</span><span class="s7">'A+'</span><span class="s4">)</span><span class="s7">&quot;</span><span class="s5">&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-type-big&quot;</span><span class="s5">&gt;</span><span class="s4">A+</span><span class="s5">&lt;/div&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-label&quot;</span><span class="s5">&gt;</span><span class="s4">A Positive</span><span class="s5">&lt;/div&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-stat&quot;</span><span class="s5">&gt;</span><span class="s4">Can give to: 2 types</span><span class="s5">&lt;br&gt;</span><span class="s4">Can receive from: 4 types</span><span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-card&quot; </span><span class="s6">onclick</span><span class="s7">=&quot;</span><span class="s4">showDetail(</span><span class="s7">'A-'</span><span class="s4">)</span><span class="s7">&quot;</span><span class="s5">&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-type-big&quot;</span><span class="s5">&gt;</span><span class="s4">A−</span><span class="s5">&lt;/div&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-label&quot;</span><span class="s5">&gt;</span><span class="s4">A Negative</span><span class="s5">&lt;/div&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-stat&quot;</span><span class="s5">&gt;</span><span class="s4">Can give to: 4 types</span><span class="s5">&lt;br&gt;</span><span class="s4">Can receive from: 2 types</span><span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-card&quot; </span><span class="s6">onclick</span><span class="s7">=&quot;</span><span class="s4">showDetail(</span><span class="s7">'B+'</span><span class="s4">)</span><span class="s7">&quot;</span><span class="s5">&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-type-big&quot;</span><span class="s5">&gt;</span><span class="s4">B+</span><span class="s5">&lt;/div&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-label&quot;</span><span class="s5">&gt;</span><span class="s4">B Positive</span><span class="s5">&lt;/div&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-stat&quot;</span><span class="s5">&gt;</span><span class="s4">Can give to: 2 types</span><span class="s5">&lt;br&gt;</span><span class="s4">Can receive from: 4 types</span><span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-card&quot; </span><span class="s6">onclick</span><span class="s7">=&quot;</span><span class="s4">showDetail(</span><span class="s7">'B-'</span><span class="s4">)</span><span class="s7">&quot;</span><span class="s5">&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-type-big&quot;</span><span class="s5">&gt;</span><span class="s4">B−</span><span class="s5">&lt;/div&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-label&quot;</span><span class="s5">&gt;</span><span class="s4">B Negative</span><span class="s5">&lt;/div&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-stat&quot;</span><span class="s5">&gt;</span><span class="s4">Can give to: 4 types</span><span class="s5">&lt;br&gt;</span><span class="s4">Can receive from: 2 types</span><span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-card&quot; </span><span class="s6">onclick</span><span class="s7">=&quot;</span><span class="s4">showDetail(</span><span class="s7">'O+'</span><span class="s4">)</span><span class="s7">&quot;</span><span class="s5">&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-type-big&quot;</span><span class="s5">&gt;</span><span class="s4">O+</span><span class="s5">&lt;/div&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-label&quot;</span><span class="s5">&gt;</span><span class="s4">O Positive</span><span class="s5">&lt;/div&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-stat&quot;</span><span class="s5">&gt;</span><span class="s4">Can give to: 4 types</span><span class="s5">&lt;br&gt;</span><span class="s4">Can receive from: 2 types</span><span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-card&quot; </span><span class="s6">onclick</span><span class="s7">=&quot;</span><span class="s4">showDetail(</span><span class="s7">'O-'</span><span class="s4">)</span><span class="s7">&quot;</span><span class="s5">&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-type-big&quot;</span><span class="s5">&gt;</span><span class="s4">O−</span><span class="s5">&lt;/div&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-label&quot;</span><span class="s5">&gt;</span><span class="s4">O Negative ⭐</span><span class="s5">&lt;/div&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-stat&quot;</span><span class="s5">&gt;</span><span class="s4">Can give to: 8 types</span><span class="s5">&lt;br&gt;</span><span class="s4">Can receive from: 1 type</span><span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-card&quot; </span><span class="s6">onclick</span><span class="s7">=&quot;</span><span class="s4">showDetail(</span><span class="s7">'AB+'</span><span class="s4">)</span><span class="s7">&quot;</span><span class="s5">&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-type-big&quot;</span><span class="s5">&gt;</span><span class="s4">AB+</span><span class="s5">&lt;/div&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-label&quot;</span><span class="s5">&gt;</span><span class="s4">AB Positive 💉</span><span class="s5">&lt;/div&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-stat&quot;</span><span class="s5">&gt;</span><span class="s4">Can give to: 1 type</span><span class="s5">&lt;br&gt;</span><span class="s4">Can receive from: 8 types</span><span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-card&quot; </span><span class="s6">onclick</span><span class="s7">=&quot;</span><span class="s4">showDetail(</span><span class="s7">'AB-'</span><span class="s4">)</span><span class="s7">&quot;</span><span class="s5">&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-type-big&quot;</span><span class="s5">&gt;</span><span class="s4">AB−</span><span class="s5">&lt;/div&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-label&quot;</span><span class="s5">&gt;</span><span class="s4">AB Negative</span><span class="s5">&lt;/div&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;blood-stat&quot;</span><span class="s5">&gt;</span><span class="s4">Can give to: 2 types</span><span class="s5">&lt;br&gt;</span><span class="s4">Can receive from: 4 types</span><span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;/div&gt;</span>
+        <span class="s5">&lt;/div&gt;</span>
+    <span class="s5">&lt;/div&gt;</span>
+
+    <span class="s10">&lt;!-- Detail panel --&gt;</span>
+    <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;detail-panel&quot; </span><span class="s6">id</span><span class="s7">=&quot;detailPanel&quot;</span><span class="s5">&gt;</span>
+        <span class="s5">&lt;p </span><span class="s6">class</span><span class="s7">=&quot;detail-title&quot; </span><span class="s6">id</span><span class="s7">=&quot;detailTitle&quot;</span><span class="s5">&gt;&lt;/p&gt;</span>
+        <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;detail-row&quot;</span><span class="s5">&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;detail-box can-give&quot;</span><span class="s5">&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;detail-box-title&quot;</span><span class="s5">&gt;</span><span class="s4">✓ Can donate TO</span><span class="s5">&lt;/div&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;type-pills&quot; </span><span class="s6">id</span><span class="s7">=&quot;donateTo&quot;</span><span class="s5">&gt;&lt;/div&gt;</span>
+            <span class="s5">&lt;/div&gt;</span>
+            <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;detail-box can-receive&quot;</span><span class="s5">&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;detail-box-title&quot;</span><span class="s5">&gt;</span><span class="s4">✓ Can receive FROM</span><span class="s5">&lt;/div&gt;</span>
+                <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;type-pills&quot; </span><span class="s6">id</span><span class="s7">=&quot;receiveFrom&quot;</span><span class="s5">&gt;&lt;/div&gt;</span>
+            <span class="s5">&lt;/div&gt;</span>
+        <span class="s5">&lt;/div&gt;</span>
+        <span class="s5">&lt;button </span><span class="s6">class</span><span class="s7">=&quot;btn-search-type&quot; </span><span class="s6">id</span><span class="s7">=&quot;searchBtn&quot; </span><span class="s6">onclick</span><span class="s7">=&quot;</span><span class="s4">searchThisType()</span><span class="s7">&quot;</span><span class="s5">&gt;</span>
+            <span class="s4">Search donors with this blood type →</span>
+        <span class="s5">&lt;/button&gt;</span>
+    <span class="s5">&lt;/div&gt;</span>
+
+    <span class="s10">&lt;!-- Full compatibility table --&gt;</span>
+    <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;chart-card&quot;</span><span class="s5">&gt;</span>
+        <span class="s5">&lt;p </span><span class="s6">class</span><span class="s7">=&quot;chart-title&quot;</span><span class="s5">&gt;</span><span class="s4">Full compatibility table</span><span class="s5">&lt;/p&gt;</span>
+        <span class="s5">&lt;table&gt;</span>
+            <span class="s5">&lt;thead&gt;</span>
+            <span class="s5">&lt;tr&gt;</span>
+                <span class="s5">&lt;th&gt;</span><span class="s4">Donor \ Recipient</span><span class="s5">&lt;/th&gt;</span>
+                <span class="s5">&lt;th&gt;</span><span class="s4">A+</span><span class="s5">&lt;/th&gt;</span>
+                <span class="s5">&lt;th&gt;</span><span class="s4">A−</span><span class="s5">&lt;/th&gt;</span>
+                <span class="s5">&lt;th&gt;</span><span class="s4">B+</span><span class="s5">&lt;/th&gt;</span>
+                <span class="s5">&lt;th&gt;</span><span class="s4">B−</span><span class="s5">&lt;/th&gt;</span>
+                <span class="s5">&lt;th&gt;</span><span class="s4">O+</span><span class="s5">&lt;/th&gt;</span>
+                <span class="s5">&lt;th&gt;</span><span class="s4">O−</span><span class="s5">&lt;/th&gt;</span>
+                <span class="s5">&lt;th&gt;</span><span class="s4">AB+</span><span class="s5">&lt;/th&gt;</span>
+                <span class="s5">&lt;th&gt;</span><span class="s4">AB−</span><span class="s5">&lt;/th&gt;</span>
+            <span class="s5">&lt;/tr&gt;</span>
+            <span class="s5">&lt;/thead&gt;</span>
+            <span class="s5">&lt;tbody&gt;</span>
+            <span class="s5">&lt;tr&gt;</span>
+                <span class="s5">&lt;td&gt;</span><span class="s4">A+</span><span class="s5">&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+            <span class="s5">&lt;/tr&gt;</span>
+            <span class="s5">&lt;tr&gt;</span>
+                <span class="s5">&lt;td&gt;</span><span class="s4">A−</span><span class="s5">&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+            <span class="s5">&lt;/tr&gt;</span>
+            <span class="s5">&lt;tr&gt;</span>
+                <span class="s5">&lt;td&gt;</span><span class="s4">B+</span><span class="s5">&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+            <span class="s5">&lt;/tr&gt;</span>
+            <span class="s5">&lt;tr&gt;</span>
+                <span class="s5">&lt;td&gt;</span><span class="s4">B−</span><span class="s5">&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+            <span class="s5">&lt;/tr&gt;</span>
+            <span class="s5">&lt;tr&gt;</span>
+                <span class="s5">&lt;td&gt;</span><span class="s4">O+</span><span class="s5">&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+            <span class="s5">&lt;/tr&gt;</span>
+            <span class="s5">&lt;tr&gt;</span>
+                <span class="s5">&lt;td&gt;</span><span class="s4">O− ⭐</span><span class="s5">&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+            <span class="s5">&lt;/tr&gt;</span>
+            <span class="s5">&lt;tr&gt;</span>
+                <span class="s5">&lt;td&gt;</span><span class="s4">AB+</span><span class="s5">&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+            <span class="s5">&lt;/tr&gt;</span>
+            <span class="s5">&lt;tr&gt;</span>
+                <span class="s5">&lt;td&gt;</span><span class="s4">AB−</span><span class="s5">&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;cross&quot;</span><span class="s5">&gt;</span><span class="s4">✗</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+                <span class="s5">&lt;td&gt;&lt;span </span><span class="s6">class</span><span class="s7">=&quot;check&quot;</span><span class="s5">&gt;</span><span class="s4">✓</span><span class="s5">&lt;/span&gt;&lt;/td&gt;</span>
+            <span class="s5">&lt;/tr&gt;</span>
+            <span class="s5">&lt;/tbody&gt;</span>
+        <span class="s5">&lt;/table&gt;</span>
+    <span class="s5">&lt;/div&gt;</span>
+
+    <span class="s5">&lt;div </span><span class="s6">class</span><span class="s7">=&quot;footer&quot;</span><span class="s5">&gt;</span>
+        <span class="s4">Blood Bridge — Connecting donors with patients </span><span class="s9">&amp;nbsp;</span><span class="s4">·</span><span class="s9">&amp;nbsp; </span><span class="s4">Lifeline Coders © 2026</span>
+    <span class="s5">&lt;/div&gt;</span>
+
+<span class="s5">&lt;/div&gt;</span>
+
+<span class="s5">&lt;script&gt;</span>
+    <span class="s11">const </span><span class="s4">compatibility = {</span>
+        <span class="s7">'A+'</span><span class="s4">:  { donateTo: [</span><span class="s7">'A+'</span><span class="s4">,</span><span class="s7">'AB+'</span><span class="s4">],                        receiveFrom: [</span><span class="s7">'A+'</span><span class="s4">,</span><span class="s7">'A-'</span><span class="s4">,</span><span class="s7">'O+'</span><span class="s4">,</span><span class="s7">'O-'</span><span class="s4">] },</span>
+        <span class="s7">'A-'</span><span class="s4">:  { donateTo: [</span><span class="s7">'A+'</span><span class="s4">,</span><span class="s7">'A-'</span><span class="s4">,</span><span class="s7">'AB+'</span><span class="s4">,</span><span class="s7">'AB-'</span><span class="s4">],             receiveFrom: [</span><span class="s7">'A-'</span><span class="s4">,</span><span class="s7">'O-'</span><span class="s4">] },</span>
+        <span class="s7">'B+'</span><span class="s4">:  { donateTo: [</span><span class="s7">'B+'</span><span class="s4">,</span><span class="s7">'AB+'</span><span class="s4">],                        receiveFrom: [</span><span class="s7">'B+'</span><span class="s4">,</span><span class="s7">'B-'</span><span class="s4">,</span><span class="s7">'O+'</span><span class="s4">,</span><span class="s7">'O-'</span><span class="s4">] },</span>
+        <span class="s7">'B-'</span><span class="s4">:  { donateTo: [</span><span class="s7">'B+'</span><span class="s4">,</span><span class="s7">'B-'</span><span class="s4">,</span><span class="s7">'AB+'</span><span class="s4">,</span><span class="s7">'AB-'</span><span class="s4">],             receiveFrom: [</span><span class="s7">'B-'</span><span class="s4">,</span><span class="s7">'O-'</span><span class="s4">] },</span>
+        <span class="s7">'O+'</span><span class="s4">:  { donateTo: [</span><span class="s7">'A+'</span><span class="s4">,</span><span class="s7">'B+'</span><span class="s4">,</span><span class="s7">'O+'</span><span class="s4">,</span><span class="s7">'AB+'</span><span class="s4">],              receiveFrom: [</span><span class="s7">'O+'</span><span class="s4">,</span><span class="s7">'O-'</span><span class="s4">] },</span>
+        <span class="s7">'O-'</span><span class="s4">:  { donateTo: [</span><span class="s7">'A+'</span><span class="s4">,</span><span class="s7">'A-'</span><span class="s4">,</span><span class="s7">'B+'</span><span class="s4">,</span><span class="s7">'B-'</span><span class="s4">,</span><span class="s7">'O+'</span><span class="s4">,</span><span class="s7">'O-'</span><span class="s4">,</span><span class="s7">'AB+'</span><span class="s4">,</span><span class="s7">'AB-'</span><span class="s4">], receiveFrom: [</span><span class="s7">'O-'</span><span class="s4">] },</span>
+        <span class="s7">'AB+'</span><span class="s4">: { donateTo: [</span><span class="s7">'AB+'</span><span class="s4">],                             receiveFrom: [</span><span class="s7">'A+'</span><span class="s4">,</span><span class="s7">'A-'</span><span class="s4">,</span><span class="s7">'B+'</span><span class="s4">,</span><span class="s7">'B-'</span><span class="s4">,</span><span class="s7">'O+'</span><span class="s4">,</span><span class="s7">'O-'</span><span class="s4">,</span><span class="s7">'AB+'</span><span class="s4">,</span><span class="s7">'AB-'</span><span class="s4">] },</span>
+        <span class="s7">'AB-'</span><span class="s4">: { donateTo: [</span><span class="s7">'AB+'</span><span class="s4">,</span><span class="s7">'AB-'</span><span class="s4">],                       receiveFrom: [</span><span class="s7">'A-'</span><span class="s4">,</span><span class="s7">'B-'</span><span class="s4">,</span><span class="s7">'O-'</span><span class="s4">,</span><span class="s7">'AB-'</span><span class="s4">] }</span>
+    <span class="s4">};</span>
+
+    <span class="s11">let </span><span class="s4">selectedType = </span><span class="s7">''</span><span class="s4">;</span>
+
+    <span class="s11">function </span><span class="s4">showDetail(type) {</span>
+        <span class="s4">selectedType = type;</span>
+        <span class="s11">const </span><span class="s4">data = compatibility[type];</span>
+
+        <span class="s4">document.querySelectorAll(</span><span class="s7">'.blood-card'</span><span class="s4">).forEach(c =&gt; c.classList.remove(</span><span class="s7">'selected'</span><span class="s4">));</span>
+        <span class="s4">event.currentTarget.classList.add(</span><span class="s7">'selected'</span><span class="s4">);</span>
+
+        <span class="s4">document.getElementById(</span><span class="s7">'detailTitle'</span><span class="s4">).textContent =</span>
+            <span class="s7">'Blood type ' </span><span class="s4">+ type + </span><span class="s7">' — Compatibility details'</span><span class="s4">;</span>
+
+        <span class="s4">document.getElementById(</span><span class="s7">'donateTo'</span><span class="s4">).innerHTML =</span>
+            <span class="s4">data.donateTo.map(t =&gt; </span><span class="s7">`&lt;span class=&quot;type-pill pill-green&quot;&gt;</span><span class="s12">${</span><span class="s2">t</span><span class="s12">}</span><span class="s7">&lt;/span&gt;`</span><span class="s4">).join(</span><span class="s7">''</span><span class="s4">);</span>
+
+        <span class="s4">document.getElementById(</span><span class="s7">'receiveFrom'</span><span class="s4">).innerHTML =</span>
+            <span class="s4">data.receiveFrom.map(t =&gt; </span><span class="s7">`&lt;span class=&quot;type-pill pill-blue&quot;&gt;</span><span class="s12">${</span><span class="s2">t</span><span class="s12">}</span><span class="s7">&lt;/span&gt;`</span><span class="s4">).join(</span><span class="s7">''</span><span class="s4">);</span>
+
+        <span class="s4">document.getElementById(</span><span class="s7">'detailPanel'</span><span class="s4">).classList.add(</span><span class="s7">'show'</span><span class="s4">);</span>
+        <span class="s4">document.getElementById(</span><span class="s7">'detailPanel'</span><span class="s4">).scrollIntoView({ behavior: </span><span class="s7">'smooth' </span><span class="s4">});</span>
+    <span class="s4">}</span>
+
+    <span class="s11">function </span><span class="s4">searchThisType() {</span>
+        <span class="s4">window.location.href =</span>
+            <span class="s7">'http://localhost:8081/searchDonors?bloodType=' </span><span class="s4">+ selectedType;</span>
+    <span class="s4">}</span>
+<span class="s5">&lt;/script&gt;</span>
+
+<span class="s5">&lt;/body&gt;</span>
+<span class="s5">&lt;/html&gt;</span></pre>
+</body>
+</html>
