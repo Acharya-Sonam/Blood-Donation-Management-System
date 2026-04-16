@@ -20,10 +20,7 @@ public class PatientController extends HttpServlet {
 
     private final PatientService patientService = new PatientService();
 
-    // ---------------------------------------------------
-    // GET — runs when page first loads
-    // Shows all donors with no filter
-    // ---------------------------------------------------
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -55,10 +52,7 @@ public class PatientController extends HttpServlet {
         }
     }
 
-    // ---------------------------------------------------
-    // POST — runs when patient clicks Search button
-    // Filters by blood type, location, compatibility mode
-    // ---------------------------------------------------
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -86,7 +80,7 @@ public class PatientController extends HttpServlet {
 
             long eligibleCount = patientService.countEligible(donors);
 
-            // Send results back to JSP
+
             request.setAttribute("donors", donors);
             request.setAttribute("eligibleCount", eligibleCount);
             request.setAttribute("totalCount", donors.size());

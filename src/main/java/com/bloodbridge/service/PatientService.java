@@ -15,11 +15,7 @@ public class PatientService {
 
     private final UserDao userDao = new UserDao();
 
-    // ---------------------------------------------------
-    // Blood compatibility map
-    // Key = requested blood type
-    // Value = donor types that are compatible
-    // ---------------------------------------------------
+
     private static final Map<String, List<String>> COMPATIBILITY = Map.of(
             "A+",  Arrays.asList("A+", "A-", "O+", "O-"),
             "A-",  Arrays.asList("A-", "O-"),
@@ -31,17 +27,12 @@ public class PatientService {
             "AB-", Arrays.asList("A-", "B-", "O-", "AB-")
     );
 
-    // ---------------------------------------------------
-    // Search donors by exact blood type and location
-    // ---------------------------------------------------
+
     public List<Donor> searchDonors(String bloodType, String location, String urgency) throws SQLException {
         return userDao.searchDonors(bloodType, location, urgency);
     }
 
-    // ---------------------------------------------------
-    // Search compatible donors based on patient's blood type
-    // e.g. patient is AB+ so show all 8 compatible donor types
-    // ---------------------------------------------------
+
     public List<Donor> searchCompatibleDonors(String patientBloodType, String location, String urgency) throws SQLException {
         List<String> compatibleTypes = BloodCompatibilityUtil.getCompatibleDonorTypes(patientBloodType);
 
@@ -64,25 +55,18 @@ public class PatientService {
         return compatibleDonors;
     }
 
-    // ---------------------------------------------------
-    // Get all donors (for initial page load)
-    // ---------------------------------------------------
+
     public List<Donor> getAllDonors() throws SQLException {
         return userDao.searchDonors("", "", "");
     }
-    // ---------------------------------------------------
-    // Count how many donors are eligible right now
-    // ---------------------------------------------------
+
     public long countEligible(List<Donor> donors) {
         return donors.stream()
                 .filter(Donor::isEligible)
                 .count();
     }
 
-    // ---------------------------------------------------
-    // Get compatible blood types for a given blood type
-    // Used to display compatibility info on the JSP
-    // ---------------------------------------------------
+
     public List<String> getCompatibleTypes(String bloodType) {
         return COMPATIBILITY.getOrDefault(bloodType, new ArrayList<>());
     }

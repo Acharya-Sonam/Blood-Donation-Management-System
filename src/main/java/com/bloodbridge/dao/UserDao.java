@@ -12,7 +12,7 @@ import java.util.List;
 
 public class UserDao {
 
-    // Search donors by blood type and/or location
+
     public List<Donor> searchDonors(String bloodType, String location, String urgency) throws SQLException {
 
         List<Donor> donors = new ArrayList<>();
@@ -31,7 +31,7 @@ public class UserDao {
             query.append(" AND urgency = ?");
         }
 
-        // Urgent donors always appear first
+
         query.append(" ORDER BY CASE WHEN urgency = 'urgent' THEN 0 ELSE 1 END, name ASC");
 
         Connection conn = DBConnection.getConnection();
@@ -75,11 +75,11 @@ public class UserDao {
         return donors;
     }
 
-    // Keep old method working by calling new one
+
     public List<Donor> getAllDonors() throws SQLException {
         return searchDonors("", "", "");
     }
-    // Get donor count and eligible count grouped by blood type
+
     public Map<String, int[]> getBloodTypeStats() throws SQLException {
         Map<String, int[]> stats = new LinkedHashMap<>();
 
