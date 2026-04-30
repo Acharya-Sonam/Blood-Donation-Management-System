@@ -35,7 +35,7 @@ public class PatientController extends HttpServlet{
         // --- DIYA'S PART ---
         if (action.equals("requestForm")) {
             // Show the blood request form
-            request.getRequestDispatcher("/views/patient/request.jsp")
+            request.getRequestDispatcher("/views/patient/requestBlood.jsp")
                    .forward(request, response);
 
         } else if (action.equals("myRequests")) {
@@ -43,14 +43,14 @@ public class PatientController extends HttpServlet{
             int patientId = (int) session.getAttribute("userId");
             List<BloodRequest> requests = bloodRequestDAO.getRequestsByPatient(patientId);
             request.setAttribute("requests", requests);
-            request.getRequestDispatcher("/views/patient/requesthistory.jsp")
+            request.getRequestDispatcher("/views/patient/trackRequest.jsp")
                    .forward(request, response);
 
         } else if (action.equals("viewAllRequests")) {
             // Donor views all pending requests
             List<BloodRequest> requests = bloodRequestDAO.getAllPendingRequests();
             request.setAttribute("requests", requests);
-            request.getRequestDispatcher("/views/donor/viewrequests.jsp")
+            request.getRequestDispatcher("/views/donor/dashboard.jsp")
                    .forward(request, response);
         }
 
