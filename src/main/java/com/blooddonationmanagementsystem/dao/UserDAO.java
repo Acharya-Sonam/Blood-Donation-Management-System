@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class UserDAO {
@@ -66,7 +68,7 @@ public class UserDAO {
     public void insertDonor(Donor donor) throws SQLException {
 
         String sql = "INSERT INTO donors (user_id, full_name, phone, date_of_birth, blood_group, address) "
-                   + "VALUES (?, ?, ?, ?, ?, ?)";
+                + "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -97,7 +99,7 @@ public class UserDAO {
     public void insertPatient(Patient patient) throws SQLException {
 
         String sql = "INSERT INTO patients (user_id, full_name, phone, date_of_birth, blood_group, address, hospital_name) "
-                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -124,6 +126,92 @@ public class UserDAO {
             ResultSet rs = stmt.executeQuery();
             return rs.next();
         }
+    }
+
+    // ── GET ALL USERS ────────────────────────────────────────────────
+    public List<User> getAllUsers() throws SQLException {
+        String sql = "SELECT * FROM users ORDER BY created_at DESC";
+        List<User> users = new ArrayList<>();
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                users.add(mapUser(rs));
+            }
+        }
+        return users;
+    }
+
+    // ── GET USER BY ID ───────────────────────────────────────────────
+    public User getUserById(int userId) throws SQLException {
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return mapUser(rs);
+            }
+            return null;
+        }
+    }
+
+    // ── UPDATE USER STATUS (approve / reject) ────────────────────────
+    public void updateUserStatus(int userId, String status) throws SQLException {
+        String sql = "UPDATE users SET status = ? WHERE user_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, status);
+            stmt.setInt(2, userId);
+            stmt.executeUpdate();
+        }
+    }
+
+    // ── UPDATE USER ROLE ─────────────────────────────────────────────
+    public void updateUserRole(int userId, String role) throws SQLException {
+        String sql = "UPDATE users SET role = ? WHERE user_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, role);
+            stmt.setInt(2, userId);
+            stmt.executeUpdate();
+        }
+    }
+
+    public void deleteUser(int userId) throws SQLException {
+        String sql = "DELETE FROM users WHERE user_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userId);
+            stmt.executeUpdate();
+        }
+    }
+
+
+    public List<User> getUsersByStatus(String status) throws SQLException {
+        String sql = "SELECT * FROM users WHERE status = ? ORDER BY created_at DESC";
+        List<User> users = new ArrayList<>();
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, status);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                users.add(mapUser(rs));
+            }
+        }
+        return users;
     }
 
 
