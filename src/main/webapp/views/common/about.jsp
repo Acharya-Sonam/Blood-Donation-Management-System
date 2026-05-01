@@ -1,44 +1,57 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About — BloodBridge</title>
+    <title>About Us - Blood Bridge</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
-<body class="auth-body">
-<div class="auth-container auth-container--wide">
-    <div class="auth-brand">
-        <span class="brand-icon">🩸</span>
-        <h1>BloodBridge</h1>
-        <p>Our Mission</p>
-    </div>
-    <div class="auth-card">
-        <h2>About BloodBridge</h2>
-        <p style="margin-bottom:1rem;color:var(--gray-700);line-height:1.8;">
-            BloodBridge is a web-based ethical blood donation management platform designed to connect
-            voluntary blood donors with patients in urgent need. Our platform operates on the principles
-            of informed consent, donor anonymity, and data privacy.
-        </p>
-        <p style="margin-bottom:1rem;color:var(--gray-700);line-height:1.8;">
-            We believe every donation is a voluntary act of kindness. No commercial transactions
-            of blood are permitted on this platform. All donor and patient data is handled with
-            strict confidentiality.
-        </p>
-        <h3 style="color:var(--red-dark);margin-bottom:0.75rem;">Our Values</h3>
-        <ul style="color:var(--gray-700);line-height:2;padding-left:1.5rem;">
-            <li>Voluntary and ethical donations only</li>
-            <li>Full donor consent and anonymity</li>
-            <li>Transparent request and approval process</li>
-            <li>No commercial blood transactions</li>
-            <li>Secure and private data handling</li>
-        </ul>
-        <div style="margin-top:1.5rem;display:flex;gap:1rem;">
-            <a href="${pageContext.request.contextPath}/login"   class="btn btn-primary">Login</a>
-            <a href="${pageContext.request.contextPath}/contact" class="btn btn-secondary">Contact Us</a>
+<body class="ambient-page">
+
+    <!-- Navigation -->
+    <jsp:include page="navbar.jsp" />
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="page-header-content">
+            <h1>About Blood Bridge</h1>
+            <p>Connecting heroes to those in need, one drop at a time.</p>
         </div>
-    </div>
-</div>
+    </header>
+
+    <!-- About Content -->
+    <section class="about-section">
+        <div class="about-container">
+            <div class="about-card">
+                <div class="about-text">
+                <h2>Our Mission</h2>
+                <p>Blood Bridge was founded with a simple yet powerful mission: to eliminate the critical shortage of blood in medical emergencies. We leverage modern technology to connect voluntary blood donors directly with hospitals, clinics, and patients in urgent need.</p>
+                <p>Every single day, thousands of lives are lost because the right blood type isn't available at the right time. Our platform aims to bridge that gap by providing real-time alerts, location-based matching, and a seamless donation experience.</p>
+                
+                <h2 style="margin-top: 2rem;">How It Works</h2>
+                <ul class="timeline">
+                    <li><strong>Register:</strong> Sign up as a donor and input your blood type and location.</li>
+                    <li><strong>Get Notified:</strong> Receive instant alerts when your blood is needed nearby.</li>
+                    <li><strong>Donate:</strong> Visit the assigned clinic or campaign drive to donate.</li>
+                    <li><strong>Save Lives:</strong> Your single donation can save up to 3 lives.</li>
+                </ul>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2026 Blood Bridge Blood Donation System. All rights reserved.</p>
+        </div>
+    </footer>
+
 </body>
 </html>
