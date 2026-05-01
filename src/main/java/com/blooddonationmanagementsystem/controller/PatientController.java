@@ -12,6 +12,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import com.blooddonationmanagementsystem.model.Donor;
+import com.blooddonationmanagementsystem.service.PatientService;
 
 @WebServlet("/PatientController")
 public class PatientController extends HttpServlet{
@@ -52,10 +54,25 @@ public class PatientController extends HttpServlet{
             request.setAttribute("requests", requests);
             request.getRequestDispatcher("/views/donor/dashboard.jsp")
                    .forward(request, response);
-        }
+
 
         // --- DIKSHYA'S PART (search donors) goes below this ---
+        } else if (action.equals("searchDonors")) {
+            String bloodGroup = request.getParameter("bloodGroup");
+            String location   = request.getParameter("location");
+
+            PatientService patientService = new PatientService();
+            List<Donor> donors = patientService.searchDonors(bloodGroup, location);
+
+            request.setAttribute("donors", donors);
+            request.setAttribute("bloodGroup", bloodGroup);
+            request.setAttribute("location", location);
+            request.getRequestDispatcher("/views/patient/searchdonors.jsp")
+                    .forward(request, response);
+        }
     }
+
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
