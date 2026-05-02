@@ -25,6 +25,7 @@
                 <p>Enter your registered email to receive a 6-digit OTP.</p>
             </div>
             
+            <%-- Display Error or Success Messages --%>
             <% if (request.getAttribute("error") != null) { %>
                 <div class="alert alert-error">
                     <%= request.getAttribute("error") %>
@@ -47,7 +48,7 @@
             </form>
 
             <div class="auth-footer">
-                <p>Remembered your password? <a href="${pageContext.request.contextPath}/views/common/login.jsp">Login here</a></p>
+                <p>Remembered your password? <a href="${pageContext.request.contextPath}/login">Login here</a></p>
             </div>
         </div>
     </div>

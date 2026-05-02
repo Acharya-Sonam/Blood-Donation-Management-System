@@ -13,6 +13,12 @@ import java.io.IOException;
 public class VerifyOTPServlet extends HttpServlet {
 
     @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        request.getRequestDispatcher("/views/common/verify-otp.jsp").forward(request, response);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         String enteredOtp = request.getParameter("otp");
@@ -23,6 +29,9 @@ public class VerifyOTPServlet extends HttpServlet {
 
         if (storedOtp != null && expiry != null && System.currentTimeMillis() < expiry) {
             if (storedOtp.equals(enteredOtp)) {
+                // Mark OTP as verified in session
+                session.setAttribute("otp_verified", true);
+                
                 request.setAttribute("message", "OTP verified. Please set your new password.");
                 request.getRequestDispatcher("/views/common/reset-password.jsp").forward(request, response);
             } else {

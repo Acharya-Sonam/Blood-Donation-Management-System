@@ -55,7 +55,7 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" id="password" name="password" placeholder="Min 6 characters" required>
+                        <input type="password" id="password" name="password" placeholder="Min 8 characters" required>
                     </div>
                     <div class="form-group">
                         <label for="confirmPassword">Confirm Password</label>

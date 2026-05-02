@@ -29,7 +29,7 @@ public class AuthController extends HttpServlet {
             // If already logged in, redirect to appropriate dashboard
             HttpSession session = request.getSession(false);
             if (session != null && session.getAttribute("user") != null) {
-                redirectToDashboard((User) session.getAttribute("user"), response);
+                redirectToDashboard(request, response, (User) session.getAttribute("user"));
                 return;
             }
             // Show login page
@@ -76,8 +76,8 @@ public class AuthController extends HttpServlet {
             session.setAttribute("role", user.getRole());
             session.setMaxInactiveInterval(30 * 60); // 30 minutes
 
-            // Redirect to the correct dashboard based on role
-            redirectToDashboard(user, response);
+            // Redirect to the correct dashboard based on role or previous target
+            redirectToDashboard(request, response, user);
 
         } catch (AuthException e) {
             // Show the specific error message on the login page
@@ -85,8 +85,11 @@ public class AuthController extends HttpServlet {
             request.getRequestDispatcher("/views/common/login.jsp").forward(request, response);
 
         } catch (SQLException e) {
+            // Log the error to terminal for debugging
+            e.printStackTrace();
+            
             // Database error — forward to error page
-            request.setAttribute("errorMessage", "A system error occurred. Please try again later.");
+            request.setAttribute("errorMessage", "A system error occurred: " + e.getMessage());
             request.getRequestDispatcher("/views/common/login.jsp").forward(request, response);
         }
     }
@@ -136,7 +139,8 @@ public class AuthController extends HttpServlet {
             request.getRequestDispatcher("/views/common/register.jsp").forward(request, response);
 
         } catch (SQLException e) {
-            request.setAttribute("errorMessage", "A system error occurred during registration. Please try again.");
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "A system error occurred during registration: " + e.getMessage());
             request.getRequestDispatcher("/views/common/register.jsp").forward(request, response);
         }
     }
@@ -151,19 +155,33 @@ public class AuthController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/login?logout=true");
     }
 
-    private void redirectToDashboard(User user, HttpServletResponse response)
+    private void redirectToDashboard(HttpServletRequest request, HttpServletResponse response, User user)
             throws IOException {
 
-        String context = ""; 
+        HttpSession session = request.getSession(false);
+        String targetURL = (session != null) ? (String) session.getAttribute("targetURL") : null;
 
-        if (user.isAdmin()) {
-            response.sendRedirect("admin/dashboard");
-        } else if (user.isDonor()) {
-            response.sendRedirect("donor/dashboard");
-        } else if (user.isPatient()) {
-            response.sendRedirect("patient/dashboard");
+        if (targetURL != null && !targetURL.isEmpty()) {
+            // Clear the target URL so it doesn't affect future logins
+            session.removeAttribute("targetURL");
+            
+            // Redirect to stored target (ensure it's absolute if needed, but path from filter is relative to context)
+            if (targetURL.startsWith("/")) {
+                response.sendRedirect(request.getContextPath() + targetURL);
+            } else {
+                response.sendRedirect(request.getContextPath() + "/" + targetURL);
+            }
         } else {
-            response.sendRedirect("login");
+            // Default role-based redirection
+            if (user.isAdmin()) {
+                response.sendRedirect(request.getContextPath() + "/admin/dashboard");
+            } else if (user.isDonor()) {
+                response.sendRedirect(request.getContextPath() + "/donor/dashboard");
+            } else if (user.isPatient()) {
+                response.sendRedirect(request.getContextPath() + "/patient/dashboard");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/login");
+            }
         }
     }
 }

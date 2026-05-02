@@ -1,6 +1,5 @@
 package com.blooddonationmanagementsystem.service;
 
-
 import com.blooddonationmanagementsystem.dao.UserDAO;
 import com.blooddonationmanagementsystem.model.Donor;
 import com.blooddonationmanagementsystem.model.Patient;
@@ -12,18 +11,22 @@ import java.sql.SQLException;
 
 public class AuthService {
 
-    // One DAO instance used by all methods
     private UserDAO userDAO = new UserDAO();
 
-    //  LOGIN
     public User login(String email, String password) throws SQLException, AuthException {
-
         if (!ValidationUtil.isNotEmpty(email) || !ValidationUtil.isNotEmpty(password)) {
             throw new AuthException("Email and password are required.");
         }
         User user = userDAO.getUserByEmail(email.trim());
         if (user == null) {
             throw new AuthException("No account found with that email address.");
+        }
+
+        // Auto-fix for predefined admin password (converts plain text to hash on first login)
+        if ("admin".equals(user.getRole()) && "admin123".equals(user.getPassword())) {
+            String hashed = PasswordUtil.hash("admin123");
+            userDAO.updatePassword(user.getEmail(), hashed);
+            user.setPassword(hashed); 
         }
 
         if (!PasswordUtil.verify(password, user.getPassword())) {
@@ -39,9 +42,8 @@ public class AuthService {
         return user;
     }
 
-    //  DONOR REGISTRATION
-
-    public void registerDonor(String fullName, String email, String password,String confirm, String phone, String dob,String bloodGroup, String address)
+    public void registerDonor(String fullName, String email, String password, String confirm, String phone, String dob,
+            String bloodGroup, String address)
             throws SQLException, AuthException {
 
         if (!ValidationUtil.isNotEmpty(fullName)) {
@@ -57,7 +59,7 @@ public class AuthService {
             throw new AuthException("Please enter a valid email address (e.g. name@email.com).");
         }
         if (!ValidationUtil.isValidPassword(password)) {
-            throw new AuthException("Password must be at least 6 characters long.");
+            throw new AuthException("Password must be at least 8 characters long.");
         }
         if (!ValidationUtil.passwordsMatch(password, confirm)) {
             throw new AuthException("Passwords do not match. Please re-enter.");
@@ -75,7 +77,6 @@ public class AuthService {
             throw new AuthException("Please select a valid blood group.");
         }
 
-
         if (userDAO.emailExists(email.trim())) {
             throw new AuthException("An account with this email already exists.");
         }
@@ -84,22 +85,18 @@ public class AuthService {
         }
 
         String hashedPassword = PasswordUtil.hash(password);
-
-        // Insert into users table and get the new user_id
         int userId = userDAO.insertUser(email.trim(), hashedPassword, "donor");
 
         if (userId == -1) {
             throw new AuthException("Registration failed. Please try again.");
         }
 
-        // Build Donor object and insert into donors table
-        Donor donor = new Donor(userId, fullName.trim(), phone.trim(),dob, bloodGroup.trim(), address);
+        Donor donor = new Donor(userId, fullName.trim(), phone.trim(), dob, bloodGroup.trim(), address);
         userDAO.insertDonor(donor);
     }
 
-    //  PATIENT REGISTRATION
-   
-    public void registerPatient(String fullName, String email, String password,String confirm, String phone, String dob,String bloodGroup, String address, String hospitalName)
+    public void registerPatient(String fullName, String email, String password, String confirm, String phone,
+            String dob, String bloodGroup, String address, String hospitalName)
             throws SQLException, AuthException {
 
         if (!ValidationUtil.isNotEmpty(fullName)) {
@@ -115,7 +112,7 @@ public class AuthService {
             throw new AuthException("Please enter a valid email address (e.g. name@email.com).");
         }
         if (!ValidationUtil.isValidPassword(password)) {
-            throw new AuthException("Password must be at least 6 characters long.");
+            throw new AuthException("Password must be at least 8 characters long.");
         }
         if (!ValidationUtil.passwordsMatch(password, confirm)) {
             throw new AuthException("Passwords do not match. Please re-enter.");
@@ -140,7 +137,6 @@ public class AuthService {
             throw new AuthException("A patient account with this phone number already exists.");
         }
 
-
         String hashedPassword = PasswordUtil.hash(password);
         int userId = userDAO.insertUser(email.trim(), hashedPassword, "patient");
 
@@ -148,12 +144,10 @@ public class AuthService {
             throw new AuthException("Registration failed. Please try again.");
         }
 
-        Patient patient = new Patient(userId, fullName.trim(), phone.trim(),dob, bloodGroup.trim(), address, hospitalName);
+        Patient patient = new Patient(userId, fullName.trim(), phone.trim(), dob, bloodGroup.trim(), address, hospitalName);
         userDAO.insertPatient(patient);
     }
 
-    //  INNER EXCEPTION CLASS
- 
     public static class AuthException extends Exception {
         public AuthException(String message) {
             super(message);

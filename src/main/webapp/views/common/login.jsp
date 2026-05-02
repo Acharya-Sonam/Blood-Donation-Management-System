@@ -25,7 +25,24 @@
                 <p>Login to manage your donations or request blood.</p>
             </div>
             
-            <form action="#" method="POST" class="auth-form">
+            <%-- Display Error or Success Messages --%>
+            <% if (request.getAttribute("errorMessage") != null) { %>
+                <div class="alert alert-error">
+                    <%= request.getAttribute("errorMessage") %>
+                </div>
+            <% } %>
+            <% if (request.getAttribute("message") != null) { %>
+                <div class="alert alert-success">
+                    <%= request.getAttribute("message") %>
+                </div>
+            <% } %>
+            <% if (request.getParameter("registered") != null) { %>
+                <div class="alert alert-success">
+                    Registration successful! Please login.
+                </div>
+            <% } %>
+
+            <form action="${pageContext.request.contextPath}/login" method="POST" class="auth-form">
                 <div class="form-group">
                     <label for="email">Email Address</label>
                     <input type="email" id="email" name="email" placeholder="Enter your email" required>
@@ -47,7 +64,7 @@
             </form>
 
             <div class="auth-footer">
-                <p>Don't have an account? <a href="${pageContext.request.contextPath}/views/common/register.jsp">Register here</a></p>
+                <p>Don't have an account? <a href="${pageContext.request.contextPath}/register">Register here</a></p>
             </div>
         </div>
     </div>

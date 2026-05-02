@@ -24,7 +24,7 @@ public class ValidationUtil {
 
     public static boolean isValidPassword(String password) {
         if (!isNotEmpty(password)) return false;
-        return password.length() >= 10;
+        return password.length() >= 8;
     }
 
     public static boolean passwordsMatch(String password, String confirmPassword) {
