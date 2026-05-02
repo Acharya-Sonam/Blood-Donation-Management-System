@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Blood Bridge</title>
+    <title>Forgot Password - Blood Bridge</title>
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,33 +21,33 @@
     <div class="auth-wrapper">
         <div class="auth-card glass-card">
             <div class="auth-header">
-                <h2>Welcome Back</h2>
-                <p>Login to manage your donations or request blood.</p>
+                <h2>Forgot Password</h2>
+                <p>Enter your registered email to receive a 6-digit OTP.</p>
             </div>
             
-            <form action="#" method="POST" class="auth-form">
+            <% if (request.getAttribute("error") != null) { %>
+                <div class="alert alert-error">
+                    <%= request.getAttribute("error") %>
+                </div>
+            <% } %>
+
+            <% if (request.getAttribute("message") != null) { %>
+                <div class="alert alert-success">
+                    <%= request.getAttribute("message") %>
+                </div>
+            <% } %>
+            
+            <form action="${pageContext.request.contextPath}/forgot-password" method="POST" class="auth-form">
                 <div class="form-group">
                     <label for="email">Email Address</label>
                     <input type="email" id="email" name="email" placeholder="Enter your email" required>
                 </div>
                 
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                </div>
-
-                <div class="form-options">
-                    <label class="remember-me">
-                        <input type="checkbox" name="remember"> Remember Me
-                    </label>
-                    <a href="${pageContext.request.contextPath}/forgot-password" class="forgot-password">Forgot Password?</a>
-                </div>
-                
-                <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+                <button type="submit" class="btn btn-primary btn-full">Send OTP</button>
             </form>
 
             <div class="auth-footer">
-                <p>Don't have an account? <a href="${pageContext.request.contextPath}/views/common/register.jsp">Register here</a></p>
+                <p>Remembered your password? <a href="${pageContext.request.contextPath}/views/common/login.jsp">Login here</a></p>
             </div>
         </div>
     </div>

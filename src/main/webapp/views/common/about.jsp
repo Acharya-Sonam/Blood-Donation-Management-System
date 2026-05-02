@@ -43,6 +43,34 @@
                 </ul>
             </div>
             </div>
+            </div>
+
+            <!-- Contact Form Integrated -->
+            <div class="about-card" style="margin-top: 2rem;">
+                <div class="about-text">
+                    <h2>Get in Touch</h2>
+                    <p style="margin-bottom: 1.5rem;">We'd love to hear from you. Reach out with any questions or feedback.</p>
+                    <form action="#" method="POST" class="auth-form" style="max-width: 500px;">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Write your message here..." style="width: 100%; padding: 0.8rem 1rem; border: 2px solid var(--clr-border); border-radius: var(--radius-md); font-family: var(--font-main); font-size: 1rem; background: rgba(255, 255, 255, 0.8); resize: vertical; transition: all 0.3s ease;" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </section>
 
