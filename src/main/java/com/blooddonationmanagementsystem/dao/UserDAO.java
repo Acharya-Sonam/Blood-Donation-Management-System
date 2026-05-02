@@ -127,6 +127,39 @@ public class UserDAO {
     }
 
 
+    public boolean updatePassword(String email, String hashedPassword) throws SQLException {
+        String sql = "UPDATE users SET password = ? WHERE email = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, hashedPassword);
+            stmt.setString(2, email);
+            return stmt.executeUpdate() > 0;
+        }
+    }
+
+    public java.util.List<User> getPendingUsers() throws SQLException {
+        java.util.List<User> pendingUsers = new java.util.ArrayList<>();
+        String sql = "SELECT * FROM users WHERE status = 'pending'";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                pendingUsers.add(mapUser(rs));
+            }
+        }
+        return pendingUsers;
+    }
+
+    public boolean updateUserStatus(int userId, String status) throws SQLException {
+        String sql = "UPDATE users SET status = ? WHERE user_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, status);
+            stmt.setInt(2, userId);
+            return stmt.executeUpdate() > 0;
+        }
+    }
+
     private User mapUser(ResultSet rs) throws SQLException {
         User user = new User();
         user.setUserId(rs.getInt("user_id"));

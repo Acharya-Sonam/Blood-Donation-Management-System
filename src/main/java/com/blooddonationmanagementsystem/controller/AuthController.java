@@ -33,11 +33,11 @@ public class AuthController extends HttpServlet {
                 return;
             }
             // Show login page
-            request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/common/login.jsp").forward(request, response);
 
         } else if ("/register".equals(path)) {
             // Show registration page
-            request.getRequestDispatcher("/views/auth/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/common/register.jsp").forward(request, response);
 
         } else if ("/logout".equals(path)) {
             // Destroy session and go to login
@@ -82,12 +82,12 @@ public class AuthController extends HttpServlet {
         } catch (AuthException e) {
             // Show the specific error message on the login page
             request.setAttribute("errorMessage", e.getMessage());
-            request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/common/login.jsp").forward(request, response);
 
         } catch (SQLException e) {
             // Database error — forward to error page
             request.setAttribute("errorMessage", "A system error occurred. Please try again later.");
-            request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/common/login.jsp").forward(request, response);
         }
     }
 
@@ -119,7 +119,7 @@ public class AuthController extends HttpServlet {
             } else {
                 // No role selected
                 request.setAttribute("errorMessage", "Please select a registration type (Donor or Patient).");
-                request.getRequestDispatcher("/views/auth/register.jsp").forward(request, response);
+                request.getRequestDispatcher("/views/common/register.jsp").forward(request, response);
                 return;
             }
 
@@ -133,11 +133,11 @@ public class AuthController extends HttpServlet {
             request.setAttribute("phone",      phone);
             request.setAttribute("bloodGroup", bloodGroup);
             request.setAttribute("address",    address);
-            request.getRequestDispatcher("/views/auth/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/common/register.jsp").forward(request, response);
 
         } catch (SQLException e) {
             request.setAttribute("errorMessage", "A system error occurred during registration. Please try again.");
-            request.getRequestDispatcher("/views/auth/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/common/register.jsp").forward(request, response);
         }
     }
 

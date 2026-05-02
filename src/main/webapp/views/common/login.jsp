@@ -40,7 +40,7 @@
                     <label class="remember-me">
                         <input type="checkbox" name="remember"> Remember Me
                     </label>
-                    <a href="#" class="forgot-password">Forgot Password?</a>
+                    <a href="${pageContext.request.contextPath}/forgot-password" class="forgot-password">Forgot Password?</a>
                 </div>
                 
                 <button type="submit" class="btn btn-primary btn-full">Sign In</button>
