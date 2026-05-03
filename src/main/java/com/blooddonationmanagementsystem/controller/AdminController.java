@@ -19,6 +19,7 @@ public class AdminController extends HttpServlet {
     private final AdminService adminService = new AdminService();
 
     // ── GET REQUEST HANDLER ───────────────────────────────────────
+    // ── GET REQUEST HANDLER ───────────────────────────────────────
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -26,27 +27,36 @@ public class AdminController extends HttpServlet {
         // Check if admin is logged in
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect(request.getContextPath() + "/auth/login");
+            response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
         User loggedInUser = (User) session.getAttribute("user");
         if (!loggedInUser.isAdmin()) {
-            response.sendRedirect(request.getContextPath() + "/auth/login");
+            response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
-        String path = request.getPathInfo(); // e.g. /manageusers, /approve, etc.
+        String path = request.getPathInfo();
         if (path == null) path = "/";
 
         try {
             switch (path) {
-                case "/manageusers":
                 case "/dashboard":
+                case "/":
+                    handleDashboard(request, response);
+                    break;
+                case "/manageusers":
                     handleManageUsers(request, response);
                     break;
+                case "/requests":
+                    handleRequests(request, response);
+                    break;
+                case "/inventory":
+                    handleInventory(request, response);
+                    break;
                 default:
-                    response.sendRedirect(request.getContextPath() + "/admin/manageusers");
+                    response.sendRedirect(request.getContextPath() + "/admin/dashboard");
             }
         } catch (SQLException e) {
             throw new ServletException("Database error", e);
@@ -61,13 +71,13 @@ public class AdminController extends HttpServlet {
         // Check if admin is logged in
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect(request.getContextPath() + "/auth/login");
+            response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
         User loggedInUser = (User) session.getAttribute("user");
         if (!loggedInUser.isAdmin()) {
-            response.sendRedirect(request.getContextPath() + "/auth/login");
+            response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
@@ -88,6 +98,9 @@ public class AdminController extends HttpServlet {
                 case "/updaterole":
                     handleUpdateRole(request, response);
                     break;
+                case "/updaterequest":
+                    handleUpdateRequest(request, response);
+                    break;
                 default:
                     response.sendRedirect(request.getContextPath() + "/admin/manageusers");
             }
@@ -96,7 +109,18 @@ public class AdminController extends HttpServlet {
         }
     }
 
-    // ── LOAD MANAGE USERS PAGE ────────────────────────────────────
+    // ── DASHBOARD ─────────────────────────────────────────────────
+    private void handleDashboard(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, ServletException, IOException {
+        
+        request.setAttribute("totalDonors", adminService.getTotalDonors());
+        request.setAttribute("pendingApprovals", adminService.getPendingApprovals());
+        request.setAttribute("totalRequests", adminService.getTotalBloodRequests());
+        
+        request.getRequestDispatcher("/views/admin/dashboard.jsp").forward(request, response);
+    }
+
+    // ── MANAGE USERS ──────────────────────────────────────────────
     private void handleManageUsers(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
 
@@ -120,10 +144,22 @@ public class AdminController extends HttpServlet {
                 .forward(request, response);
     }
 
+    // ── BLOOD REQUESTS ───────────────────────────────────────────
+    private void handleRequests(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setAttribute("requests", adminService.getAllBloodRequests());
+        request.getRequestDispatcher("/views/admin/manageRequests.jsp").forward(request, response);
+    }
+
+    // ── INVENTORY ───────────────────────────────────────────────
+    private void handleInventory(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("/views/admin/inventory.jsp").forward(request, response);
+    }
+
     // ── APPROVE USER ──────────────────────────────────────────────
     private void handleApprove(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-
         int userId = Integer.parseInt(request.getParameter("userId"));
         adminService.approveUser(userId);
         response.sendRedirect(request.getContextPath() + "/admin/manageusers?filter=pending&success=approved");
@@ -132,7 +168,6 @@ public class AdminController extends HttpServlet {
     // ── REJECT USER ───────────────────────────────────────────────
     private void handleReject(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-
         int userId = Integer.parseInt(request.getParameter("userId"));
         adminService.rejectUser(userId);
         response.sendRedirect(request.getContextPath() + "/admin/manageusers?filter=pending&success=rejected");
@@ -141,7 +176,6 @@ public class AdminController extends HttpServlet {
     // ── DELETE USER ───────────────────────────────────────────────
     private void handleDelete(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-
         int userId = Integer.parseInt(request.getParameter("userId"));
         adminService.deleteUser(userId);
         response.sendRedirect(request.getContextPath() + "/admin/manageusers?success=deleted");
@@ -150,10 +184,18 @@ public class AdminController extends HttpServlet {
     // ── UPDATE USER ROLE ──────────────────────────────────────────
     private void handleUpdateRole(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-
         int userId    = Integer.parseInt(request.getParameter("userId"));
         String role   = request.getParameter("role");
         adminService.updateUserRole(userId, role);
         response.sendRedirect(request.getContextPath() + "/admin/manageusers?success=roleupdated");
+    }
+
+    // ── UPDATE BLOOD REQUEST STATUS ──────────────────────────────
+    private void handleUpdateRequest(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        int requestId = Integer.parseInt(request.getParameter("requestId"));
+        String status = request.getParameter("status");
+        adminService.updateRequestStatus(requestId, status);
+        response.sendRedirect(request.getContextPath() + "/admin/requests?success=updated");
     }
 }

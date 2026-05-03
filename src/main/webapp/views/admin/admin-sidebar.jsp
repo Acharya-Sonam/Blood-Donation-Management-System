@@ -2,7 +2,7 @@
 <aside class="sidebar">
     <div class="sidebar-brand">
         <h2>🩸 Blood Bridge</h2>
-        <p>Admin Panel</p>
+        <p>Admin Dashboard</p>
     </div>
     <nav>
         <ul>
@@ -17,32 +17,17 @@
                 </a>
             </li>
             <li>
-                <a href="${pageContext.request.contextPath}/admin/donors" class="${pageContext.request.requestURI.contains('manageDonors') ? 'active' : ''}">
-                    🤝 Manage Donors
-                </a>
-            </li>
-            <li>
-                <a href="${pageContext.request.contextPath}/admin/patients" class="${pageContext.request.requestURI.contains('managePatients') ? 'active' : ''}">
-                    🩹 Manage Patients
-                </a>
-            </li>
-            <li>
                 <a href="${pageContext.request.contextPath}/admin/requests" class="${pageContext.request.requestURI.contains('manageRequests') ? 'active' : ''}">
                     🩸 Blood Requests
                 </a>
             </li>
             <li>
                 <a href="${pageContext.request.contextPath}/admin/inventory" class="${pageContext.request.requestURI.contains('inventory') ? 'active' : ''}">
-                    📦 Blood Inventory
-                </a>
-            </li>
-            <li>
-                <a href="${pageContext.request.contextPath}/admin/reports" class="${pageContext.request.requestURI.contains('reports') ? 'active' : ''}">
-                    📜 Reports
+                    📦 Inventory
                 </a>
             </li>
             <li class="sidebar-footer">
-                <a href="${pageContext.request.contextPath}/logout">🚪 Logout</a>
+                <a href="${pageContext.request.contextPath}/logout" class="logout-btn">🚪 Logout</a>
             </li>
         </ul>
     </nav>

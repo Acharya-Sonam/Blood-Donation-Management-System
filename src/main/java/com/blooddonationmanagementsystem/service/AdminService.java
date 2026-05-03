@@ -9,6 +9,8 @@ import java.util.List;
 public class AdminService {
 
     private final UserDAO userDAO = new UserDAO();
+    private final com.blooddonationmanagementsystem.dao.BloodRequestDAO bloodRequestDAO = new com.blooddonationmanagementsystem.dao.BloodRequestDAO();
+    private final com.blooddonationmanagementsystem.dao.DonorDAO donorDAO = new com.blooddonationmanagementsystem.dao.DonorDAO();
 
     // ── GET ALL USERS ─────────────────────────────────────────────
     public List<User> getAllUsers() throws SQLException {
@@ -53,5 +55,27 @@ public class AdminService {
     // ── GET REJECTED USERS ────────────────────────────────────────
     public List<User> getRejectedUsers() throws SQLException {
         return userDAO.getUsersByStatus("rejected");
+    }
+
+    // ── DASHBOARD STATS ──────────────────────────────────────────
+    public int getTotalDonors() throws SQLException {
+        return donorDAO.getAllDonors().size();
+    }
+
+    public int getPendingApprovals() throws SQLException {
+        return getPendingUsers().size();
+    }
+
+    public int getTotalBloodRequests() throws SQLException {
+        return bloodRequestDAO.getAllPendingRequests().size(); // Or get all if we want history
+    }
+
+    // ── BLOOD REQUESTS ───────────────────────────────────────────
+    public List<com.blooddonationmanagementsystem.model.BloodRequest> getAllBloodRequests() {
+        return bloodRequestDAO.getAllPendingRequests();
+    }
+
+    public void updateRequestStatus(int requestId, String status) {
+        bloodRequestDAO.updateStatus(requestId, status);
     }
 }

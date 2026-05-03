@@ -1,80 +1,53 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.util.List, com.blooddonationmanagementsystem.model.User" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Blood Bridge</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <title>Dashboard - Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css">
 </head>
-<body class="ambient-page">
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <jsp:include page="admin-sidebar.jsp" />
 
-    <jsp:include page="../common/navbar.jsp" />
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="page-header">
+                <h1>Welcome, Admin</h1>
+                <p>Here's what's happening with Blood Bridge today.</p>
+            </header>
 
-    <header class="page-header">
-        <h1>Admin Dashboard</h1>
-        <p>Manage system approvals and user records.</p>
-    </header>
-
-    <main class="container" style="max-width: 1000px; margin: 0 auto; padding: var(--spacing-md);">
-        
-        <div class="glass-card" style="padding: var(--spacing-lg);">
-            <h2 style="margin-bottom: var(--spacing-md); color: var(--clr-secondary);">Pending Approvals</h2>
-
-            <% if (request.getParameter("approved") != null) { %>
-                <div class="alert alert-success">User approved successfully!</div>
-            <% } %>
-            <% if (request.getParameter("rejected") != null) { %>
-                <div class="alert alert-error">User account rejected.</div>
-            <% } %>
-
-            <div style="overflow-x: auto;">
-                <table style="width: 100%; border-collapse: collapse; margin-top: var(--spacing-md);">
-                    <thead>
-                        <tr style="border-bottom: 2px solid var(--clr-border); text-align: left;">
-                            <th style="padding: 1rem;">Email</th>
-                            <th style="padding: 1rem;">Role</th>
-                            <th style="padding: 1rem;">Created At</th>
-                            <th style="padding: 1rem;">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% 
-                            List<User> pendingUsers = (List<User>) request.getAttribute("pendingUsers");
-                            if (pendingUsers != null && !pendingUsers.isEmpty()) {
-                                for (User user : pendingUsers) {
-                        %>
-                            <tr style="border-bottom: 1px solid var(--clr-border);">
-                                <td style="padding: 1rem;"><%= user.getEmail() %></td>
-                                <td style="padding: 1rem;"><span class="badge" style="background: rgba(29, 53, 87, 0.1);"><%= user.getRole().toUpperCase() %></span></td>
-                                <td style="padding: 1rem;"><%= user.getCreatedAt() %></td>
-                                <td style="padding: 1rem; display: flex; gap: 0.5rem;">
-                                    <form action="${pageContext.request.contextPath}/admin/approve" method="POST">
-                                        <input type="hidden" name="userId" value="<%= user.getUserId() %>">
-                                        <button type="submit" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size: 0.8rem;">Approve</button>
-                                    </form>
-                                    <form action="${pageContext.request.contextPath}/admin/reject" method="POST">
-                                        <input type="hidden" name="userId" value="<%= user.getUserId() %>">
-                                        <button type="submit" class="btn btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.8rem;">Reject</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        <% 
-                                }
-                            } else { 
-                        %>
-                            <tr>
-                                <td colspan="4" style="padding: 2rem; text-align: center; color: var(--clr-text-muted);">No pending registration requests.</td>
-                            </tr>
-                        <% } %>
-                    </tbody>
-                </table>
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Donors</h3>
+                    <div class="value">${totalDonors}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Pending Approvals</h3>
+                    <div class="value">${pendingApprovals}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Pending Requests</h3>
+                    <div class="value">${totalRequests}</div>
+                </div>
             </div>
-        </div>
 
-    </main>
-
+            <!-- Quick Actions / Recent Activity Placeholder -->
+            <div style="margin-top: 2rem;">
+                <h2 style="margin-bottom: 1rem; color: var(--clr-secondary);">Quick Actions</h2>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="${pageContext.request.contextPath}/admin/manageusers?filter=pending" class="btn-action" style="padding: 1rem 2rem; display: inline-block;">Review Pending Users</a>
+                    <a href="${pageContext.request.contextPath}/admin/requests" class="btn-action" style="padding: 1rem 2rem; display: inline-block;">Manage Blood Requests</a>
+                </div>
+            </div>
+        </main>
+    </div>
 </body>
 </html>
