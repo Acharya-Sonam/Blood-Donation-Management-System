@@ -1,127 +1,94 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List, com.blooddonationmanagementsystem.model.BloodRequest" %>
 <%
-    if (session.getAttribute("userId") == null || !"Donor".equals(session.getAttribute("role"))) {
-        response.sendRedirect(request.getContextPath() + "/views/common/login.jsp");
+    if (session == null || session.getAttribute("userId") == null) {
+        response.sendRedirect(request.getContextPath() + "/login");
         return;
     }
     List<BloodRequest> requests = (List<BloodRequest>) request.getAttribute("requests");
     String donorName = (String) session.getAttribute("name");
 %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Donor Dashboard - Blood Bridge</title>
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/donor.css">
+    <meta charset="UTF-8">
+    <title>Donor Dashboard – Blood Bridge</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Arial, sans-serif; background: #f5f5f5; }
-
-        /* Top navbar */
-        .navbar {
-            background: #c0392b;
-            color: white;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .navbar h1 { font-size: 20px; }
-        .navbar a  { color: white; text-decoration: none; font-size: 14px; margin-left: 20px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; }
+        .navbar { background: #c0392b; color: white; padding: 14px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .navbar .brand { font-size: 1.3rem; font-weight: bold; }
+        .navbar a { color: white; text-decoration: none; margin-left: 20px; font-size: 14px; }
         .navbar a:hover { text-decoration: underline; }
-
-        /* Welcome banner */
-        .welcome {
-            background: white;
-            margin: 25px 30px 0 30px;
-            padding: 20px 25px;
-            border-radius: 8px;
-            box-shadow: 0 1px 5px rgba(0,0,0,0.08);
-        }
-        .welcome h2 { color: #c0392b; font-size: 20px; }
-        .welcome p  { color: #666; margin-top: 5px; font-size: 14px; }
-
-        /* Main content */
-        .container {
-            margin: 20px 30px;
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 1px 5px rgba(0,0,0,0.08);
-        }
-        .section-title {
-            color: #c0392b;
-            font-size: 18px;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #f5f5f5;
-            padding-bottom: 10px;
-        }
+        .container { max-width: 980px; margin: 30px auto; padding: 0 20px; }
+        .welcome { background: white; border-radius: 10px; padding: 20px 25px; margin-bottom: 24px; box-shadow: 0 1px 5px rgba(0,0,0,0.08); }
+        .welcome h2 { color: #c0392b; font-size: 1.3rem; }
+        .welcome p { color: #666; margin-top: 5px; font-size: 14px; }
+        .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 30px; }
+        .card { background: white; border-radius: 10px; padding: 24px 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.07); border-top: 4px solid #c0392b; text-decoration: none; color: #333; transition: transform 0.15s; }
+        .card:hover { transform: translateY(-4px); }
+        .card .icon { font-size: 2rem; margin-bottom: 10px; }
+        .card h3 { font-size: 0.95rem; color: #222; }
+        .section-title { color: #c0392b; font-size: 1.1rem; font-weight: 600; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #f5f5f5; }
+        .table-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 1px 5px rgba(0,0,0,0.08); }
         table { width: 100%; border-collapse: collapse; }
-        th {
-            background: #c0392b;
-            color: white;
-            padding: 11px;
-            text-align: left;
-            font-size: 14px;
-        }
-        td { padding: 11px; border-bottom: 1px solid #eee; font-size: 14px; }
+        th { background: #c0392b; color: white; padding: 11px; text-align: left; font-size: 13px; }
+        td { padding: 11px; border-bottom: 1px solid #eee; font-size: 13px; }
         tr:hover td { background: #fdf2f2; }
-
-        .btn-accept {
-            padding: 6px 13px;
-            background: #27ae60;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        .btn-reject {
-            padding: 6px 13px;
-            background: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-            margin-left: 5px;
-        }
-        .btn-accept:hover { background: #1e8449; }
-        .btn-reject:hover { background: #c0392b; }
-
-        .urgent   { color: #e67e22; font-weight: bold; }
+        .btn-accept { padding: 6px 13px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .btn-reject { padding: 6px 13px; background: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; margin-left: 5px; }
+        .urgent { color: #e67e22; font-weight: bold; }
         .critical { color: #c0392b; font-weight: bold; }
-        .normal   { color: #27ae60; }
-
-        .empty { text-align: center; color: #888; padding: 30px; font-size: 15px; }
+        .normal { color: #27ae60; }
+        .empty { text-align: center; color: #888; padding: 30px; font-size: 14px; }
     </style>
 </head>
 <body>
 
-<!-- Navbar -->
 <div class="navbar">
-    <h1>🩸 Blood Bridge</h1>
+    <span class="brand">&#128149; Blood Bridge</span>
     <div>
+        <a href="<%= request.getContextPath() %>/PatientController?action=searchDonors">&#128269; Search Donors</a>
         <a href="<%= request.getContextPath() %>/views/donor/profile.jsp">My Profile</a>
         <a href="<%= request.getContextPath() %>/views/donor/donationHistory.jsp">Donation History</a>
         <a href="<%= request.getContextPath() %>/views/donor/wishlist.jsp">Wishlist</a>
-        <a href="<%= request.getContextPath() %>/AuthController?action=logout">Logout</a>
+        <a href="<%= request.getContextPath() %>/logout">Logout</a>
     </div>
 </div>
 
-<!-- Welcome -->
-<div class="welcome">
-    <h2>Welcome, <%= donorName != null ? donorName : "Donor" %> 👋</h2>
-    <p>Here are the active blood requests that need your help.</p>
-</div>
-
-<!-- Pending Requests Table -->
 <div class="container">
-    <div class="section-title">🩸 Pending Blood Requests</div>
 
-    <% if (requests == null || requests.isEmpty()) { %>
+    <div class="welcome">
+        <h2>Welcome, <%= donorName != null ? donorName : "Donor" %>! &#128075;</h2>
+        <p>Here are the active blood requests that need your help.</p>
+    </div>
+
+    <%-- Quick Action Cards --%>
+    <div class="cards">
+        <a class="card" href="<%= request.getContextPath() %>/PatientController?action=searchDonors">
+            <div class="icon">&#128269;</div>
+            <h3>Search Donors</h3>
+        </a>
+        <a class="card" href="<%= request.getContextPath() %>/views/donor/donationHistory.jsp">
+            <div class="icon">&#128203;</div>
+            <h3>Donation History</h3>
+        </a>
+        <a class="card" href="<%= request.getContextPath() %>/views/donor/profile.jsp">
+            <div class="icon">&#128100;</div>
+            <h3>My Profile</h3>
+        </a>
+        <a class="card" href="<%= request.getContextPath() %>/views/donor/wishlist.jsp">
+            <div class="icon">&#10084;</div>
+            <h3>Wishlist</h3>
+        </a>
+    </div>
+
+    <%-- Pending Requests Table --%>
+    <div class="table-card">
+        <div class="section-title">&#128137; Pending Blood Requests</div>
+        <% if (requests == null || requests.isEmpty()) { %>
         <p class="empty">No pending blood requests at the moment. Check back later!</p>
-    <% } else { %>
+        <% } else { %>
         <table>
             <tr>
                 <th>#</th>
@@ -136,43 +103,36 @@
                 int i = 1;
                 for (BloodRequest r : requests) {
                     String urgencyClass = "Critical".equals(r.getUrgency()) ? "critical"
-                                       : "Urgent".equals(r.getUrgency())   ? "urgent"
-                                       : "normal";
+                            : "Urgent".equals(r.getUrgency())   ? "urgent"
+                            : "normal";
             %>
             <tr>
                 <td><%= i++ %></td>
                 <td><%= r.getPatientName() %></td>
                 <td><b><%= r.getBloodGroup() %></b></td>
                 <td><%= r.getQuantity() %> unit(s)</td>
-                <td>
-                    <span class="<%= urgencyClass %>">
-                        <%= r.getUrgency() %>
-                    </span>
-                </td>
+                <td><span class="<%= urgencyClass %>"><%= r.getUrgency() %></span></td>
                 <td><%= r.getRequestDate() %></td>
                 <td>
-                    <!-- Accept -->
-                    <form action="<%= request.getContextPath() %>/PatientController"
-                          method="post" style="display:inline;">
-                        <input type="hidden" name="action"    value="updateStatus" />
-                        <input type="hidden" name="requestId" value="<%= r.getId() %>" />
-                        <input type="hidden" name="status"    value="Approved" />
-                        <button class="btn-accept" type="submit">✔ Accept</button>
+                    <form action="<%= request.getContextPath() %>/PatientController" method="post" style="display:inline;">
+                        <input type="hidden" name="action" value="updateStatus">
+                        <input type="hidden" name="requestId" value="<%= r.getId() %>">
+                        <input type="hidden" name="status" value="Approved">
+                        <button class="btn-accept" type="submit">Accept</button>
                     </form>
-                    <!-- Reject -->
-                    <form action="<%= request.getContextPath() %>/PatientController"
-                          method="post" style="display:inline;">
-                        <input type="hidden" name="action"    value="updateStatus" />
-                        <input type="hidden" name="requestId" value="<%= r.getId() %>" />
-                        <input type="hidden" name="status"    value="Rejected" />
-                        <button class="btn-reject" type="submit">✘ Reject</button>
+                    <form action="<%= request.getContextPath() %>/PatientController" method="post" style="display:inline;">
+                        <input type="hidden" name="action" value="updateStatus">
+                        <input type="hidden" name="requestId" value="<%= r.getId() %>">
+                        <input type="hidden" name="status" value="Rejected">
+                        <button class="btn-reject" type="submit">Reject</button>
                     </form>
                 </td>
             </tr>
             <% } %>
         </table>
-    <% } %>
-</div>
+        <% } %>
+    </div>
 
+</div>
 </body>
 </html>

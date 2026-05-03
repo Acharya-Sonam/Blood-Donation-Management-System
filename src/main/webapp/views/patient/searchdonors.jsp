@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.List" %>
-<%@ page import="com.blooddonationmanagementsystem.model.Donor" %>
+<%@ page import="java.util.List,java.util.Map,java.util.HashMap,java.util.HashSet,java.util.Set,java.util.ArrayList,com.blooddonationmanagementsystem.model.Donor" %>
 <%
     if (session == null || session.getAttribute("userId") == null) {
         response.sendRedirect(request.getContextPath() + "/login");
@@ -75,18 +74,19 @@
 
 <div class="container">
 
-    <%-- Search Form --%>
     <div class="search-card">
         <h2>Search Blood Donors</h2>
-        <form action="<%= request.getContextPath() %>/PatientController" method="get" id="searchForm">
+        <form action="<%= request.getContextPath() %>/PatientController" method="get">
             <input type="hidden" name="action" value="searchDonors">
             <div class="form-row">
                 <div class="form-group">
                     <label>Blood Group</label>
-                    <select name="bloodGroup" id="bgSelect">
+                    <select name="bloodGroup">
                         <option value="">Any Blood Group</option>
-                        <% String[] groups = {"A+","A-","B+","B-","AB+","AB-","O+","O-"};
-                            for (String g : groups) { %>
+                        <%
+                            java.lang.String[] groups = {"A+","A-","B+","B-","AB+","AB-","O+","O-"};
+                            for (java.lang.String g : groups) {
+                        %>
                         <option value="<%= g %>" <%= g.equals(bloodGroup) ? "selected" : "" %>><%= g %></option>
                         <% } %>
                     </select>
@@ -111,18 +111,16 @@
 
     <%
         if (donors != null) {
-            // Blood group compatibility map
-            java.util.Map<String, String[]> compat = new java.util.HashMap<>();
-            compat.put("A+",  new String[]{"A+","AB+"});
-            compat.put("A-",  new String[]{"A+","A-","AB+","AB-"});
-            compat.put("B+",  new String[]{"B+","AB+"});
-            compat.put("B-",  new String[]{"B+","B-","AB+","AB-"});
-            compat.put("AB+", new String[]{"AB+"});
-            compat.put("AB-", new String[]{"AB+","AB-"});
-            compat.put("O+",  new String[]{"A+","B+","O+","AB+"});
-            compat.put("O-",  new String[]{"A+","A-","B+","B-","O+","O-","AB+","AB-"});
+            java.util.Map<java.lang.String, java.lang.String[]> compat = new java.util.HashMap<>();
+            compat.put("A+",  new java.lang.String[]{"A+","AB+"});
+            compat.put("A-",  new java.lang.String[]{"A+","A-","AB+","AB-"});
+            compat.put("B+",  new java.lang.String[]{"B+","AB+"});
+            compat.put("B-",  new java.lang.String[]{"B+","B-","AB+","AB-"});
+            compat.put("AB+", new java.lang.String[]{"AB+"});
+            compat.put("AB-", new java.lang.String[]{"AB+","AB-"});
+            compat.put("O+",  new java.lang.String[]{"A+","B+","O+","AB+"});
+            compat.put("O-",  new java.lang.String[]{"A+","A-","B+","B-","O+","O-","AB+","AB-"});
 
-            // Filter by availability if selected
             java.util.List<Donor> filtered = new java.util.ArrayList<>();
             for (Donor d : donors) {
                 if (availability == null || availability.isEmpty()) {
@@ -133,12 +131,9 @@
                 } else if ("no".equals(availability) &&
                         d.getLastDonation() != null && !d.getLastDonation().isEmpty()) {
                     filtered.add(d);
-                } else if (availability.isEmpty()) {
-                    filtered.add(d);
                 }
             }
 
-            // Pagination
             int perPage = 6;
             int totalDonors = filtered.size();
             int pageNum = 1;
@@ -149,27 +144,26 @@
             int startIdx = (pageNum - 1) * perPage;
             int endIdx   = Math.min(startIdx + perPage, totalDonors);
 
-            long availCount = donors.stream().filter(d ->
-                    d.getLastDonation() == null || d.getLastDonation().isEmpty()).count();
-            java.util.Set<String> uniqueGroups = new java.util.HashSet<>();
-            for (Donor d : donors) uniqueGroups.add(d.getBloodGroup());
+            long availCount = 0;
+            java.util.Set<java.lang.String> uniqueGroups = new java.util.HashSet<>();
+            for (Donor d : donors) {
+                if (d.getLastDonation() == null || d.getLastDonation().isEmpty()) availCount++;
+                uniqueGroups.add(d.getBloodGroup());
+            }
     %>
 
-    <%-- Stats Row --%>
     <div class="stats-row">
         <div class="stat-card"><div class="label">Total donors</div><div class="value"><%= donors.size() %></div></div>
         <div class="stat-card"><div class="label">Available now</div><div class="value"><%= availCount %></div></div>
         <div class="stat-card"><div class="label">Blood groups</div><div class="value"><%= uniqueGroups.size() %></div></div>
-        <div class="stat-card"><div class="label">Showing</div><div class="value"><%= Math.min(perPage, totalDonors) %></div></div>
+        <div class="stat-card"><div class="label">Showing</div><div class="value"><%= endIdx - startIdx %></div></div>
     </div>
 
-    <%-- Results Bar --%>
     <div class="results-bar">
         <span>Showing <%= endIdx - startIdx %> of <%= totalDonors %> donors</span>
         <button class="btn-export" onclick="exportCSV()">Export CSV</button>
     </div>
 
-    <%-- Donor Cards --%>
     <% if (totalDonors == 0) { %>
     <div class="empty-state">No donors found. Try different search filters.</div>
     <% } else { %>
@@ -177,14 +171,19 @@
         <% for (int i = startIdx; i < endIdx; i++) {
             Donor d = filtered.get(i);
             boolean isAvail = d.getLastDonation() == null || d.getLastDonation().isEmpty();
-            String[] canDonateTo = compat.getOrDefault(d.getBloodGroup(), new String[]{});
+            java.lang.String[] canDonateTo = compat.getOrDefault(d.getBloodGroup(), new java.lang.String[]{});
+            StringBuilder compatSb = new StringBuilder();
+            for (int j = 0; j < canDonateTo.length; j++) {
+                compatSb.append(canDonateTo[j]);
+                if (j < canDonateTo.length - 1) compatSb.append(", ");
+            }
         %>
         <div class="donor-card">
             <div>
                 <span class="blood-badge"><%= d.getBloodGroup() %></span>
                 <span class="avail-badge <%= isAvail ? "avail-yes" : "avail-no" %>">
-                    <%= isAvail ? "Available" : "Not Available" %>
-                </span>
+            <%= isAvail ? "Available" : "Not Available" %>
+        </span>
             </div>
             <div class="donor-name"><%= d.getFullName() %></div>
             <div class="donor-info">&#128205; Location: <span><%= d.getAddress() %></span></div>
@@ -192,12 +191,11 @@
             <% if (d.getLastDonation() != null && !d.getLastDonation().isEmpty()) { %>
             <div class="donor-info">&#128197; Last donated: <span><%= d.getLastDonation() %></span></div>
             <% } %>
-            <div class="compat-tag">Can donate to: <%= String.join(", ", canDonateTo) %></div>
+            <div class="compat-tag">Can donate to: <%= compatSb.toString() %></div>
         </div>
         <% } %>
     </div>
 
-    <%-- Pagination --%>
     <% if (totalPages > 1) { %>
     <div class="pagination">
         <% for (int p = 1; p <= totalPages; p++) { %>
@@ -214,7 +212,6 @@
 
 </div>
 
-<%-- Hidden data for CSV export --%>
 <script id="donorData" type="application/json">
 <% if (donors != null && !donors.isEmpty()) { %>
     [<% for (int i = 0; i < donors.size(); i++) {
@@ -231,7 +228,7 @@
         if (data.length === 0) { alert("No donors to export."); return; }
         var csv = "Name,Blood Group,Location,Phone,Available\n";
         data.forEach(function(d) {
-            csv += d.name + "," + d.blood + "," + d.location + "," + d.phone + "," + d.available + "\n";
+            csv += d.name+","+d.blood+","+d.location+","+d.phone+","+d.available+"\n";
         });
         var a = document.createElement("a");
         a.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
