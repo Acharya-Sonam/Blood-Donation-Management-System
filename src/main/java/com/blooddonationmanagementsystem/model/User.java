@@ -2,22 +2,20 @@ package com.blooddonationmanagementsystem.model;
 
 public class User {
 
-    // Fields 
+    // ── Fields ───────────────────────────────────────────────────────
     private int    userId;
-    private String name; // Added for convenience in Admin views
     private String email;
     private String password;
     private String role;
     private String status;
     private String createdAt;
 
-    // Constructors 
+    // ── Constructors ─────────────────────────────────────────────────
     public User() {}
 
-    public User(int userId, String name, String email, String password,
+    public User(int userId, String email, String password,
                 String role, String status, String createdAt) {
         this.userId    = userId;
-        this.name      = name;
         this.email     = email;
         this.password  = password;
         this.role      = role;
@@ -25,11 +23,10 @@ public class User {
         this.createdAt = createdAt;
     }
 
+    // ── Getters ──────────────────────────────────────────────────────
+
     public int    getUserId() {
          return userId;  
-    }
-    public String getName() {
-        return name;
     }
     public String getEmail() { 
         return email;   
@@ -47,13 +44,11 @@ public class User {
          return createdAt; 
     }
 
- 
+    // ── Setters ──────────────────────────────────────────────────────
+
     public void setUserId(int userId) {
          this.userId    = userId;
          }
-    public void setName(String name) {
-        this.name = name;
-    }
     public void setEmail(String email)  {
          this.email     = email;
         }
@@ -69,6 +64,9 @@ public class User {
     public void setCreatedAt(String createdAt){
          this.createdAt = createdAt;
  }
+
+    // ── Helper methods ───────────────────────────────────────────────
+
     public boolean isApproved() {
         return "approved".equals(this.status);
     }

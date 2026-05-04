@@ -28,7 +28,6 @@ public class AuthFilter implements Filter {
 
         String requestURI = request.getRequestURI();
         String contextPath = request.getContextPath();
-        String queryString = request.getQueryString();
 
         String path = requestURI.substring(contextPath.length());
 
@@ -45,15 +44,7 @@ public class AuthFilter implements Filter {
             // Session is valid 
             chain.doFilter(request, response);
         } else {
-            // No session - Store the target URL to redirect back after login
-            String targetURL = path;
-            if (queryString != null) {
-                targetURL += "?" + queryString;
-            }
-            
-            HttpSession newSession = request.getSession(true);
-            newSession.setAttribute("targetURL", targetURL);
-            
+            // No session 
             response.sendRedirect(contextPath + "/login");
         }
     }
@@ -67,17 +58,12 @@ public class AuthFilter implements Filter {
             || path.equals("/login")
             || path.equals("/register")
             || path.equals("/index.jsp")
-            || path.equals("/forgot-password")
-            || path.equals("/verify-otp")
-            || path.equals("/reset-password")
             || path.startsWith("/css/")
             || path.startsWith("/js/")
             || path.startsWith("/images/")
-            || path.startsWith("/views/common/")
             || path.startsWith("/views/auth/")
             || path.equals("/about")
             || path.equals("/contact")
-            || path.equals("/error")
-            || path.equals("/logout");
+            || path.equals("/error");
     }
 }

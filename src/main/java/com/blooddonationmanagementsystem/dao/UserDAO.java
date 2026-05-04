@@ -9,18 +9,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class UserDAO {
     public int insertUser(String email, String password, String role) throws SQLException {
+
         String sql = "INSERT INTO users (email, password, role, status) VALUES (?, ?, ?, 'pending')";
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+
             stmt.setString(1, email);
             stmt.setString(2, password);
             stmt.setString(3, role);
             stmt.executeUpdate();
+
+            // Get the auto-generated user_id
             ResultSet keys = stmt.getGeneratedKeys();
             if (keys.next()) {
                 return keys.getInt(1);
@@ -30,33 +34,44 @@ public class UserDAO {
     }
 
     public User getUserByEmail(String email) throws SQLException {
+
         String sql = "SELECT * FROM users WHERE email = ?";
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
+
             if (rs.next()) {
                 return mapUser(rs);
             }
-            return null;
+            return null; // no user found with that email
         }
     }
 
     public boolean emailExists(String email) throws SQLException {
+
         String sql = "SELECT user_id FROM users WHERE email = ?";
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
-            return rs.next();
+            return rs.next(); // true if a row was found
         }
     }
 
     public void insertDonor(Donor donor) throws SQLException {
-        String sql = "INSERT INTO donors (user_id, full_name, phone, date_of_birth, blood_group, address) VALUES (?, ?, ?, ?, ?, ?)";
+
+        String sql = "INSERT INTO donors (user_id, full_name, phone, date_of_birth, blood_group, address) "
+                   + "VALUES (?, ?, ?, ?, ?, ?)";
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, donor.getUserId());
+
+            stmt.setInt(1,    donor.getUserId());
             stmt.setString(2, donor.getFullName());
             stmt.setString(3, donor.getPhone());
             stmt.setString(4, donor.getDateOfBirth());
@@ -67,20 +82,27 @@ public class UserDAO {
     }
 
     public boolean donorPhoneExists(String phone) throws SQLException {
+
         String sql = "SELECT donor_id FROM donors WHERE phone = ?";
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, phone);
             ResultSet rs = stmt.executeQuery();
             return rs.next();
         }
     }
-
+    //  PATIENT TABLE OPERATIONS
     public void insertPatient(Patient patient) throws SQLException {
-        String sql = "INSERT INTO patients (user_id, full_name, phone, date_of_birth, blood_group, address, hospital_name) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        String sql = "INSERT INTO patients (user_id, full_name, phone, date_of_birth, blood_group, address, hospital_name) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, patient.getUserId());
+
+            stmt.setInt(1,    patient.getUserId());
             stmt.setString(2, patient.getFullName());
             stmt.setString(3, patient.getPhone());
             stmt.setString(4, patient.getDateOfBirth());
@@ -92,136 +114,22 @@ public class UserDAO {
     }
 
     public boolean patientPhoneExists(String phone) throws SQLException {
+
         String sql = "SELECT patient_id FROM patients WHERE phone = ?";
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, phone);
             ResultSet rs = stmt.executeQuery();
             return rs.next();
         }
     }
 
-    public List<User> getAllUsers() throws SQLException {
-        String sql = "SELECT u.*, COALESCE(d.full_name, p.full_name, 'Admin') as name " +
-                     "FROM users u " +
-                     "LEFT JOIN donors d ON u.user_id = d.user_id " +
-                     "LEFT JOIN patients p ON u.user_id = p.user_id " +
-                     "ORDER BY u.created_at DESC";
-        List<User> users = new ArrayList<>();
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                users.add(mapUser(rs));
-            }
-        }
-        return users;
-    }
-
-    public User getUserById(int userId) throws SQLException {
-        String sql = "SELECT * FROM users WHERE user_id = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, userId);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return mapUser(rs);
-            }
-            return null;
-        }
-    }
-
-    public boolean updateUserStatus(int userId, String status) throws SQLException {
-        String sql = "UPDATE users SET status = ? WHERE user_id = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, status);
-            stmt.setInt(2, userId);
-            return stmt.executeUpdate() > 0;
-        }
-    }
-
-    public void updateUserRole(int userId, String role) throws SQLException {
-        String sql = "UPDATE users SET role = ? WHERE user_id = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, role);
-            stmt.setInt(2, userId);
-            stmt.executeUpdate();
-        }
-    }
-
-    public void deleteUser(int userId) throws SQLException {
-        String sql = "DELETE FROM users WHERE user_id = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, userId);
-            stmt.executeUpdate();
-        }
-    }
-
-    public List<User> getUsersByStatus(String status) throws SQLException {
-        String sql = "SELECT u.*, COALESCE(d.full_name, p.full_name, 'Admin') as name " +
-                     "FROM users u " +
-                     "LEFT JOIN donors d ON u.user_id = d.user_id " +
-                     "LEFT JOIN patients p ON u.user_id = p.user_id " +
-                     "WHERE u.status = ? ORDER BY u.created_at DESC";
-        List<User> users = new ArrayList<>();
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, status);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                users.add(mapUser(rs));
-            }
-        }
-        return users;
-    }
-
-    public List<User> searchUsers(String query) throws SQLException {
-        String sql = "SELECT u.*, COALESCE(d.full_name, p.full_name, 'Admin') as name " +
-                     "FROM users u " +
-                     "LEFT JOIN donors d ON u.user_id = d.user_id " +
-                     "LEFT JOIN patients p ON u.user_id = p.user_id " +
-                     "WHERE u.email LIKE ? OR d.full_name LIKE ? OR p.full_name LIKE ? " +
-                     "ORDER BY u.created_at DESC";
-        List<User> users = new ArrayList<>();
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            String term = "%" + query + "%";
-            stmt.setString(1, term);
-            stmt.setString(2, term);
-            stmt.setString(3, term);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                users.add(mapUser(rs));
-            }
-        }
-        return users;
-    }
-
-    public List<User> getPendingUsers() throws SQLException {
-        return getUsersByStatus("pending");
-    }
-
-    public boolean updatePassword(String email, String hashedPassword) throws SQLException {
-        String sql = "UPDATE users SET password = ? WHERE email = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, hashedPassword);
-            stmt.setString(2, email);
-            return stmt.executeUpdate() > 0;
-        }
-    }
 
     private User mapUser(ResultSet rs) throws SQLException {
         User user = new User();
         user.setUserId(rs.getInt("user_id"));
-        try {
-            user.setName(rs.getString("name"));
-        } catch (SQLException e) {
-            // Name might not be in the result set for some queries
-        }
         user.setEmail(rs.getString("email"));
         user.setPassword(rs.getString("password"));
         user.setRole(rs.getString("role"));
