@@ -18,8 +18,7 @@ public class AdminController extends HttpServlet {
 
     private final AdminService adminService = new AdminService();
 
-    // ── GET REQUEST HANDLER ───────────────────────────────────────
-    // ── GET REQUEST HANDLER ───────────────────────────────────────
+    // GET REQUEST HANDLER 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -63,7 +62,7 @@ public class AdminController extends HttpServlet {
         }
     }
 
-    // ── POST REQUEST HANDLER ──────────────────────────────────────
+    //POST REQUEST HANDLER 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -98,6 +97,9 @@ public class AdminController extends HttpServlet {
                 case "/updaterole":
                     handleUpdateRole(request, response);
                     break;
+                case "/updateinventory":
+                    handleUpdateInventory(request, response);
+                    break;
                 case "/updaterequest":
                     handleUpdateRequest(request, response);
                     break;
@@ -109,25 +111,32 @@ public class AdminController extends HttpServlet {
         }
     }
 
-    // ── DASHBOARD ─────────────────────────────────────────────────
+    //DASHBOARD 
     private void handleDashboard(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
         
         request.setAttribute("totalDonors", adminService.getTotalDonors());
-        request.setAttribute("pendingApprovals", adminService.getPendingApprovals());
-        request.setAttribute("totalRequests", adminService.getTotalBloodRequests());
+        request.setAttribute("totalPatients", adminService.getTotalPatients());
+        request.setAttribute("pendingUsers", adminService.getPendingApprovals());
+        request.setAttribute("pendingRequests", adminService.getTotalBloodRequests());
+        
+        request.setAttribute("inventory", adminService.getInventory());
+        request.setAttribute("recentRequests", adminService.getAllBloodRequests());
         
         request.getRequestDispatcher("/views/admin/dashboard.jsp").forward(request, response);
     }
 
-    // ── MANAGE USERS ──────────────────────────────────────────────
+    //MANAGE USERS 
     private void handleManageUsers(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
 
         String filter = request.getParameter("filter"); // pending, approved, rejected, all
+        String search = request.getParameter("search");
 
         List<User> users;
-        if (filter == null || filter.equals("all")) {
+        if (search != null && !search.trim().isEmpty()) {
+            users = adminService.searchUsers(search.trim());
+        } else if (filter == null || filter.equals("all")) {
             users = adminService.getAllUsers();
         } else {
             users = switch (filter) {
@@ -140,24 +149,26 @@ public class AdminController extends HttpServlet {
 
         request.setAttribute("users", users);
         request.setAttribute("filter", filter == null ? "all" : filter);
+        request.setAttribute("search", search);
         request.getRequestDispatcher("/views/admin/manageusers.jsp")
                 .forward(request, response);
     }
 
-    // ── BLOOD REQUESTS ───────────────────────────────────────────
+    // BLOOD REQUESTS 
     private void handleRequests(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute("requests", adminService.getAllBloodRequests());
         request.getRequestDispatcher("/views/admin/manageRequests.jsp").forward(request, response);
     }
 
-    // ── INVENTORY ───────────────────────────────────────────────
+    // INVENTORY 
     private void handleInventory(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws SQLException, ServletException, IOException {
+        request.setAttribute("inventory", adminService.getInventory());
         request.getRequestDispatcher("/views/admin/inventory.jsp").forward(request, response);
     }
 
-    // ── APPROVE USER ──────────────────────────────────────────────
+    //  APPROVE USER
     private void handleApprove(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
         int userId = Integer.parseInt(request.getParameter("userId"));
@@ -165,7 +176,7 @@ public class AdminController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/admin/manageusers?filter=pending&success=approved");
     }
 
-    // ── REJECT USER ───────────────────────────────────────────────
+    // REJECT USER 
     private void handleReject(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
         int userId = Integer.parseInt(request.getParameter("userId"));
@@ -173,7 +184,7 @@ public class AdminController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/admin/manageusers?filter=pending&success=rejected");
     }
 
-    // ── DELETE USER ───────────────────────────────────────────────
+    //DELETE USER 
     private void handleDelete(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
         int userId = Integer.parseInt(request.getParameter("userId"));
@@ -181,16 +192,31 @@ public class AdminController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/admin/manageusers?success=deleted");
     }
 
-    // ── UPDATE USER ROLE ──────────────────────────────────────────
+    // UPDATE USER ROLE 
     private void handleUpdateRole(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-        int userId    = Integer.parseInt(request.getParameter("userId"));
-        String role   = request.getParameter("role");
+        int userId = Integer.parseInt(request.getParameter("userId"));
+        String role = request.getParameter("role");
         adminService.updateUserRole(userId, role);
         response.sendRedirect(request.getContextPath() + "/admin/manageusers?success=roleupdated");
     }
 
-    // ── UPDATE BLOOD REQUEST STATUS ──────────────────────────────
+    // UPDATE INVENTORY 
+    private void handleUpdateInventory(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+        String bloodGroup = request.getParameter("bloodGroup");
+        int units = Integer.parseInt(request.getParameter("units"));
+        String action = request.getParameter("action"); // add or remove
+
+        if ("remove".equals(action)) {
+            units = -units;
+        }
+
+        adminService.updateInventory(bloodGroup, units);
+        response.sendRedirect(request.getContextPath() + "/admin/inventory?success=updated");
+    }
+
+    // UPDATE BLOOD REQUEST STATUS 
     private void handleUpdateRequest(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         int requestId = Integer.parseInt(request.getParameter("requestId"));

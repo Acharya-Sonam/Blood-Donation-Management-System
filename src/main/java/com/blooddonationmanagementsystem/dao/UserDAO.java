@@ -102,7 +102,11 @@ public class UserDAO {
     }
 
     public List<User> getAllUsers() throws SQLException {
-        String sql = "SELECT * FROM users ORDER BY created_at DESC";
+        String sql = "SELECT u.*, COALESCE(d.full_name, p.full_name, 'Admin') as name " +
+                     "FROM users u " +
+                     "LEFT JOIN donors d ON u.user_id = d.user_id " +
+                     "LEFT JOIN patients p ON u.user_id = p.user_id " +
+                     "ORDER BY u.created_at DESC";
         List<User> users = new ArrayList<>();
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -157,11 +161,37 @@ public class UserDAO {
     }
 
     public List<User> getUsersByStatus(String status) throws SQLException {
-        String sql = "SELECT * FROM users WHERE status = ? ORDER BY created_at DESC";
+        String sql = "SELECT u.*, COALESCE(d.full_name, p.full_name, 'Admin') as name " +
+                     "FROM users u " +
+                     "LEFT JOIN donors d ON u.user_id = d.user_id " +
+                     "LEFT JOIN patients p ON u.user_id = p.user_id " +
+                     "WHERE u.status = ? ORDER BY u.created_at DESC";
         List<User> users = new ArrayList<>();
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, status);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                users.add(mapUser(rs));
+            }
+        }
+        return users;
+    }
+
+    public List<User> searchUsers(String query) throws SQLException {
+        String sql = "SELECT u.*, COALESCE(d.full_name, p.full_name, 'Admin') as name " +
+                     "FROM users u " +
+                     "LEFT JOIN donors d ON u.user_id = d.user_id " +
+                     "LEFT JOIN patients p ON u.user_id = p.user_id " +
+                     "WHERE u.email LIKE ? OR d.full_name LIKE ? OR p.full_name LIKE ? " +
+                     "ORDER BY u.created_at DESC";
+        List<User> users = new ArrayList<>();
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            String term = "%" + query + "%";
+            stmt.setString(1, term);
+            stmt.setString(2, term);
+            stmt.setString(3, term);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 users.add(mapUser(rs));
@@ -187,6 +217,11 @@ public class UserDAO {
     private User mapUser(ResultSet rs) throws SQLException {
         User user = new User();
         user.setUserId(rs.getInt("user_id"));
+        try {
+            user.setName(rs.getString("name"));
+        } catch (SQLException e) {
+            // Name might not be in the result set for some queries
+        }
         user.setEmail(rs.getString("email"));
         user.setPassword(rs.getString("password"));
         user.setRole(rs.getString("role"));
