@@ -68,3 +68,28 @@ public class AdminController extends HttpServlet {
                     request.getRequestDispatcher("/views/admin/manageusers.jsp")
                            .forward(request, response);
                     break;
+
+                    case "/admin/users":
+                    // Manage users - search or list all
+                    String query = request.getParameter("search");
+                    if (query != null && !query.trim().isEmpty()) {
+                        request.setAttribute("users", adminService.searchUsers(query));
+                    } else {
+                        request.setAttribute("users", adminService.getAllUsers());
+                    }
+                    request.setAttribute("pendingUsers",  adminService.getPendingUsers());
+                    request.getRequestDispatcher("/views/admin/manageusers.jsp")
+                           .forward(request, response);
+                    break;
+ 
+                case "/admin/donors":
+                    request.setAttribute("users", adminService.getAllUsers());
+                    request.getRequestDispatcher("/views/admin/manageDonors.jsp")
+                           .forward(request, response);
+                    break;
+ 
+                case "/admin/patients":
+                    request.setAttribute("users", adminService.getAllUsers());
+                    request.getRequestDispatcher("/views/admin/managePatients.jsp")
+                           .forward(request, response);
+                    break;
