@@ -80,3 +80,48 @@ public class DonationController extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
+        int userId = (int) session.getAttribute("userId");
+ 
+        try {
+            // Check eligibility first
+            if (!donationService.isEligibleToDonate(userId)) {
+                request.setAttribute("errorMessage", "You are not eligible to donate yet. "
+                        + "Please wait until: " + donationService.getNextEligibleDate(userId));
+                request.getRequestDispatcher("/views/donor/donations.jsp")
+                       .forward(request, response);
+                return;
+            }
+ 
+            String donationDate = request.getParameter("donationDate");
+            int    units        = Integer.parseInt(request.getParameter("units"));
+            int    inventoryId  = Integer.parseInt(request.getParameter("inventoryId"));
+ 
+            String requestIdParam = request.getParameter("requestId");
+            boolean success;
+ 
+            if (requestIdParam != null && !requestIdParam.isEmpty()) {
+                // Donation linked to a specific blood request
+                int requestId = Integer.parseInt(requestIdParam);
+                success = donationService.recordDonation(userId, requestId, units,
+                                                         donationDate, inventoryId);
+            } else {
+                // Walk-in donation
+                success = donationService.recordWalkInDonation(userId, units,
+                                                               donationDate, inventoryId);
+            }
+ 
+            if (success) {
+                response.sendRedirect(request.getContextPath()
+                        + "/donor/donationHistory?success=true");
+            } else {
+                request.setAttribute("errorMessage", "Failed to record donation. Please try again.");
+                request.getRequestDispatcher("/views/donor/donations.jsp")
+                       .forward(request, response);
+            }
+ 
+        } catch (SQLException e) {
+            request.setAttribute("errorMessage", "Database error: " + e.getMessage());
+            request.getRequestDispatcher("/views/common/error.jsp").forward(request, response);
+        }
+    }
+}
