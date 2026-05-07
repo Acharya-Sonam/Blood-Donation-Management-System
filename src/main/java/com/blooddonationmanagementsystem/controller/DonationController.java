@@ -50,3 +50,33 @@ public class DonationController extends HttpServlet {
                 request.setAttribute("lastDonation",   donationService.getLastDonationDate(userId));
                 request.setAttribute("nextEligible",   donationService.getNextEligibleDate(userId));
                 request.setAttribute("isEligible",     donationService.isEligibleToDonate(userId));
+
+                 request.getRequestDispatcher("/views/donor/donationHistory.jsp")
+                       .forward(request, response);
+ 
+            } else {
+                // Show donate form (/donor/donations)
+                boolean eligible = donationService.isEligibleToDonate(userId);
+                request.setAttribute("isEligible",   eligible);
+                request.setAttribute("nextEligible", donationService.getNextEligibleDate(userId));
+ 
+                request.getRequestDispatcher("/views/donor/donations.jsp")
+                       .forward(request, response);
+            }
+ 
+        } catch (SQLException e) {
+            request.setAttribute("errorMessage", "Database error: " + e.getMessage());
+            request.getRequestDispatcher("/views/common/error.jsp").forward(request, response);
+        }
+    }
+ 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+ 
+        // Session check
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("userId") == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
