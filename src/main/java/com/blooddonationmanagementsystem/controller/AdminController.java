@@ -93,3 +93,34 @@ public class AdminController extends HttpServlet {
                     request.getRequestDispatcher("/views/admin/managePatients.jsp")
                            .forward(request, response);
                     break;
+
+                    case "/admin/requests":
+                    request.setAttribute("requests", adminService.getAllBloodRequests());
+                    request.getRequestDispatcher("/views/admin/manageRequests.jsp")
+                           .forward(request, response);
+                    break;
+ 
+                case "/admin/inventory":
+                    request.setAttribute("inventory", adminService.getInventory());
+                    request.getRequestDispatcher("/views/admin/inventory.jsp")
+                           .forward(request, response);
+                    break;
+ 
+                case "/admin/reports":
+                    request.setAttribute("inventory", adminService.getInventory());
+                    request.setAttribute("totalDonors",   adminService.getTotalDonors());
+                    request.setAttribute("totalPatients", adminService.getTotalPatients());
+                    request.setAttribute("totalRequests", adminService.getTotalBloodRequests());
+                    request.getRequestDispatcher("/views/admin/reports.jsp")
+                           .forward(request, response);
+                    break;
+ 
+                default:
+                    response.sendRedirect(request.getContextPath() + "/admin/dashboard");
+            }
+ 
+        } catch (SQLException e) {
+            request.setAttribute("errorMessage", "Database error: " + e.getMessage());
+            request.getRequestDispatcher("/views/common/error.jsp").forward(request, response);
+        }
+    }
