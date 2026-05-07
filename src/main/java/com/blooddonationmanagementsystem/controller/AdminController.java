@@ -124,3 +124,56 @@ public class AdminController extends HttpServlet {
             request.getRequestDispatcher("/views/common/error.jsp").forward(request, response);
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+ 
+        // Session check
+        HttpSession session = request.getSession(false);
+        if (session == null || !"admin".equals(session.getAttribute("role"))) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+ 
+        String path   = request.getServletPath();
+        String action = request.getParameter("action");
+ 
+        try {
+            if ("/admin/users".equals(path)) {
+                int userId = Integer.parseInt(request.getParameter("userId"));
+ 
+                if ("approve".equals(action)) {
+                    adminService.approveUser(userId);
+                } else if ("reject".equals(action)) {
+                    adminService.rejectUser(userId);
+                } else if ("delete".equals(action)) {
+                    adminService.deleteUser(userId);
+                } else if ("updateRole".equals(action)) {
+                    String role = request.getParameter("role");
+                    adminService.updateUserRole(userId, role);
+                }
+                response.sendRedirect(request.getContextPath() + "/admin/users");
+ 
+            } else if ("/admin/requests".equals(path)) {
+                int    requestId = Integer.parseInt(request.getParameter("requestId"));
+                String status    = request.getParameter("status");
+                adminService.updateRequestStatus(requestId, status);
+                response.sendRedirect(request.getContextPath() + "/admin/requests");
+ 
+            } else if ("/admin/inventory".equals(path)) {
+                String bloodGroup = request.getParameter("bloodGroup");
+                int    units      = Integer.parseInt(request.getParameter("units"));
+                adminService.updateInventory(bloodGroup, units);
+                response.sendRedirect(request.getContextPath() + "/admin/inventory");
+ 
+            } else {
+                response.sendRedirect(request.getContextPath() + "/admin/dashboard");
+            }
+ 
+        } catch (SQLException e) {
+            request.setAttribute("errorMessage", "Database error: " + e.getMessage());
+            request.getRequestDispatcher("/views/common/error.jsp").forward(request, response);
+        }
+    }
+}
