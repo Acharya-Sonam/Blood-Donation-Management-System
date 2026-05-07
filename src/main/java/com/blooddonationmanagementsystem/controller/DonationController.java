@@ -16,3 +16,37 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+
+@WebServlet(urlPatterns = {
+    "/donor/donations",
+    "/donor/donationHistory"
+})
+public class DonationController extends HttpServlet {
+ 
+    private final DonationService donationService = new DonationService();
+    private final DonorService    donorService    = new DonorService();
+ 
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+ 
+        // Session check
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("userId") == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+ 
+        int    userId = (int) session.getAttribute("userId");
+        String path   = request.getServletPath();
+ 
+        try {
+            if ("/donor/donationHistory".equals(path)) {
+                // Show donation history page
+                List<Donation> history = donationService.getDonationHistory(userId);
+ 
+                request.setAttribute("donations",      history);
+                request.setAttribute("totalDonations", donationService.getDonationCount(userId));
+                request.setAttribute("lastDonation",   donationService.getLastDonationDate(userId));
+                request.setAttribute("nextEligible",   donationService.getNextEligibleDate(userId));
+                request.setAttribute("isEligible",     donationService.isEligibleToDonate(userId));
