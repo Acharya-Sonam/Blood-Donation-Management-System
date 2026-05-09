@@ -1,15 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.List" %>
-<%@ page import="com.blooddonationmanagementsystem.model.Donor" %>
+<%@ page import="java.util.List,java.util.Map,java.util.HashMap,java.util.HashSet,java.util.Set,java.util.ArrayList,com.blooddonationmanagementsystem.model.Donor" %>
 <%
     if (session == null || session.getAttribute("userId") == null) {
         response.sendRedirect(request.getContextPath() + "/login");
         return;
     }
     List<Donor> donors = (List<Donor>) request.getAttribute("donors");
-    String bloodGroup = request.getParameter("bloodGroup");
-    String location   = request.getParameter("location");
-    String availability = request.getParameter("availability");
+    java.lang.String bloodGroup = request.getParameter("bloodGroup");
+    java.lang.String location   = request.getParameter("location");
+    java.lang.String availability = request.getParameter("availability");
     if (bloodGroup   == null) bloodGroup = "";
     if (location     == null) location = "";
     if (availability == null) availability = "";
@@ -20,73 +19,337 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Donors – Blood Bridge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f4f4; color: #333; }
-        .navbar { background: #c0392b; color: white; padding: 13px 28px; display: flex; justify-content: space-between; align-items: center; }
-        .navbar .brand { font-size: 1.2rem; font-weight: 600; }
-        .navbar a { color: white; text-decoration: none; margin-left: 18px; font-size: 0.9rem; }
-        .navbar a:hover { text-decoration: underline; }
-        .container { max-width: 980px; margin: 30px auto; padding: 0 18px; }
-        .search-card { background: white; border-radius: 10px; padding: 22px; margin-bottom: 20px; box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
-        .search-card h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; color: #c0392b; }
-        .form-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
-        .form-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 160px; }
-        .form-group label { font-size: 0.8rem; font-weight: 600; color: #666; }
-        .form-group select, .form-group input { padding: 9px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem; outline: none; }
-        .form-group select:focus, .form-group input:focus { border-color: #c0392b; }
-        .btn { padding: 9px 20px; border-radius: 6px; font-size: 0.9rem; cursor: pointer; border: 1px solid #ddd; background: white; }
-        .btn-primary { background: #c0392b; color: white; border-color: #c0392b; }
-        .btn-primary:hover { background: #a93226; }
-        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
-        .stat-card { background: white; border-radius: 8px; padding: 14px 16px; box-shadow: 0 1px 5px rgba(0,0,0,0.06); }
-        .stat-card .label { font-size: 0.75rem; color: #888; margin-bottom: 4px; }
-        .stat-card .value { font-size: 1.6rem; font-weight: 600; color: #c0392b; }
-        .results-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-        .results-bar span { font-size: 0.88rem; color: #666; }
-        .btn-export { padding: 7px 16px; font-size: 0.82rem; border-radius: 6px; cursor: pointer; border: 1px solid #ddd; background: white; color: #444; }
-        .btn-export:hover { background: #f5f5f5; }
-        .donor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-bottom: 20px; }
-        .donor-card { background: white; border-radius: 10px; padding: 18px; box-shadow: 0 1px 6px rgba(0,0,0,0.07); border-left: 4px solid #c0392b; }
-        .blood-badge { display: inline-block; background: #c0392b; color: white; font-size: 0.82rem; font-weight: 600; padding: 3px 10px; border-radius: 12px; }
-        .avail-badge { display: inline-block; font-size: 0.75rem; padding: 3px 9px; border-radius: 12px; margin-left: 6px; }
-        .avail-yes { background: #e8f5e9; color: #2e7d32; }
-        .avail-no  { background: #fff3e0; color: #e65100; }
-        .donor-name { font-size: 0.97rem; font-weight: 600; margin: 10px 0 8px; }
-        .donor-info { font-size: 0.82rem; color: #666; margin-bottom: 4px; }
-        .donor-info span { color: #333; font-weight: 600; }
-        .compat-tag { display: inline-block; margin-top: 10px; font-size: 0.72rem; background: #e3f2fd; color: #1565c0; padding: 3px 8px; border-radius: 10px; }
-        .empty-state { text-align: center; padding: 50px 20px; background: white; border-radius: 10px; color: #888; font-size: 0.95rem; box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
-        .pagination { display: flex; justify-content: center; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
-        .page-btn { padding: 6px 13px; font-size: 0.83rem; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; background: white; }
-        .page-btn.active { background: #c0392b; color: white; border-color: #c0392b; }
+        body { font-family: 'Inter', sans-serif; background: #f8f0f0; min-height: 100vh; }
+
+        .navbar {
+            background: linear-gradient(135deg, #c0392b 0%, #96281b 100%);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(192,57,43,0.3);
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-decoration: none;
+        }
+        .brand-dot {
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.9;
+        }
+        .nav-links a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            margin-left: 24px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: white; }
+
+        .page-header {
+            background: linear-gradient(135deg, #c0392b 0%, #96281b 100%);
+            padding: 32px 32px 60px;
+            color: white;
+        }
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+        .page-header p { font-size: 14px; opacity: 0.8; }
+
+        .main { max-width: 1000px; margin: -36px auto 40px; padding: 0 20px; }
+
+        .search-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            margin-bottom: 24px;
+        }
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-end;
+        }
+        .form-group { flex: 1; min-width: 150px; }
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #eee;
+            border-radius: 10px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: white;
+        }
+        .form-group select:focus,
+        .form-group input:focus {
+            border-color: #c0392b;
+            box-shadow: 0 0 0 3px rgba(192,57,43,0.08);
+        }
+        .btn-search {
+            background: linear-gradient(135deg, #c0392b, #96281b);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 4px 12px rgba(192,57,43,0.3);
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-search:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(192,57,43,0.4);
+        }
+        .btn-clear {
+            background: white;
+            color: #888;
+            border: 1.5px solid #eee;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.15s;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-clear:hover { border-color: #ccc; color: #555; }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+        .stat {
+            background: white;
+            border-radius: 14px;
+            padding: 18px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            position: relative;
+            overflow: hidden;
+        }
+        .stat::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #c0392b, #e74c3c);
+        }
+        .stat .label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        .stat .value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #c0392b;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+        .stat .sub { font-size: 11px; color: #bbb; margin-top: 4px; }
+
+        .results-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .results-label { font-size: 13px; color: #888; font-weight: 500; }
+        .btn-export {
+            background: white;
+            color: #c0392b;
+            border: 1.5px solid #f0d0cd;
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.15s;
+        }
+        .btn-export:hover { background: #fff5f5; border-color: #c0392b; }
+
+        .donor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 18px;
+        }
+        .donor-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .donor-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #c0392b, #e74c3c);
+            transform: scaleX(0);
+            transition: transform 0.25s;
+            transform-origin: left;
+        }
+        .donor-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.12); }
+        .donor-card:hover::after { transform: scaleX(1); }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 14px;
+        }
+        .blood-badge {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 10px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(192,57,43,0.3);
+        }
+        .avail-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+        }
+        .avail-yes { background: #edfaf4; color: #1a7a4a; }
+        .avail-no  { background: #fff5ec; color: #c05621; }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #fff0ef, #ffd5d0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: #c0392b;
+        }
+        .donor-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            letter-spacing: -0.3px;
+        }
+        .divider { height: 1px; background: #f5f5f5; margin-bottom: 12px; }
+        .donor-info { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+        .info-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: #f8f8f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+        .info-text { font-size: 12px; color: #888; }
+        .info-text strong { color: #333; font-weight: 600; }
+        .compat-tag {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            background: #eff6ff;
+            color: #1d5fa6;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        .empty-state p { color: #aaa; font-size: 14px; margin-top: 12px; }
     </style>
 </head>
 <body>
 
 <div class="navbar">
-    <span class="brand">&#128149; Blood Bridge</span>
-    <div>
+    <a class="brand" href="<%= request.getContextPath() %>/donor/dashboard">
+        <div class="brand-dot"></div>
+        Blood Bridge
+    </a>
+    <div class="nav-links">
         <a href="<%= request.getContextPath() %>/PatientController?action=requestForm">Request Blood</a>
         <a href="<%= request.getContextPath() %>/PatientController?action=myRequests">My Requests</a>
         <a href="<%= request.getContextPath() %>/logout">Logout</a>
     </div>
 </div>
 
-<div class="container">
+<div class="page-header">
+    <h1>Find Blood Donors</h1>
+    <p>Search and connect with verified donors in your area</p>
+</div>
 
-    <%-- Search Form --%>
+<div class="main">
+
     <div class="search-card">
-        <h2>Search Blood Donors</h2>
-        <form action="<%= request.getContextPath() %>/PatientController" method="get" id="searchForm">
+        <form action="<%= request.getContextPath() %>/PatientController" method="get">
             <input type="hidden" name="action" value="searchDonors">
             <div class="form-row">
                 <div class="form-group">
                     <label>Blood Group</label>
-                    <select name="bloodGroup" id="bgSelect">
+                    <select name="bloodGroup">
                         <option value="">Any Blood Group</option>
-                        <% String[] groups = {"A+","A-","B+","B-","AB+","AB-","O+","O-"};
-                            for (String g : groups) { %>
+                        <%
+                            java.lang.String[] groups = {"A+","A-","B+","B-","AB+","AB-","O+","O-"};
+                            for (java.lang.String g : groups) { %>
                         <option value="<%= g %>" <%= g.equals(bloodGroup) ? "selected" : "" %>><%= g %></option>
                         <% } %>
                     </select>
@@ -98,31 +361,29 @@
                 <div class="form-group">
                     <label>Availability</label>
                     <select name="availability">
-                        <option value="">Any</option>
+                        <option value="">Any Status</option>
                         <option value="yes" <%= "yes".equals(availability) ? "selected" : "" %>>Available</option>
                         <option value="no"  <%= "no".equals(availability)  ? "selected" : "" %>>Not Available</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Search</button>
-                <a href="<%= request.getContextPath() %>/PatientController?action=searchDonors" class="btn">Clear</a>
+                <button type="submit" class="btn-search">Search</button>
+                <a href="<%= request.getContextPath() %>/PatientController?action=searchDonors" class="btn-clear">Clear</a>
             </div>
         </form>
     </div>
 
     <%
         if (donors != null) {
-            // Blood group compatibility map
-            java.util.Map<String, String[]> compat = new java.util.HashMap<>();
-            compat.put("A+",  new String[]{"A+","AB+"});
-            compat.put("A-",  new String[]{"A+","A-","AB+","AB-"});
-            compat.put("B+",  new String[]{"B+","AB+"});
-            compat.put("B-",  new String[]{"B+","B-","AB+","AB-"});
-            compat.put("AB+", new String[]{"AB+"});
-            compat.put("AB-", new String[]{"AB+","AB-"});
-            compat.put("O+",  new String[]{"A+","B+","O+","AB+"});
-            compat.put("O-",  new String[]{"A+","A-","B+","B-","O+","O-","AB+","AB-"});
+            java.util.Map<java.lang.String, java.lang.String[]> compat = new java.util.HashMap<>();
+            compat.put("A+",  new java.lang.String[]{"A+","AB+"});
+            compat.put("A-",  new java.lang.String[]{"A+","A-","AB+","AB-"});
+            compat.put("B+",  new java.lang.String[]{"B+","AB+"});
+            compat.put("B-",  new java.lang.String[]{"B+","B-","AB+","AB-"});
+            compat.put("AB+", new java.lang.String[]{"AB+"});
+            compat.put("AB-", new java.lang.String[]{"AB+","AB-"});
+            compat.put("O+",  new java.lang.String[]{"A+","B+","O+","AB+"});
+            compat.put("O-",  new java.lang.String[]{"A+","A-","B+","B-","O+","O-","AB+","AB-"});
 
-            // Filter by availability if selected
             java.util.List<Donor> filtered = new java.util.ArrayList<>();
             for (Donor d : donors) {
                 if (availability == null || availability.isEmpty()) {
@@ -133,12 +394,9 @@
                 } else if ("no".equals(availability) &&
                         d.getLastDonation() != null && !d.getLastDonation().isEmpty()) {
                     filtered.add(d);
-                } else if (availability.isEmpty()) {
-                    filtered.add(d);
                 }
             }
 
-            // Pagination
             int perPage = 6;
             int totalDonors = filtered.size();
             int pageNum = 1;
@@ -149,78 +407,106 @@
             int startIdx = (pageNum - 1) * perPage;
             int endIdx   = Math.min(startIdx + perPage, totalDonors);
 
-            long availCount = donors.stream().filter(d ->
-                    d.getLastDonation() == null || d.getLastDonation().isEmpty()).count();
-            java.util.Set<String> uniqueGroups = new java.util.HashSet<>();
-            for (Donor d : donors) uniqueGroups.add(d.getBloodGroup());
+            long availCount = 0;
+            java.util.Set<java.lang.String> uniqueGroups = new java.util.HashSet<>();
+            for (Donor d : donors) {
+                if (d.getLastDonation() == null || d.getLastDonation().isEmpty()) availCount++;
+                uniqueGroups.add(d.getBloodGroup());
+            }
     %>
 
-    <%-- Stats Row --%>
     <div class="stats-row">
-        <div class="stat-card"><div class="label">Total donors</div><div class="value"><%= donors.size() %></div></div>
-        <div class="stat-card"><div class="label">Available now</div><div class="value"><%= availCount %></div></div>
-        <div class="stat-card"><div class="label">Blood groups</div><div class="value"><%= uniqueGroups.size() %></div></div>
-        <div class="stat-card"><div class="label">Showing</div><div class="value"><%= Math.min(perPage, totalDonors) %></div></div>
+        <div class="stat"><div class="label">Total donors</div><div class="value"><%= donors.size() %></div><div class="sub">registered</div></div>
+        <div class="stat"><div class="label">Available now</div><div class="value"><%= availCount %></div><div class="sub">ready to donate</div></div>
+        <div class="stat"><div class="label">Blood groups</div><div class="value"><%= uniqueGroups.size() %></div><div class="sub">types found</div></div>
+        <div class="stat"><div class="label">Showing</div><div class="value"><%= endIdx - startIdx %></div><div class="sub">of results</div></div>
     </div>
 
-    <%-- Results Bar --%>
     <div class="results-bar">
-        <span>Showing <%= endIdx - startIdx %> of <%= totalDonors %> donors</span>
+        <span class="results-label">Showing <%= endIdx - startIdx %> of <%= totalDonors %> donors</span>
         <button class="btn-export" onclick="exportCSV()">Export CSV</button>
     </div>
 
-    <%-- Donor Cards --%>
     <% if (totalDonors == 0) { %>
-    <div class="empty-state">No donors found. Try different search filters.</div>
+    <div class="empty-state">
+        <div style="font-size:40px">&#128269;</div>
+        <p>No donors found. Try different search filters.</p>
+    </div>
     <% } else { %>
     <div class="donor-grid">
         <% for (int i = startIdx; i < endIdx; i++) {
             Donor d = filtered.get(i);
             boolean isAvail = d.getLastDonation() == null || d.getLastDonation().isEmpty();
-            String[] canDonateTo = compat.getOrDefault(d.getBloodGroup(), new String[]{});
+            java.lang.String[] canDonateTo = compat.getOrDefault(d.getBloodGroup(), new java.lang.String[]{});
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < canDonateTo.length; j++) {
+                sb.append(canDonateTo[j]);
+                if (j < canDonateTo.length - 1) sb.append(", ");
+            }
+            java.lang.String[] nameParts = d.getFullName().split(" ");
+            java.lang.String initials = "";
+            for (int k = 0; k < Math.min(2, nameParts.length); k++) {
+                if (nameParts[k].length() > 0) initials += nameParts[k].charAt(0);
+            }
+            initials = initials.toUpperCase();
         %>
         <div class="donor-card">
-            <div>
+            <div class="card-top">
                 <span class="blood-badge"><%= d.getBloodGroup() %></span>
-                <span class="avail-badge <%= isAvail ? "avail-yes" : "avail-no" %>">
-                    <%= isAvail ? "Available" : "Not Available" %>
-                </span>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+                    <div class="avatar"><%= initials %></div>
+                    <span class="avail-badge <%= isAvail ? "avail-yes" : "avail-no" %>">
+                        <%= isAvail ? "Available" : "Not Available" %>
+                    </span>
+                </div>
             </div>
             <div class="donor-name"><%= d.getFullName() %></div>
-            <div class="donor-info">&#128205; Location: <span><%= d.getAddress() %></span></div>
-            <div class="donor-info">&#128222; Phone: <span><%= d.getPhone() %></span></div>
+            <div class="divider"></div>
+            <div class="donor-info">
+                <div class="info-icon">&#128205;</div>
+                <div class="info-text">Location: <strong><%= d.getAddress() %></strong></div>
+            </div>
+            <div class="donor-info">
+                <div class="info-icon">&#128222;</div>
+                <div class="info-text">Phone: <strong><%= d.getPhone() %></strong></div>
+            </div>
             <% if (d.getLastDonation() != null && !d.getLastDonation().isEmpty()) { %>
-            <div class="donor-info">&#128197; Last donated: <span><%= d.getLastDonation() %></span></div>
+            <div class="donor-info">
+                <div class="info-icon">&#128197;</div>
+                <div class="info-text">Last donated: <strong><%= d.getLastDonation() %></strong></div>
+            </div>
             <% } %>
-            <div class="compat-tag">Can donate to: <%= String.join(", ", canDonateTo) %></div>
+            <div class="compat-tag">Can donate to: <%= sb.toString() %></div>
         </div>
         <% } %>
     </div>
 
-    <%-- Pagination --%>
     <% if (totalPages > 1) { %>
-    <div class="pagination">
+    <div style="display:flex;justify-content:center;gap:8px;margin-top:24px;flex-wrap:wrap">
         <% for (int p = 1; p <= totalPages; p++) { %>
-        <a href="<%= request.getContextPath() %>/PatientController?action=searchDonors&bloodGroup=<%= bloodGroup %>&location=<%= location %>&availability=<%= availability %>&page=<%= p %>">
-            <button class="page-btn <%= p == pageNum ? "active" : "" %>"><%= p %></button>
+        <a href="<%= request.getContextPath() %>/PatientController?action=searchDonors&bloodGroup=<%= bloodGroup %>&location=<%= location %>&availability=<%= availability %>&page=<%= p %>"
+           style="padding:8px 16px;border-radius:10px;font-size:13px;font-weight:600;text-decoration:none;border:1.5px solid <%= p==pageNum?"#c0392b":"#eee" %>;background:<%= p==pageNum?"#c0392b":"white" %>;color:<%= p==pageNum?"white":"#888" %>">
+            <%= p %>
         </a>
         <% } %>
     </div>
     <% } %>
     <% } %>
     <% } else { %>
-    <div class="empty-state">Use the search above to find available donors.</div>
+    <div class="empty-state">
+        <div style="font-size:40px">&#128149;</div>
+        <p>Use the search above to find available donors.</p>
+    </div>
     <% } %>
 
 </div>
 
-<%-- Hidden data for CSV export --%>
 <script id="donorData" type="application/json">
 <% if (donors != null && !donors.isEmpty()) { %>
     [<% for (int i = 0; i < donors.size(); i++) {
         Donor d = donors.get(i);
         boolean av = d.getLastDonation() == null || d.getLastDonation().isEmpty();
-    %>{"name":"<%= d.getFullName() %>","blood":"<%= d.getBloodGroup() %>","location":"<%= d.getAddress() %>","phone":"<%= d.getPhone() %>","available":"<%= av ? "Yes" : "No" %>"}<%if(i<donors.size()-1){%>,<%}%>
+    %>{"name":"<%= d.getFullName() %>","blood":"<%= d.getBloodGroup() %>","location":"<%= d.getAddress() %>","phone":"<%= d.getPhone() %>","available":"<%= av?"Yes":"No" %>"}<%if(i<donors.size()-1){%>,<%}%>
 <% } %>]
     <% } else { %>[]<% } %>
 </script>
@@ -228,10 +514,10 @@
 <script>
     function exportCSV() {
         var data = JSON.parse(document.getElementById("donorData").textContent);
-        if (data.length === 0) { alert("No donors to export."); return; }
+        if (!data.length) { alert("No donors to export."); return; }
         var csv = "Name,Blood Group,Location,Phone,Available\n";
         data.forEach(function(d) {
-            csv += d.name + "," + d.blood + "," + d.location + "," + d.phone + "," + d.available + "\n";
+            csv += d.name+","+d.blood+","+d.location+","+d.phone+","+d.available+"\n";
         });
         var a = document.createElement("a");
         a.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
