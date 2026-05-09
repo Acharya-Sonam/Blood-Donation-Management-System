@@ -15,17 +15,17 @@ public class User {
 
     public User(int userId, String email, String password,
                 String role, String status, String createdAt) {
-        this.userId    = userId;
-        this.email     = email;
-        this.password  = password;
-        this.role      = role;
-        this.status    = status;
+        this.userId = userId;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.status = status;
         this.createdAt = createdAt;
     }
 
     // ── Getters ──────────────────────────────────────────────────────
 
-    public int    getUserId() {
+    public int getUserId() {
          return userId;  
     }
     public String getEmail() { 
