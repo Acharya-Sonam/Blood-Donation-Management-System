@@ -82,18 +82,21 @@
                                 <td>
                                     <div style="display: flex; gap: 0.4rem; justify-content: flex-end;">
                                         <c:if test="${u.status == 'pending'}">
-                                            <form action="${pageContext.request.contextPath}/admin/approve" method="POST">
+                                            <form action="${pageContext.request.contextPath}/admin/users" method="POST">
                                                 <input type="hidden" name="userId" value="${u.userId}">
+                                                <input type="hidden" name="action" value="approve">
                                                 <button type="submit" class="btn-action" style="color: #28a745; border-color: #28a745;">Verify</button>
                                             </form>
-                                            <form action="${pageContext.request.contextPath}/admin/reject" method="POST">
+                                            <form action="${pageContext.request.contextPath}/admin/users" method="POST">
                                                 <input type="hidden" name="userId" value="${u.userId}">
+                                                <input type="hidden" name="action" value="reject">
                                                 <button type="submit" class="btn-action" style="color: #e63946; border-color: #e63946;">Reject</button>
                                             </form>
                                         </c:if>
                                         <div style="position: relative;">
-                                            <form action="${pageContext.request.contextPath}/admin/delete" method="POST" onsubmit="return confirm('Delete this user permanently?')">
+                                            <form action="${pageContext.request.contextPath}/admin/users" method="POST" onsubmit="return confirm('Delete this user permanently?')">
                                                 <input type="hidden" name="userId" value="${u.userId}">
+                                                <input type="hidden" name="action" value="delete">
                                                 <button type="submit" class="btn-action">Delete</button>
                                             </form>
                                         </div>

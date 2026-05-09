@@ -131,7 +131,11 @@ public class UserDAO {
     // ── Admin / management operations ────────────────────────────────
 
     public List<User> getAllUsers() throws SQLException {
-        String sql = "SELECT * FROM users ORDER BY user_id DESC";
+        String sql = "SELECT u.*, COALESCE(d.full_name, p.full_name, 'Admin') AS name "
+                   + "FROM users u "
+                   + "LEFT JOIN donors d ON u.user_id = d.user_id "
+                   + "LEFT JOIN patients p ON u.user_id = p.user_id "
+                   + "ORDER BY u.user_id DESC";
         List<User> users = new ArrayList<>();
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -144,7 +148,11 @@ public class UserDAO {
     }
 
     public User getUserById(int userId) throws SQLException {
-        String sql = "SELECT * FROM users WHERE user_id = ?";
+        String sql = "SELECT u.*, COALESCE(d.full_name, p.full_name, 'Admin') AS name "
+                   + "FROM users u "
+                   + "LEFT JOIN donors d ON u.user_id = d.user_id "
+                   + "LEFT JOIN patients p ON u.user_id = p.user_id "
+                   + "WHERE u.user_id = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, userId);
@@ -155,7 +163,11 @@ public class UserDAO {
     }
 
     public List<User> getUsersByStatus(String status) throws SQLException {
-        String sql = "SELECT * FROM users WHERE status = ? ORDER BY user_id DESC";
+        String sql = "SELECT u.*, COALESCE(d.full_name, p.full_name, 'Admin') AS name "
+                   + "FROM users u "
+                   + "LEFT JOIN donors d ON u.user_id = d.user_id "
+                   + "LEFT JOIN patients p ON u.user_id = p.user_id "
+                   + "WHERE u.status = ? ORDER BY u.user_id DESC";
         List<User> users = new ArrayList<>();
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -201,13 +213,21 @@ public class UserDAO {
     public List<User> searchUsers(String query) throws SQLException {
         String q = (query == null) ? "" : query.trim();
         String like = "%" + q + "%";
-        String sql = "SELECT * FROM users WHERE email LIKE ? OR role LIKE ? OR status LIKE ? ORDER BY user_id DESC";
+        String sql = "SELECT u.*, COALESCE(d.full_name, p.full_name, 'Admin') AS name "
+                   + "FROM users u "
+                   + "LEFT JOIN donors d ON u.user_id = d.user_id "
+                   + "LEFT JOIN patients p ON u.user_id = p.user_id "
+                   + "WHERE u.email LIKE ? OR u.role LIKE ? OR u.status LIKE ? "
+                   + "OR d.full_name LIKE ? OR p.full_name LIKE ? "
+                   + "ORDER BY u.user_id DESC";
         List<User> users = new ArrayList<>();
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, like);
             stmt.setString(2, like);
             stmt.setString(3, like);
+            stmt.setString(4, like);
+            stmt.setString(5, like);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     users.add(mapUser(rs));
@@ -235,6 +255,15 @@ public class UserDAO {
         user.setRole(rs.getString("role"));
         user.setStatus(rs.getString("status"));
         user.setCreatedAt(rs.getString("created_at"));
+        
+        // Handle name mapping from COALESCE in SQL
+        try {
+            user.setName(rs.getString("name"));
+        } catch (SQLException e) {
+            // Name column might not be present in all queries
+            user.setName("N/A");
+        }
+        
         return user;
     }
 }

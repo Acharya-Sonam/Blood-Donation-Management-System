@@ -12,7 +12,7 @@
                 </a>
             </li>
             <li>
-                <a href="${pageContext.request.contextPath}/admin/manageusers" class="${pageContext.request.requestURI.contains('manageusers') ? 'active' : ''}">
+                <a href="${pageContext.request.contextPath}/admin/users" class="${pageContext.request.requestURI.contains('manageusers') ? 'active' : ''}">
                     👥 Manage Users
                 </a>
             </li>

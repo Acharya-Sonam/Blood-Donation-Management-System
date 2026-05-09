@@ -8,6 +8,7 @@ public class User {
     private String password;
     private String role;
     private String status;
+    private String name; // New field for display name
     private String createdAt;
 
     // ── Constructors ─────────────────────────────────────────────────
@@ -43,6 +44,9 @@ public class User {
     public String getCreatedAt() {
          return createdAt; 
     }
+    public String getName() {
+        return name;
+    }
 
     // ── Setters ──────────────────────────────────────────────────────
 
@@ -63,7 +67,10 @@ public class User {
      }
     public void setCreatedAt(String createdAt){
          this.createdAt = createdAt;
- }
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     // ── Helper methods ───────────────────────────────────────────────
 

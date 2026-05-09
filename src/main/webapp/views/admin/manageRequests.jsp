@@ -1,16 +1,74 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ASUS
-  Date: 4/2/2026
-  Time: 1:09 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Blood Requests - Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css">
 </head>
 <body>
+    <div class="dashboard-container">
+        <jsp:include page="admin-sidebar.jsp" />
 
+        <main class="main-content">
+            <h1 style="margin-bottom: 2rem;">Manage Blood Requests</h1>
+
+            <div class="table-container">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Patient</th>
+                            <th>Blood Group</th>
+                            <th>Quantity</th>
+                            <th>Urgency</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th style="text-align: right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="r" items="${requests}">
+                            <tr>
+                                <td>#${r.id}</td>
+                                <td>${r.patientName}</td>
+                                <td><span class="badge badge-blood">${r.bloodGroup}</span></td>
+                                <td>${r.quantity} Units</td>
+                                <td><span class="badge badge-${r.urgency.toLowerCase()}">${r.urgency}</span></td>
+                                <td><span class="badge badge-${r.status.toLowerCase()}">${r.status}</span></td>
+                                <td>${r.requestDate}</td>
+                                <td>
+                                    <div style="display: flex; gap: 0.4rem; justify-content: flex-end;">
+                                        <form action="${pageContext.request.contextPath}/admin/requests" method="POST">
+                                            <input type="hidden" name="requestId" value="${r.id}">
+                                            <input type="hidden" name="status" value="Approved">
+                                            <button type="submit" class="btn-action" style="color: #28a745; border-color: #28a745;">Approve</button>
+                                        </form>
+                                        <form action="${pageContext.request.contextPath}/admin/requests" method="POST">
+                                            <input type="hidden" name="requestId" value="${r.id}">
+                                            <input type="hidden" name="status" value="Rejected">
+                                            <button type="submit" class="btn-action" style="color: #e63946; border-color: #e63946;">Reject</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        <c:if test="${empty requests}">
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 4rem; color: var(--clr-text-muted);">
+                                    No blood requests found.
+                                </td>
+                            </tr>
+                        </c:if>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
 </body>
 </html>
