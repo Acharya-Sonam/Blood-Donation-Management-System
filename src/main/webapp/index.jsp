@@ -26,8 +26,8 @@
                 Join thousands of heroes saving lives every day. Whether you need blood or want to donate, Blood Bridge connects you with those who matter most.
             </p>
             <div class="hero-actions">
-                <a href="${pageContext.request.contextPath}/views/common/register.jsp" class="btn btn-primary btn-large">Become a Donor</a>
-                <a href="${pageContext.request.contextPath}/views/common/login.jsp" class="btn btn-secondary btn-large">Request Blood</a>
+                <a href="${pageContext.request.contextPath}/register" class="btn btn-primary btn-large">Become a Donor</a>
+                <a href="${pageContext.request.contextPath}/login" class="btn btn-secondary btn-large">Request Blood</a>
             </div>
             <div class="hero-stats">
                 <div class="stat-item">
@@ -52,7 +52,7 @@
                 </div>
                 <ul class="urgent-list">
                     <li>
-                        <a href="${pageContext.request.contextPath}/views/common/login.jsp" style="display: flex; align-items: center; gap: 1rem; width: 100%; text-decoration: none; color: inherit;">
+                        <a href="${pageContext.request.contextPath}/login" style="display: flex; align-items: center; gap: 1rem; width: 100%; text-decoration: none; color: inherit;">
                             <span class="blood-type o-neg">O-</span>
                             <div class="urgent-details">
                                 <strong>City Hospital</strong>
@@ -61,7 +61,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="${pageContext.request.contextPath}/views/common/login.jsp" style="display: flex; align-items: center; gap: 1rem; width: 100%; text-decoration: none; color: inherit;">
+                        <a href="${pageContext.request.contextPath}/login" style="display: flex; align-items: center; gap: 1rem; width: 100%; text-decoration: none; color: inherit;">
                             <span class="blood-type a-pos">A+</span>
                             <div class="urgent-details">
                                 <strong>General Clinic</strong>
