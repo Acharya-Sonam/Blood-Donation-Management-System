@@ -15,7 +15,7 @@
 <body class="auth-page">
 
     <!-- Navigation -->
-    <jsp:include page="navbar.jsp" />
+    <jsp:include page="../common/navbar.jsp" />
 
     <!-- Auth Container -->
     <div class="auth-wrapper">

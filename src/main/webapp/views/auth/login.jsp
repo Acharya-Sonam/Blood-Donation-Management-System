@@ -15,7 +15,7 @@
 <body class="auth-page">
 
     <!-- Navigation -->
-    <jsp:include page="navbar.jsp" />
+    <jsp:include page="../common/navbar.jsp" />
 
     <!-- Auth Container -->
     <div class="auth-wrapper">
@@ -40,14 +40,14 @@
                     <label class="remember-me">
                         <input type="checkbox" name="remember"> Remember Me
                     </label>
-                    <a href="${pageContext.request.contextPath}/views/auth/forgot-password.jsp" class="forgot-password">Forgot Password?</a>
+                    <a href="${pageContext.request.contextPath}/forgot-password" class="forgot-password">Forgot Password?</a>
                 </div>
                 
                 <button type="submit" class="btn btn-primary btn-full">Sign In</button>
             </form>
 
             <div class="auth-footer">
-                <p>Don't have an account? <a href="${pageContext.request.contextPath}/views/common/register.jsp">Register here</a></p>
+                <p>Don't have an account? <a href="${pageContext.request.contextPath}/register">Register here</a></p>
             </div>
         </div>
     </div>
