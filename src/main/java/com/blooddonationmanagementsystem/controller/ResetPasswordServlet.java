@@ -24,7 +24,7 @@ public class ResetPasswordServlet extends HttpServlet {
         Boolean verified = (Boolean) session.getAttribute("otp_verified");
         
         if (verified != null && verified) {
-            request.getRequestDispatcher("/views/common/reset-password.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/auth/reset-password.jsp").forward(request, response);
         } else {
             response.sendRedirect(request.getContextPath() + "/forgot-password");
         }
@@ -58,19 +58,19 @@ public class ResetPasswordServlet extends HttpServlet {
                     session.removeAttribute("otp_verified");
 
                     request.setAttribute("message", "Password reset successfully! You can now log in.");
-                    request.getRequestDispatcher("/views/common/login.jsp").forward(request, response);
+                    request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
                 } else {
                     request.setAttribute("error", "Failed to update password. Please try again.");
-                    request.getRequestDispatcher("/views/common/reset-password.jsp").forward(request, response);
+                    request.getRequestDispatcher("/views/auth/reset-password.jsp").forward(request, response);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
                 request.setAttribute("error", "Database error occurred.");
-                request.getRequestDispatcher("/views/common/reset-password.jsp").forward(request, response);
+                request.getRequestDispatcher("/views/auth/reset-password.jsp").forward(request, response);
             }
         } else {
             request.setAttribute("error", "Passwords do not match or are empty.");
-            request.getRequestDispatcher("/views/common/reset-password.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/auth/reset-password.jsp").forward(request, response);
         }
     }
 }

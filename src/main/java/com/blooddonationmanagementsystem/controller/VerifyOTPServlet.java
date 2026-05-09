@@ -15,7 +15,7 @@ public class VerifyOTPServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        request.getRequestDispatcher("/views/common/verify-otp.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/auth/verify-otp.jsp").forward(request, response);
     }
 
     @Override
@@ -33,14 +33,14 @@ public class VerifyOTPServlet extends HttpServlet {
                 session.setAttribute("otp_verified", true);
                 
                 request.setAttribute("message", "OTP verified. Please set your new password.");
-                request.getRequestDispatcher("/views/common/reset-password.jsp").forward(request, response);
+                request.getRequestDispatcher("/views/auth/reset-password.jsp").forward(request, response);
             } else {
                 request.setAttribute("error", "Invalid OTP. Please try again.");
-                request.getRequestDispatcher("/views/common/verify-otp.jsp").forward(request, response);
+                request.getRequestDispatcher("/views/auth/verify-otp.jsp").forward(request, response);
             }
         } else {
             request.setAttribute("error", "OTP expired or not found. Please request a new one.");
-            request.getRequestDispatcher("/views/common/forgot-password.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/auth/forgot-password.jsp").forward(request, response);
         }
     }
 }

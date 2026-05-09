@@ -22,7 +22,7 @@ public class ForgotPasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        request.getRequestDispatcher("/views/common/forgot-password.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/auth/forgot-password.jsp").forward(request, response);
     }
 
     @Override
@@ -46,19 +46,19 @@ public class ForgotPasswordServlet extends HttpServlet {
                 boolean emailSent = EmailUtil.sendOTP(email, otp);
                 if (emailSent) {
                     request.setAttribute("message", "OTP sent successfully to " + email);
-                    request.getRequestDispatcher("/views/common/verify-otp.jsp").forward(request, response);
+                    request.getRequestDispatcher("/views/auth/verify-otp.jsp").forward(request, response);
                 } else {
                     request.setAttribute("error", "Failed to send OTP. Please try again.");
-                    request.getRequestDispatcher("/views/common/forgot-password.jsp").forward(request, response);
+                    request.getRequestDispatcher("/views/auth/forgot-password.jsp").forward(request, response);
                 }
             } else {
                 request.setAttribute("error", "No account found with this email.");
-                request.getRequestDispatcher("/views/common/forgot-password.jsp").forward(request, response);
+                request.getRequestDispatcher("/views/auth/forgot-password.jsp").forward(request, response);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("error", "Database error occurred.");
-            request.getRequestDispatcher("/views/common/forgot-password.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/auth/forgot-password.jsp").forward(request, response);
         }
     }
 }
