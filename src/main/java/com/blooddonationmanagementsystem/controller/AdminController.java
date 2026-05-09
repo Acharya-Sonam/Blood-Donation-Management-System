@@ -1,6 +1,4 @@
 package com.blooddonationmanagementsystem.controller;
-
-package com.blooddonationmanagementsystem.controller;
  
 import com.blooddonationmanagementsystem.model.User;
 import com.blooddonationmanagementsystem.service.AdminService;
@@ -48,28 +46,13 @@ public class AdminController extends HttpServlet {
                     // Load stats for dashboard
                     request.setAttribute("totalDonors",    adminService.getTotalDonors());
                     request.setAttribute("totalPatients",  adminService.getTotalPatients());
-                    request.setAttribute("pendingApprovals", adminService.getPendingApprovals()
-                );
-
+                    request.setAttribute("pendingApprovals", adminService.getPendingApprovals());
                     request.setAttribute("totalRequests", adminService.getTotalBloodRequests());
                     request.getRequestDispatcher("/views/admin/dashboard.jsp")
                            .forward(request, response);
                     break;
  
                 case "/admin/users":
-                    // Manage users - search or list all
-                    String query = request.getParameter("search");
-                    if (query != null && !query.trim().isEmpty()) {
-                        request.setAttribute("users", adminService.searchUsers(query));
-                    } else {
-                        request.setAttribute("users", adminService.getAllUsers());
-                    }
-                    request.setAttribute("pendingUsers",  adminService.getPendingUsers());
-                    request.getRequestDispatcher("/views/admin/manageusers.jsp")
-                           .forward(request, response);
-                    break;
-
-                    case "/admin/users":
                     // Manage users - search or list all
                     String query = request.getParameter("search");
                     if (query != null && !query.trim().isEmpty()) {
