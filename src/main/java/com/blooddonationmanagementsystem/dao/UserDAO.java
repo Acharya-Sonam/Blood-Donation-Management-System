@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class UserDAO {
@@ -126,6 +128,104 @@ public class UserDAO {
         }
     }
 
+    // ── Admin / management operations ────────────────────────────────
+
+    public List<User> getAllUsers() throws SQLException {
+        String sql = "SELECT * FROM users ORDER BY user_id DESC";
+        List<User> users = new ArrayList<>();
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                users.add(mapUser(rs));
+            }
+        }
+        return users;
+    }
+
+    public User getUserById(int userId) throws SQLException {
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next() ? mapUser(rs) : null;
+            }
+        }
+    }
+
+    public List<User> getUsersByStatus(String status) throws SQLException {
+        String sql = "SELECT * FROM users WHERE status = ? ORDER BY user_id DESC";
+        List<User> users = new ArrayList<>();
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, status);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    users.add(mapUser(rs));
+                }
+            }
+        }
+        return users;
+    }
+
+    public void updateUserStatus(int userId, String status) throws SQLException {
+        String sql = "UPDATE users SET status = ? WHERE user_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, status);
+            stmt.setInt(2, userId);
+            stmt.executeUpdate();
+        }
+    }
+
+    public void updateUserRole(int userId, String role) throws SQLException {
+        String sql = "UPDATE users SET role = ? WHERE user_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, role);
+            stmt.setInt(2, userId);
+            stmt.executeUpdate();
+        }
+    }
+
+    public void deleteUser(int userId) throws SQLException {
+        String sql = "DELETE FROM users WHERE user_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            stmt.executeUpdate();
+        }
+    }
+
+    public List<User> searchUsers(String query) throws SQLException {
+        String q = (query == null) ? "" : query.trim();
+        String like = "%" + q + "%";
+        String sql = "SELECT * FROM users WHERE email LIKE ? OR role LIKE ? OR status LIKE ? ORDER BY user_id DESC";
+        List<User> users = new ArrayList<>();
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, like);
+            stmt.setString(2, like);
+            stmt.setString(3, like);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    users.add(mapUser(rs));
+                }
+            }
+        }
+        return users;
+    }
+
+    public boolean updatePassword(String email, String hashedPassword) throws SQLException {
+        String sql = "UPDATE users SET password = ? WHERE email = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, hashedPassword);
+            stmt.setString(2, email);
+            return stmt.executeUpdate() > 0;
+        }
+    }
 
     private User mapUser(ResultSet rs) throws SQLException {
         User user = new User();
