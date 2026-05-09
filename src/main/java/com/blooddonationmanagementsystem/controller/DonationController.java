@@ -1,6 +1,4 @@
 package com.blooddonationmanagementsystem.controller;
-
-package com.blooddonationmanagementsystem.controller;
  
 import com.blooddonationmanagementsystem.model.Donation;
 import com.blooddonationmanagementsystem.service.DonationService;
