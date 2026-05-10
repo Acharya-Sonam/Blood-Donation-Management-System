@@ -57,6 +57,48 @@
                     </c:if>
                 </div>
             </div>
+
+            <div class="section-title">📋 Full Blood Requests History</div>
+            <div class="card">
+                <div class="card-header">All System Requests</div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Blood Group</th>
+                                <th>Quantity</th>
+                                <th>Urgency</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="req" items="${allRequests}">
+                                <tr>
+                                    <td>${req.patientName}</td>
+                                    <td><strong>${req.bloodGroup}</strong></td>
+                                    <td>${req.quantity} Units</td>
+                                    <td>
+                                        <span class="badge ${req.urgency == 'Urgent' ? 'badge-rejected' : 'badge-accepted'}">${req.urgency}</span>
+                                    </td>
+                                    <td>${req.requestDate}</td>
+                                    <td>
+                                        <span class="badge ${req.status == 'Pending' ? 'badge-pending' : (req.status == 'Approved' || req.status == 'Accepted' ? 'badge-accepted' : 'badge-rejected')}">
+                                            ${req.status}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            <c:if test="${empty allRequests}">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 20px; color: var(--text-muted);">No requests found in history.</td>
+                                </tr>
+                            </c:if>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </main>
 
