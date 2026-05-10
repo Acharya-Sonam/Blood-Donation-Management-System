@@ -108,7 +108,11 @@
 
         <% if (request.getParameter("msg") != null && request.getParameter("msg").equals("error")) { %>
             <div class="alert alert-error">
-                Something went wrong. Please check if you already have a pending request.
+                Something went wrong. Please try again.
+            </div>
+        <% } else if (request.getParameter("msg") != null && request.getParameter("msg").equals("duplicate")) { %>
+            <div class="alert alert-error">
+                You already have a pending request for this blood group.
             </div>
         <% } %>
 
