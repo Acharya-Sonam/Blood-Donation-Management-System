@@ -45,6 +45,48 @@
                     <span class="stat-label">Active Requests</span>
                 </div>
             </div>
+
+            <div class="section-title">🕒 Recent Blood Requests</div>
+            <div class="card">
+                <div class="card-header">Latest Pending Requests</div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Blood Group</th>
+                                <th>Quantity</th>
+                                <th>Urgency</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="req" items="${recentRequests}">
+                                <tr>
+                                    <td>${req.patientName}</td>
+                                    <td><strong>${req.bloodGroup}</strong></td>
+                                    <td>${req.quantity} Units</td>
+                                    <td>
+                                        <span class="badge ${req.urgency == 'Urgent' ? 'badge-rejected' : 'badge-accepted'}">${req.urgency}</span>
+                                    </td>
+                                    <td>${req.requestDate}</td>
+                                    <td><span class="badge badge-pending">${req.status}</span></td>
+                                    <td>
+                                        <a href="${pageContext.request.contextPath}/admin/requests" class="admin-badge" style="text-decoration: none;">Manage</a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            <c:if test="${empty recentRequests}">
+                                <tr>
+                                    <td colspan="7" style="text-align: center; padding: 20px; color: var(--text-muted);">No pending requests found.</td>
+                                </tr>
+                            </c:if>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </main>
 
