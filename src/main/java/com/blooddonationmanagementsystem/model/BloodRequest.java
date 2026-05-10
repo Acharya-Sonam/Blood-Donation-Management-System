@@ -1,4 +1,4 @@
-package com.blooddonationmanagementsystem.model;
+﻿package com.blooddonationmanagementsystem.model;
 
 public class BloodRequest {
 
@@ -85,4 +85,12 @@ public class BloodRequest {
     public void setPatientName(String patientName) {
         this.patientName = patientName;
     }
-}
+
+    public String getAdminComment() {
+        return adminComment;
+    }
+
+    public void setAdminComment(String adminComment) {
+        this.adminComment = adminComment;
+    }
+}
