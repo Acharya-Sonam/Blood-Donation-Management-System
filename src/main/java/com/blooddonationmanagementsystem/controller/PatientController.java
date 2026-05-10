@@ -16,10 +16,13 @@ import com.blooddonationmanagementsystem.model.Donor;
 import com.blooddonationmanagementsystem.service.PatientService;
 
 
+import com.blooddonationmanagementsystem.service.BloodRequestService;
+
 @WebServlet("/PatientController")
 public class PatientController extends HttpServlet{
 
-    BloodRequestDAO bloodRequestDAO = new BloodRequestDAO();
+    BloodRequestService bloodRequestService = new BloodRequestService();
+    BloodRequestDAO bloodRequestDAO = new BloodRequestDAO(); // Kept for legacy if needed, but we'll migrate
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
