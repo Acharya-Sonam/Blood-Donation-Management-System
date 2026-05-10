@@ -26,6 +26,11 @@
                     📦 Inventory
                 </a>
             </li>
+            <li>
+                <a href="${pageContext.request.contextPath}/admin/reports" class="${pageContext.request.requestURI.contains('reports') ? 'active' : ''}">
+                    📈 Reports
+                </a>
+            </li>
             <li class="sidebar-footer">
                 <a href="${pageContext.request.contextPath}/logout" class="logout-btn">🚪 Logout</a>
             </li>
