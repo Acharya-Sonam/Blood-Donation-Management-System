@@ -312,9 +312,20 @@ table tbody td { padding: 10px 14px; }
 }
 .summary-card .s-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
 
+/* ---- Custom Scrollbar ---- */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #bbb; }
+
 /* ---- Responsive ---- */
 @media (max-width: 768px) {
     .sidebar { width: 0; overflow: hidden; }
     .main-content { margin-left: 0; }
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.topbar-right button:hover {
+    background: var(--red-light);
+    transform: scale(1.05);
 }
