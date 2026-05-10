@@ -23,77 +23,122 @@
             --success: #27ae60;
             --warning: #f39c12;
             --danger: #e74c3c;
+            --white: #ffffff;
         }
 
         body {
-            background: #f4f7f6;
-            font-family: 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
         }
 
         .container {
             max-width: 1000px;
             margin: 40px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            background: var(--white);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f1f1f1;
+            padding-bottom: 20px;
         }
 
         h2 {
             color: var(--dark);
-            margin-bottom: 25px;
-            border-left: 5px solid var(--primary);
-            padding-left: 15px;
+            margin: 0;
+            font-size: 24px;
+        }
+
+        h2 i {
+            color: var(--primary);
+            margin-right: 10px;
         }
 
         .status-badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 13px;
             font-weight: 600;
-            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .status-pending { background: #fff3cd; color: #856404; }
-        .status-accepted { background: #d4edda; color: #155724; }
-        .status-rejected { background: #f8d7da; color: #721c24; }
+        .status-pending { background: #fff8e1; color: #ffa000; border: 1px solid #ffe082; }
+        .status-accepted { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+        .status-rejected { background: #ffebee; color: #c62828; border: 1px solid #ef9a9a; }
 
         table {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            text-align: left;
-            padding: 15px;
-            border-bottom: 1px solid #eee;
+            border-collapse: separate;
+            border-spacing: 0 10px;
         }
 
         th {
-            background: #f8f9fa;
-            color: var(--dark);
+            background: none;
+            color: #888;
             font-weight: 600;
+            text-transform: uppercase;
+            font-size: 13px;
+            padding: 10px 20px;
         }
 
-        tr:hover { background: #fafafa; }
+        tbody tr {
+            background: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            transition: 0.3s;
+        }
 
-        .urgency-Critical { color: var(--danger); font-weight: bold; }
-        .urgency-Urgent { color: var(--warning); font-weight: bold; }
+        tbody tr:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        td {
+            padding: 20px;
+            border-top: 1px solid #f1f1f1;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        td:first-child { border-left: 1px solid #f1f1f1; border-radius: 12px 0 0 12px; }
+        td:last-child { border-right: 1px solid #f1f1f1; border-radius: 0 12px 12px 0; }
+
+        .blood-group-icon {
+            background: var(--primary);
+            color: white;
+            width: 35px;
+            height: 35px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .urgency-Critical { color: var(--danger); font-weight: 700; }
+        .urgency-Urgent { color: var(--warning); font-weight: 600; }
 
         .btn-cancel {
-            background: none;
-            border: 1px solid var(--danger);
-            color: var(--danger);
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
+            background: #fff;
+            color: #999;
+            border: 1px solid #ddd;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 13px;
             transition: 0.3s;
         }
 
         .btn-cancel:hover {
-            background: var(--danger);
-            color: white;
+            border-color: var(--danger);
+            color: var(--danger);
+            background: #fff5f5;
         }
     </style>
 </head>
@@ -101,24 +146,26 @@
     <jsp:include page="../common/navbar.jsp" />
 
     <div class="container fade-in">
-        <h2><i class="fas fa-list-ul"></i> My Blood Requests</h2>
+        <div class="header-section">
+            <h2><i class="fas fa-history"></i> My Blood Requests</h2>
+            <a href="PatientController?action=requestForm" style="text-decoration:none; color:var(--primary); font-weight:600;"><i class="fas fa-plus"></i> New Request</a>
+        </div>
 
         <% if (request.getParameter("msg") != null && request.getParameter("msg").equals("cancelled")) { %>
-            <div class="alert" style="background:#d4edda; color:#155724; padding:15px; border-radius:10px; margin-bottom:20px;">
-                Request cancelled successfully.
+            <div class="alert" style="background:#e6fffa; color:#2c7a7b; padding:15px; border-radius:10px; margin-bottom:20px; border:1px solid #b2f5ea;">
+                <i class="fas fa-check-circle"></i> Request cancelled successfully.
             </div>
         <% } %>
         <% if (request.getParameter("msg") != null && request.getParameter("msg").equals("cancel_error")) { %>
-            <div class="alert" style="background:#f8d7da; color:#721c24; padding:15px; border-radius:10px; margin-bottom:20px;">
-                Failed to cancel request. It may đã be processed.
+            <div class="alert" style="background:#fff5f5; color:#c53030; padding:15px; border-radius:10px; margin-bottom:20px; border:1px solid #feb2b2;">
+                <i class="fas fa-exclamation-circle"></i> Failed to cancel request.
             </div>
         <% } %>
 
         <c:if test="${empty requests}">
-            <div style="text-align: center; padding: 40px;">
-                <i class="fas fa-search-plus" style="font-size: 50px; color: #ccc;"></i>
+            <div style="text-align: center; padding: 60px;">
+                <img src="https://cdni.iconscout.com/illustration/premium/thumb/no-data-found-8867280-7265556.png" style="width:200px; opacity:0.5;">
                 <p style="margin-top: 15px; color: #777;">You haven't made any blood requests yet.</p>
-                <a href="PatientController?action=requestForm" class="btn-primary" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background: var(--primary); color: white; text-decoration: none; border-radius: 5px;">Make a Request</a>
             </div>
         </c:if>
 
@@ -126,8 +173,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Blood Group</th>
+                        <th>Request Details</th>
                         <th>Quantity</th>
                         <th>Urgency</th>
                         <th>Status</th>
@@ -137,25 +183,40 @@
                 <tbody>
                     <c:forEach var="req" items="${requests}">
                         <tr>
-                            <td>${req.requestDate}</td>
-                            <td><strong>${req.bloodGroup}</strong></td>
-                            <td>${req.quantity} Units</td>
                             <td>
-                                <span class="urgency-${req.urgency}">${req.urgency}</span>
+                                <div style="display:flex; align-items:center;">
+                                    <div class="blood-group-icon">${req.bloodGroup}</div>
+                                    <div>
+                                        <div style="font-weight:600; color:var(--dark);">Blood Group ${req.bloodGroup}</div>
+                                        <div style="font-size:12px; color:#999;">Requested on ${req.requestDate}</div>
+                                    </div>
+                                </div>
                             </td>
                             <td>
-                                <span class="status-badge status-${req.status.toLowerCase()}">${req.status}</span>
+                                <div style="font-weight:600;">${req.quantity} <span style="font-weight:400; color:#888;">Units</span></div>
+                            </td>
+                            <td>
+                                <span class="urgency-${req.urgency}">
+                                    <i class="fas fa-bolt"></i> ${req.urgency}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="status-badge status-${req.status.toLowerCase()}">
+                                    <c:choose>
+                                        <c:when test="${req.status eq 'Pending'}"><i class="fas fa-clock"></i></c:when>
+                                        <c:when test="${req.status eq 'Accepted'}"><i class="fas fa-check-circle"></i></c:when>
+                                        <c:when test="${req.status eq 'Rejected'}"><i class="fas fa-times-circle"></i></c:when>
+                                    </c:choose>
+                                    ${req.status}
+                                </span>
                             </td>
                             <td>
                                 <c:if test="${req.status eq 'Pending'}">
                                     <form action="PatientController" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to cancel this request?')">
                                         <input type="hidden" name="action" value="cancelRequest">
                                         <input type="hidden" name="requestId" value="${req.id}">
-                                        <button type="submit" class="btn-cancel">Cancel</button>
+                                        <button type="submit" class="btn-cancel"><i class="fas fa-trash-alt"></i> Cancel</button>
                                     </form>
-                                </c:if>
-                                <c:if test="${req.status ne 'Pending'}">
-                                    <span style="color: #999; font-size: 12px;">No actions</span>
                                 </c:if>
                             </td>
                         </tr>
