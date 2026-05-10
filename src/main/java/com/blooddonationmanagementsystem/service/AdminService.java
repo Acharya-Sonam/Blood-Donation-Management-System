@@ -96,4 +96,12 @@ public class AdminService {
     public void updateRequestStatus(int requestId, String status) {
         bloodRequestDAO.updateStatus(requestId, status);
     }
+
+    public List<com.blooddonationmanagementsystem.model.BloodRequest> getAllRequests() {
+        return bloodRequestDAO.getAllRequests();
+    }
+
+    public java.util.Map<String, Integer> getRequestStats() {
+        return bloodRequestDAO.getRequestStatsByBloodGroup();
+    }
 }
