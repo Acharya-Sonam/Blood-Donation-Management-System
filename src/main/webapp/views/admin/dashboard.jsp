@@ -1,16 +1,31 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ASUS
-  Date: 4/2/2026
-  Time: 1:08 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard | Blood Bridge</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css">
 </head>
 <body>
+
+    <!-- Sidebar -->
+    <jsp:include page="admin-sidebar.jsp" />
+
+    <main class="main-content">
+        <!-- Top bar -->
+        <header class="topbar">
+            <h1>📊 System Overview</h1>
+            <div class="topbar-right">
+                <span class="admin-badge">Administrator</span>
+                <a href="${pageContext.request.contextPath}/logout" class="logout-btn">Logout</a>
+            </div>
+        </header>
+
+        <div class="page-body">
+            <!-- Content will go here -->
+        </div>
+    </main>
 
 </body>
 </html>
