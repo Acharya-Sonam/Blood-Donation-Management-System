@@ -128,6 +128,14 @@ public class PatientController extends HttpServlet{
             bloodRequestDAO.updateStatus(requestId, status);
             response.sendRedirect(request.getContextPath()
                     + "/PatientController?action=viewAllRequests");
+        } else if (action.equals("cancelRequest")) {
+            int requestId = Integer.parseInt(request.getParameter("requestId"));
+            boolean success = bloodRequestDAO.deleteRequest(requestId);
+            if (success) {
+                response.sendRedirect(request.getContextPath() + "/PatientController?action=myRequests&msg=cancelled");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/PatientController?action=myRequests&msg=cancel_error");
+            }
         }
     }
 }
