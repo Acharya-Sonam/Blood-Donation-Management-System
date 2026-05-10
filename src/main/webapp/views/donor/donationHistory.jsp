@@ -45,6 +45,13 @@
             <p style="color: var(--clr-text-muted); font-size: 1.1rem; margin-bottom: 2rem;">
                 Every drop counts. Here's a look at the lives you've helped save.
             </p>
+            
+            <c:if test="${not empty param.success}">
+                <div class="glass-card" style="padding: 1rem; background: rgba(40, 167, 69, 0.1); border: 1px solid rgba(40, 167, 69, 0.3); color: #28a745; margin-bottom: 2rem; border-radius: 12px; display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.2rem;">✅</span>
+                    <span>Your donation has been recorded successfully! Thank you for your contribution.</span>
+                </div>
+            </c:if>
 
             <div style="display: flex; gap: 2rem; margin-bottom: 3rem; flex-wrap: wrap;">
                 <div class="glass-card" style="padding: 1.5rem; flex: 1; min-width: 200px; border-color: rgba(230, 57, 70, 0.2);">

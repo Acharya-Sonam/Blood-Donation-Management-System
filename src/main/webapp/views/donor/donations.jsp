@@ -29,7 +29,7 @@
             </c:if>
 
             <form action="${pageContext.request.contextPath}/donor/donations" method="POST" class="auth-form">
-                <input type="hidden" name="inventoryId" value="1"> <!-- Default inventory ID for now -->
+                <input type="hidden" name="inventoryId" value="0"> <!-- Handled automatically by server based on blood group -->
                 
                 <div class="form-group">
                     <label for="donationDate">Donation Date</label>
