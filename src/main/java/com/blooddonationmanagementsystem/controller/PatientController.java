@@ -3,7 +3,6 @@ package com.blooddonationmanagementsystem.controller;
 import java.io.IOException;
 import java.util.List;
 
-import com.blooddonationmanagementsystem.dao.BloodRequestDAO;
 import com.blooddonationmanagementsystem.model.BloodRequest;
 
 import jakarta.servlet.ServletException;
@@ -22,7 +21,6 @@ import com.blooddonationmanagementsystem.service.BloodRequestService;
 public class PatientController extends HttpServlet{
 
     BloodRequestService bloodRequestService = new BloodRequestService();
-    BloodRequestDAO bloodRequestDAO = new BloodRequestDAO(); // Kept for legacy if needed, but we'll migrate
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
