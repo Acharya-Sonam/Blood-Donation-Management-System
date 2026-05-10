@@ -47,14 +47,14 @@ public class PatientController extends HttpServlet{
         } else if (action.equals("myRequests")) {
             // Show patient's own request history
             int patientId = (int) session.getAttribute("userId");
-            List<BloodRequest> requests = bloodRequestDAO.getRequestsByPatient(patientId);
+            List<BloodRequest> requests = bloodRequestService.getPatientRequests(patientId);
             request.setAttribute("requests", requests);
             request.getRequestDispatcher("/views/patient/trackRequest.jsp")
                    .forward(request, response);
 
         } else if (action.equals("viewAllRequests")) {
             // Donor views all pending requests
-            List<BloodRequest> requests = bloodRequestDAO.getAllPendingRequests();
+            List<BloodRequest> requests = bloodRequestService.getAllPendingRequests();
             request.setAttribute("requests", requests);
             request.getRequestDispatcher("/views/donor/viewrequests.jsp")
                    .forward(request, response);
