@@ -48,6 +48,8 @@ public class AdminController extends HttpServlet {
                     request.setAttribute("totalPatients",  adminService.getTotalPatients());
                     request.setAttribute("pendingApprovals", adminService.getPendingApprovals());
                     request.setAttribute("totalRequests", adminService.getTotalBloodRequests());
+                    request.setAttribute("recentRequests", adminService.getAllBloodRequests()); // Pending requests as recent activity
+                    request.setAttribute("inventory", adminService.getInventory());
                     request.getRequestDispatcher("/views/admin/dashboard.jsp")
                            .forward(request, response);
                     break;
@@ -94,6 +96,8 @@ public class AdminController extends HttpServlet {
                     request.setAttribute("totalDonors",   adminService.getTotalDonors());
                     request.setAttribute("totalPatients", adminService.getTotalPatients());
                     request.setAttribute("totalRequests", adminService.getTotalBloodRequests());
+                    request.setAttribute("allRequests", adminService.getAllRequests());
+                    request.setAttribute("requestStats", adminService.getRequestStats());
                     request.getRequestDispatcher("/views/admin/reports.jsp")
                            .forward(request, response);
                     break;
