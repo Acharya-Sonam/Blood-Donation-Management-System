@@ -17,6 +17,10 @@
         <header class="topbar">
             <h1>📊 System Overview</h1>
             <div class="topbar-right">
+                <div style="display: flex; align-items: center; gap: 8px; margin-right: 20px;">
+                    <div style="width: 10px; height: 10px; background: #27ae60; border-radius: 50%; box-shadow: 0 0 8px #27ae60;"></div>
+                    <span style="font-size: 0.8rem; font-weight: 600; color: #27ae60;">System Live</span>
+                </div>
                 <span class="admin-badge">Administrator</span>
                 <a href="${pageContext.request.contextPath}/logout" class="logout-btn">Logout</a>
             </div>
