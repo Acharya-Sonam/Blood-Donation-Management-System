@@ -56,19 +56,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="item" items="${inventory}">
+                             <c:forEach var="item" items="${inventory}">
                                 <tr>
                                     <td><strong>${item.bloodGroup}</strong></td>
-                                    <td>${item.stockQuantity} Units</td>
+                                    <td>${item.unitsAvailable} Units</td>
                                     <td>
-                                        <span class="badge ${item.stockQuantity < 5 ? 'badge-rejected' : (item.stockQuantity > 15 ? 'badge-accepted' : 'badge-pending')}">
-                                            ${item.stockQuantity < 5 ? 'Low Stock' : (item.stockQuantity > 15 ? 'High' : 'Normal')}
+                                        <span class="badge ${item.unitsAvailable < 5 ? 'badge-rejected' : (item.unitsAvailable > 15 ? 'badge-accepted' : 'badge-pending')}">
+                                            ${item.unitsAvailable < 5 ? 'Low Stock' : (item.unitsAvailable > 15 ? 'High' : 'Normal')}
                                         </span>
                                     </td>
                                     <td>
                                         <div class="bar-track" style="margin: 0;">
-                                            <div class="bar-fill ${item.stockQuantity < 5 ? 'orange' : (item.stockQuantity > 15 ? 'green' : 'blue')}" 
-                                                 style="width: ${item.stockQuantity * 5}%">
+                                            <div class="bar-fill ${item.unitsAvailable < 5 ? 'orange' : (item.unitsAvailable > 15 ? 'green' : 'blue')}" 
+                                                 style="width: ${item.unitsAvailable * 5}%">
                                             </div>
                                         </div>
                                     </td>

@@ -100,9 +100,9 @@
                         <div class="bar-row">
                             <div class="bar-label">${item.bloodGroup}</div>
                             <div class="bar-track">
-                                <div class="bar-fill ${item.stockQuantity < 5 ? 'orange' : (item.stockQuantity > 15 ? 'green' : 'blue')}" 
-                                     style="width: ${item.stockQuantity * 5}%">
-                                    ${item.stockQuantity} Units
+                                <div class="bar-fill ${item.unitsAvailable < 5 ? 'orange' : (item.unitsAvailable > 15 ? 'green' : 'blue')}" 
+                                     style="width: ${item.unitsAvailable * 5}%">
+                                    ${item.unitsAvailable} Units
                                 </div>
                             </div>
                         </div>

@@ -1,6 +1,8 @@
 package com.blooddonationmanagementsystem.controller;
  
 import com.blooddonationmanagementsystem.model.User;
+import com.blooddonationmanagementsystem.model.BloodRequest;
+import com.blooddonationmanagementsystem.model.BloodInventory;
 import com.blooddonationmanagementsystem.service.AdminService;
  
 import jakarta.servlet.ServletException;
@@ -12,6 +14,8 @@ import jakarta.servlet.http.HttpSession;
  
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
  
 @WebServlet(urlPatterns = {
     "/admin/dashboard",
