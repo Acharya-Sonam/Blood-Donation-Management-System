@@ -105,6 +105,35 @@ public class BloodRequestDAO {
         return list;
     }
 
+    // Get all requests (for admin reports)
+    public List<BloodRequest> getAllRequests() {
+        List<BloodRequest> list = new ArrayList<>();
+        String sql = "SELECT br.*, u.name AS patient_name "
+                   + "FROM blood_requests br "
+                   + "JOIN users u ON br.patient_id = u.id "
+                   + "ORDER BY br.request_date DESC";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                BloodRequest r = new BloodRequest();
+                r.setId(rs.getInt("id"));
+                r.setPatientId(rs.getInt("patient_id"));
+                r.setBloodGroup(rs.getString("blood_group"));
+                r.setQuantity(rs.getInt("quantity"));
+                r.setUrgency(rs.getString("urgency"));
+                r.setStatus(rs.getString("status"));
+                r.setRequestDate(rs.getString("request_date"));
+                r.setPatientName(rs.getString("patient_name"));
+                list.add(r);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return list;
+    }
+
     // Donor accepts or rejects a request
     public boolean updateStatus(int requestId, String status) {
         String sql = "UPDATE blood_requests SET status = ? WHERE id = ?";
