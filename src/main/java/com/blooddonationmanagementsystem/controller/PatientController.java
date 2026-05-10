@@ -103,6 +103,13 @@ public class PatientController extends HttpServlet{
             br.setQuantity(quantity);
             br.setUrgency(urgency);
 
+            // Check if patient already has a pending request for this blood group
+            if (bloodRequestDAO.hasPendingRequest(patientId, bloodGroup)) {
+                response.sendRedirect(request.getContextPath()
+                        + "/PatientController?action=requestForm&msg=duplicate");
+                return;
+            }
+
             boolean success = bloodRequestDAO.submitRequest(br);
 
             if (success) {
