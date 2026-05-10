@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,6 +25,13 @@
                 <h2>Join Blood Bridge</h2>
                 <p>Register as a donor or to request blood.</p>
             </div>
+
+            <c:if test="${not empty errorMessage}">
+                <div class="alert alert-danger">
+                    <span>⚠️</span>
+                    <span>${errorMessage}</span>
+                </div>
+            </c:if>
             
             <form action="${pageContext.request.contextPath}/register" method="POST" class="auth-form">
                 <div class="form-group">
@@ -37,12 +45,12 @@
 
                 <div class="form-group">
                     <label for="fullName">Full Name</label>
-                    <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                    <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" value="${fullName}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" value="${email}" required>
                 </div>
 
                 <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
@@ -59,11 +67,11 @@
                 <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div>
                         <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" placeholder="Phone number" required>
+                        <input type="tel" id="phone" name="phone" placeholder="Phone number" value="${phone}" required>
                     </div>
                     <div>
                         <label for="dateOfBirth">Date of Birth</label>
-                        <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+                        <input type="date" id="dateOfBirth" name="dateOfBirth" value="${dateOfBirth}" required>
                     </div>
                 </div>
 
@@ -84,12 +92,12 @@
 
                 <div class="form-group">
                     <label for="address">Address</label>
-                    <input type="text" id="address" name="address" placeholder="Enter your address" required>
+                    <input type="text" id="address" name="address" placeholder="Enter your address" value="${address}" required>
                 </div>
 
                 <div id="hospitalField" class="form-group" style="display: none;">
                     <label for="hospitalName">Hospital Name (for Patients)</label>
-                    <input type="text" id="hospitalName" name="hospitalName" placeholder="Enter hospital name">
+                    <input type="text" id="hospitalName" name="hospitalName" placeholder="Enter hospital name" value="${hospitalName}">
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-full">Create Account</button>

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,11 +25,32 @@
                 <h2>Welcome Back</h2>
                 <p>Login to manage your donations or request blood.</p>
             </div>
+
+            <c:if test="${not empty errorMessage}">
+                <div class="alert alert-danger">
+                    <span>⚠️</span>
+                    <span>${errorMessage}</span>
+                </div>
+            </c:if>
+
+            <c:if test="${not empty param.registered}">
+                <div class="alert alert-success">
+                    <span>✅</span>
+                    <span>Registration successful! Please login to continue.</span>
+                </div>
+            </c:if>
+
+            <c:if test="${not empty param.logout}">
+                <div class="alert alert-success">
+                    <span>👋</span>
+                    <span>You have been logged out successfully.</span>
+                </div>
+            </c:if>
             
             <form action="${pageContext.request.contextPath}/login" method="POST" class="auth-form">
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" value="${email}" required>
                 </div>
                 
                 <div class="form-group">

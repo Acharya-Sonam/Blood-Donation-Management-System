@@ -80,13 +80,12 @@ public class AuthController extends HttpServlet {
             redirectToDashboard(user, response);
 
         } catch (AuthException e) {
-            // Show the specific error message on the login page
             request.setAttribute("errorMessage", e.getMessage());
+            request.setAttribute("email", email);
             request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
-
         } catch (SQLException e) {
-            // Database error — forward to error page
             request.setAttribute("errorMessage", "A system error occurred. Please try again later.");
+            request.setAttribute("email", email);
             request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
         }
     }
@@ -137,6 +136,12 @@ public class AuthController extends HttpServlet {
 
         } catch (SQLException e) {
             request.setAttribute("errorMessage", "A system error occurred during registration. Please try again.");
+            request.setAttribute("role",       role);
+            request.setAttribute("fullName",   fullName);
+            request.setAttribute("email",      email);
+            request.setAttribute("phone",      phone);
+            request.setAttribute("bloodGroup", bloodGroup);
+            request.setAttribute("address",    address);
             request.getRequestDispatcher("/views/auth/register.jsp").forward(request, response);
         }
     }

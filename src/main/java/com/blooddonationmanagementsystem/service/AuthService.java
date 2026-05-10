@@ -57,7 +57,7 @@ public class AuthService {
             throw new AuthException("Please enter a valid email address (e.g. name@email.com).");
         }
         if (!ValidationUtil.isValidPassword(password)) {
-            throw new AuthException("Password must be at least 6 characters long.");
+            throw new AuthException("Password must be at least 8 characters long.");
         }
         if (!ValidationUtil.passwordsMatch(password, confirm)) {
             throw new AuthException("Passwords do not match. Please re-enter.");
@@ -115,7 +115,7 @@ public class AuthService {
             throw new AuthException("Please enter a valid email address (e.g. name@email.com).");
         }
         if (!ValidationUtil.isValidPassword(password)) {
-            throw new AuthException("Password must be at least 6 characters long.");
+            throw new AuthException("Password must be at least 8 characters long.");
         }
         if (!ValidationUtil.passwordsMatch(password, confirm)) {
             throw new AuthException("Passwords do not match. Please re-enter.");
