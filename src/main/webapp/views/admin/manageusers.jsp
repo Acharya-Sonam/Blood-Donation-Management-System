@@ -12,110 +12,108 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css">
 </head>
 <body>
-    <div class="dashboard-container">
-        <jsp:include page="admin-sidebar.jsp" />
+    <jsp:include page="admin-sidebar.jsp" />
 
-        <main class="main-content">
+    <main class="main-content">
+        <header class="topbar">
+            <h1>👥 Manage Users</h1>
+            <div class="topbar-right">
+                <span class="admin-badge">Administrator</span>
+                <a href="${pageContext.request.contextPath}/logout" class="logout-btn">Logout</a>
+            </div>
+        </header>
+
+        <div class="page-body">
             <!-- Search & Filters -->
-            <div style="background: var(--clr-white); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--clr-border); margin-bottom: 2rem; display: flex; flex-direction: column; gap: 1.5rem;">
-                
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; gap: 0.5rem;">
-                        <a href="?filter=all" class="btn-action ${param.filter == 'all' || empty param.filter ? 'active' : ''}">All Members</a>
-                        <a href="?filter=pending" class="btn-action ${param.filter == 'pending' ? 'active' : ''}">Pending Review</a>
-                        <a href="?filter=approved" class="btn-action ${param.filter == 'approved' ? 'active' : ''}">Verified Members</a>
+            <div class="card" style="padding: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div style="display: flex; gap: 10px;">
+                        <a href="?filter=all" class="admin-badge" style="text-decoration: none; ${param.filter == 'all' || empty param.filter ? 'background: var(--red-primary); color: white;' : ''}">All Members</a>
+                        <a href="?filter=pending" class="admin-badge" style="text-decoration: none; ${param.filter == 'pending' ? 'background: var(--red-primary); color: white;' : ''}">Pending Review</a>
+                        <a href="?filter=approved" class="admin-badge" style="text-decoration: none; ${param.filter == 'approved' ? 'background: var(--red-primary); color: white;' : ''}">Verified Members</a>
                     </div>
                 </div>
 
-                <form action="" method="GET" style="display: flex; gap: 0.5rem;">
+                <form action="" method="GET" style="display: flex; gap: 10px;">
                     <input type="hidden" name="filter" value="${param.filter}">
                     <input type="text" name="search" placeholder="Search by name, email, or role..." value="${param.search}" 
-                           style="flex: 1; padding: 0.7rem 1.2rem; border-radius: 8px; border: 2px solid var(--clr-border); font-family: var(--font-main); font-size: 1rem; outline: none;">
-                    <button type="submit" class="btn-search">Search Now</button>
+                           style="flex: 1; padding: 10px 15px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+                    <button type="submit" class="logout-btn">Search Now</button>
                 </form>
             </div>
 
             <c:if test="${not empty param.success}">
-                <div style="background: #e6fffa; color: #234e52; padding: 1rem; border-radius: 8px; border: 1px solid #b2f5ea; margin-bottom: 2rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
-                    <span>✅</span> Action processed successfully.
+                <div class="admin-badge" style="width: 100%; margin-bottom: 20px; padding: 15px; background: #eafaf1; color: #1e8449; border: 1px solid #82e0aa;">
+                    ✅ Action processed successfully.
                 </div>
             </c:if>
 
-            <div class="table-container">
-                <table class="users-table">
-                    <thead>
-                        <tr>
-                            <th>User ID</th>
-                            <th>Member</th>
-                            <th>Contact Info</th>
-                            <th>Role & Status</th>
-                            <th>Registration</th>
-                            <th style="text-align: right;">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="u" items="${users}">
+            <div class="card">
+                <div class="card-header">User Database</div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
                             <tr>
-                                <td><span style="color: var(--clr-text-muted); font-family: monospace;">#${u.userId}</span></td>
-                                <td>
-                                    <div style="display: flex; align-items: center; gap: 0.8rem;">
-                                        <div style="width: 35px; height: 35px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--clr-secondary);">
-                                            ${u.name.substring(0,1)}
+                                <th>User ID</th>
+                                <th>Member</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Registration</th>
+                                <th style="text-align: right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="u" items="${users}">
+                                <tr>
+                                    <td><span style="font-family: monospace;">#${u.userId}</span></td>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 12px;">
+                                            <div style="width: 32px; height: 32px; background: var(--red-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--red-primary);">
+                                                ${u.name.substring(0,1)}
+                                            </div>
+                                            <div>
+                                                <div style="font-weight: 600;">${u.name}</div>
+                                                <div style="font-size: 0.75rem; color: var(--text-muted);">${u.email}</div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <div style="font-weight: 700; color: var(--clr-secondary);">${u.name}</div>
-                                            <div style="font-size: 0.8rem; color: var(--clr-text-muted);">${u.email}</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div style="font-size: 0.85rem; font-weight: 600;">Role: ${u.role}</div>
-                                </td>
-                                <td>
-                                    <div style="display: flex; flex-direction: column; gap: 0.3rem;">
-                                        <span class="badge badge-${u.status}">${u.status}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div style="font-size: 0.85rem; color: var(--clr-text-muted);">${u.createdAt}</div>
-                                </td>
-                                <td>
-                                    <div style="display: flex; gap: 0.4rem; justify-content: flex-end;">
-                                        <c:if test="${u.status == 'pending'}">
-                                            <form action="${pageContext.request.contextPath}/admin/users" method="POST">
-                                                <input type="hidden" name="userId" value="${u.userId}">
-                                                <input type="hidden" name="action" value="approve">
-                                                <button type="submit" class="btn-action" style="color: #28a745; border-color: #28a745;">Verify</button>
-                                            </form>
-                                            <form action="${pageContext.request.contextPath}/admin/users" method="POST">
-                                                <input type="hidden" name="userId" value="${u.userId}">
-                                                <input type="hidden" name="action" value="reject">
-                                                <button type="submit" class="btn-action" style="color: #e63946; border-color: #e63946;">Reject</button>
-                                            </form>
-                                        </c:if>
-                                        <div style="position: relative;">
-                                            <form action="${pageContext.request.contextPath}/admin/users" method="POST" onsubmit="return confirm('Delete this user permanently?')">
+                                    </td>
+                                    <td><span class="admin-badge" style="background: #f4f6f9; color: #2c3e50;">${u.role}</span></td>
+                                    <td>
+                                        <span class="badge ${u.status == 'pending' ? 'badge-pending' : (u.status == 'approved' ? 'badge-accepted' : 'badge-rejected')}">
+                                            ${u.status}
+                                        </span>
+                                    </td>
+                                    <td><div style="font-size: 0.8rem; color: var(--text-muted);">${u.createdAt}</div></td>
+                                    <td>
+                                        <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                                            <c:if test="${u.status == 'pending'}">
+                                                <form action="${pageContext.request.contextPath}/admin/users" method="POST" style="display:inline;">
+                                                    <input type="hidden" name="userId" value="${u.userId}">
+                                                    <input type="hidden" name="action" value="approve">
+                                                    <button type="submit" class="admin-badge" style="background: #eafaf1; color: #1e8449; border: 1px solid #82e0aa; cursor: pointer;">Verify</button>
+                                                </form>
+                                            </c:if>
+                                            <form action="${pageContext.request.contextPath}/admin/users" method="POST" onsubmit="return confirm('Delete this user permanently?')" style="display:inline;">
                                                 <input type="hidden" name="userId" value="${u.userId}">
                                                 <input type="hidden" name="action" value="delete">
-                                                <button type="submit" class="btn-action">Delete</button>
+                                                <button type="submit" class="admin-badge" style="background: #fdedec; color: #cb4335; border: 1px solid #f1948a; cursor: pointer;">Delete</button>
                                             </form>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        <c:if test="${empty users}">
-                            <tr>
-                                <td colspan="6" style="text-align: center; padding: 4rem; color: var(--clr-text-muted);">
-                                    <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
-                                    <strong>No users found matching your criteria.</strong>
-                                </td>
-                            </tr>
-                        </c:if>
-                    </tbody>
-                </table>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            <c:if test="${empty users}">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                                        <strong>No users found matching your criteria.</strong>
+                                    </td>
+                                </tr>
+                            </c:if>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </main>
-    </div>
+        </div>
+    </main>
 </body>
 </html>
