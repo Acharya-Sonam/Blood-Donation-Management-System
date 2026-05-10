@@ -12,6 +12,24 @@ import com.blooddonationmanagementsystem.util.DBConnection;
 
 public class BloodRequestDAO {
 
+    // Check if patient already has a pending request for the same blood group
+    public boolean hasPendingRequest(int patientId, String bloodGroup) {
+        String sql = "SELECT COUNT(*) FROM blood_requests WHERE patient_id = ? AND blood_group = ? AND status = 'Pending'";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, patientId);
+            ps.setString(2, bloodGroup);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return false;
+    }
+
     // Patient submits a new blood request
     public boolean submitRequest(BloodRequest request) {
         String sql = "INSERT INTO blood_requests (patient_id, blood_group, quantity, urgency, status, request_date) "
