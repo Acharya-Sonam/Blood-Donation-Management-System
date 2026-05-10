@@ -134,6 +134,22 @@ public class BloodRequestDAO {
         return list;
     }
 
+    // Get count of requests grouped by blood group
+    public java.util.Map<String, Integer> getRequestStatsByBloodGroup() {
+        java.util.Map<String, Integer> stats = new java.util.HashMap<>();
+        String sql = "SELECT blood_group, COUNT(*) as count FROM blood_requests GROUP BY blood_group";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                stats.put(rs.getString("blood_group"), rs.getInt("count"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return stats;
+    }
+
     // Donor accepts or rejects a request
     public boolean updateStatus(int requestId, String status) {
         String sql = "UPDATE blood_requests SET status = ? WHERE id = ?";
