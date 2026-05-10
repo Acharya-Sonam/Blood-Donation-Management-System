@@ -10,6 +10,7 @@ public class BloodRequest {
     private String status;
     private String requestDate;
     private String patientName;
+    private String adminComment;
 
     public BloodRequest() {}
 
