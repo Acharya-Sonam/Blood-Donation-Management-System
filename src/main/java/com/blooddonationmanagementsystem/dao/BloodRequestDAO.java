@@ -120,4 +120,19 @@ public class BloodRequestDAO {
             return false;
         }
     }
-}   
+
+    // Patient cancels their own request
+    public boolean deleteRequest(int requestId) {
+        String sql = "DELETE FROM blood_requests WHERE id = ? AND status = 'Pending'";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, requestId);
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        }
+    }
+}
