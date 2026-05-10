@@ -37,6 +37,26 @@
                     <div class="s-label">Pending Requests</div>
                 </div>
             </div>
+
+            <div class="section-title">📊 Blood Request Distribution</div>
+            <div class="card">
+                <div class="card-header">Requests by Blood Group</div>
+                <div class="bar-chart">
+                    <c:forEach var="entry" items="${requestStats}">
+                        <div class="bar-row">
+                            <div class="bar-label">${entry.key}</div>
+                            <div class="bar-track">
+                                <div class="bar-fill blue" style="width: ${entry.value * 10}%">
+                                    ${entry.value} Requests
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
+                    <c:if test="${empty requestStats}">
+                        <p style="text-align: center; padding: 20px; color: var(--text-muted);">No request statistics available.</p>
+                    </c:if>
+                </div>
+            </div>
         </div>
     </main>
 
