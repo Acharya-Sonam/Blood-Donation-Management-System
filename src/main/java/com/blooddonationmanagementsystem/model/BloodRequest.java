@@ -1,4 +1,4 @@
-﻿package com.blooddonationmanagementsystem.model;
+package com.blooddonationmanagementsystem.model;
 
 public class BloodRequest {
 
