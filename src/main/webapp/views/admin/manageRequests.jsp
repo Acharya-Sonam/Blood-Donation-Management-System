@@ -12,63 +12,72 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css">
 </head>
 <body>
-    <div class="dashboard-container">
-        <jsp:include page="admin-sidebar.jsp" />
+    <jsp:include page="admin-sidebar.jsp" />
 
-        <main class="main-content">
-            <h1 style="margin-bottom: 2rem;">Manage Blood Requests</h1>
-
-            <div class="table-container">
-                <table class="users-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Patient</th>
-                            <th>Blood Group</th>
-                            <th>Quantity</th>
-                            <th>Urgency</th>
-                            <th>Status</th>
-                            <th>Date</th>
-                            <th style="text-align: right;">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="r" items="${requests}">
-                            <tr>
-                                <td>#${r.id}</td>
-                                <td>${r.patientName}</td>
-                                <td><span class="badge badge-blood">${r.bloodGroup}</span></td>
-                                <td>${r.quantity} Units</td>
-                                <td><span class="badge badge-${r.urgency.toLowerCase()}">${r.urgency}</span></td>
-                                <td><span class="badge badge-${r.status.toLowerCase()}">${r.status}</span></td>
-                                <td>${r.requestDate}</td>
-                                <td>
-                                    <div style="display: flex; gap: 0.4rem; justify-content: flex-end;">
-                                        <form action="${pageContext.request.contextPath}/admin/requests" method="POST">
-                                            <input type="hidden" name="requestId" value="${r.id}">
-                                            <input type="hidden" name="status" value="Approved">
-                                            <button type="submit" class="btn-action" style="color: #28a745; border-color: #28a745;">Approve</button>
-                                        </form>
-                                        <form action="${pageContext.request.contextPath}/admin/requests" method="POST">
-                                            <input type="hidden" name="requestId" value="${r.id}">
-                                            <input type="hidden" name="status" value="Rejected">
-                                            <button type="submit" class="btn-action" style="color: #e63946; border-color: #e63946;">Reject</button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        <c:if test="${empty requests}">
-                            <tr>
-                                <td colspan="8" style="text-align: center; padding: 4rem; color: var(--clr-text-muted);">
-                                    No blood requests found.
-                                </td>
-                            </tr>
-                        </c:if>
-                    </tbody>
-                </table>
+    <main class="main-content">
+        <header class="topbar">
+            <h1>🩸 Manage Blood Requests</h1>
+            <div class="topbar-right">
+                <span class="admin-badge">Administrator</span>
+                <a href="${pageContext.request.contextPath}/logout" class="logout-btn">Logout</a>
             </div>
-        </main>
-    </div>
+        </header>
+
+        <div class="page-body">
+            <div class="card">
+                <div class="card-header">Pending & Active Requests</div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Patient</th>
+                                <th>Blood Group</th>
+                                <th>Quantity</th>
+                                <th>Urgency</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th style="text-align: right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="r" items="${requests}">
+                                <tr>
+                                    <td>#${r.id}</td>
+                                    <td>${r.patientName}</td>
+                                    <td><strong>${r.bloodGroup}</strong></td>
+                                    <td>${r.quantity} Units</td>
+                                    <td><span class="badge ${r.urgency == 'Urgent' ? 'badge-rejected' : 'badge-accepted'}">${r.urgency}</span></td>
+                                    <td><span class="badge badge-pending">${r.status}</span></td>
+                                    <td>${r.requestDate}</td>
+                                    <td>
+                                        <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                                            <form action="${pageContext.request.contextPath}/admin/requests" method="POST">
+                                                <input type="hidden" name="requestId" value="${r.id}">
+                                                <input type="hidden" name="status" value="Approved">
+                                                <button type="submit" class="admin-badge" style="color: #1e8449; background: #eafaf1; cursor: pointer; border: 1px solid #82e0aa;">Approve</button>
+                                            </form>
+                                            <form action="${pageContext.request.contextPath}/admin/requests" method="POST">
+                                                <input type="hidden" name="requestId" value="${r.id}">
+                                                <input type="hidden" name="status" value="Rejected">
+                                                <button type="submit" class="admin-badge" style="color: #cb4335; background: #fdedec; cursor: pointer; border: 1px solid #f1948a;">Reject</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            <c:if test="${empty requests}">
+                                <tr>
+                                    <td colspan="8" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                                        No pending blood requests found.
+                                    </td>
+                                </tr>
+                            </c:if>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
 </body>
 </html>
