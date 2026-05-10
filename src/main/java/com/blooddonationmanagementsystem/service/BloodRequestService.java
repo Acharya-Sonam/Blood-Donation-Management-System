@@ -31,4 +31,8 @@ public class BloodRequestService {
     public boolean cancelRequest(int requestId) {
         return bloodRequestDAO.deleteRequest(requestId);
     }
+
+    public int getPendingRequestCount() {
+        return getAllPendingRequests().size();
+    }
 }
