@@ -53,7 +53,7 @@ public class PatientController extends HttpServlet{
             // Donor views all pending requests
             List<BloodRequest> requests = bloodRequestDAO.getAllPendingRequests();
             request.setAttribute("requests", requests);
-            request.getRequestDispatcher("/views/donor/dashboard.jsp")
+            request.getRequestDispatcher("/views/donor/viewrequests.jsp")
                    .forward(request, response);
 
 
