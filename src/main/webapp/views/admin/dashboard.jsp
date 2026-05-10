@@ -23,7 +23,28 @@
         </header>
 
         <div class="page-body">
-            <!-- Content will go here -->
+            <div class="stats-grid">
+                <div class="stat-card blue">
+                    <span class="stat-icon">👥</span>
+                    <span class="stat-number">${totalDonors}</span>
+                    <span class="stat-label">Total Donors</span>
+                </div>
+                <div class="stat-card green">
+                    <span class="stat-icon">🏥</span>
+                    <span class="stat-number">${totalPatients}</span>
+                    <span class="stat-label">Total Patients</span>
+                </div>
+                <div class="stat-card orange">
+                    <span class="stat-icon">🔔</span>
+                    <span class="stat-number">${pendingApprovals}</span>
+                    <span class="stat-label">Pending Approvals</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">🩸</span>
+                    <span class="stat-number">${totalRequests}</span>
+                    <span class="stat-label">Active Requests</span>
+                </div>
+            </div>
         </div>
     </main>
 
