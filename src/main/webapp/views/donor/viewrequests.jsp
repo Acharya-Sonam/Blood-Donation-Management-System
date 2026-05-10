@@ -89,7 +89,9 @@
 
     <div class="header">
         <h2><i class="fas fa-handholding-heart"></i> Patient Blood Requests</h2>
-        <span>Showing all pending requests</span>
+        <span class="status-badge" style="background:var(--primary); color:white; border:none;">
+            ${requests.size()} Pending Requests
+        </span>
     </div>
 
     <div class="container">
