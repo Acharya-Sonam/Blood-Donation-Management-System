@@ -59,8 +59,28 @@
             </div>
 
             <div class="section-title">📋 Full Blood Requests History</div>
+            
+            <div class="card" style="margin-bottom: 10px; padding: 12px; background: #fff;">
+                <form style="display: flex; gap: 15px; align-items: center;">
+                    <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">Filter By:</span>
+                    <select class="admin-badge" style="border: 1px solid var(--border); background: #fff; padding: 4px 10px;">
+                        <option>All Blood Groups</option>
+                        <option>A+</option><option>A-</option>
+                        <option>B+</option><option>B-</option>
+                        <option>O+</option><option>O-</option>
+                        <option>AB+</option><option>AB-</option>
+                    </select>
+                    <select class="admin-badge" style="border: 1px solid var(--border); background: #fff; padding: 4px 10px;">
+                        <option>All Status</option>
+                        <option>Pending</option>
+                        <option>Approved</option>
+                        <option>Rejected</option>
+                    </select>
+                    <button type="button" class="logout-btn" style="padding: 4px 15px; font-size: 0.75rem;">Apply Filter</button>
+                </form>
+            </div>
+
             <div class="card">
-                <div class="card-header">All System Requests</div>
                 <div class="table-wrap">
                     <table>
                         <thead>
