@@ -23,7 +23,20 @@
         </header>
 
         <div class="page-body">
-            <!-- Content will go here -->
+            <div class="summary-row">
+                <div class="summary-card">
+                    <div class="s-num">${totalDonors}</div>
+                    <div class="s-label">Registered Donors</div>
+                </div>
+                <div class="summary-card">
+                    <div class="s-num">${totalPatients}</div>
+                    <div class="s-label">Registered Patients</div>
+                </div>
+                <div class="summary-card">
+                    <div class="s-num">${totalRequests}</div>
+                    <div class="s-label">Pending Requests</div>
+                </div>
+            </div>
         </div>
     </main>
 
