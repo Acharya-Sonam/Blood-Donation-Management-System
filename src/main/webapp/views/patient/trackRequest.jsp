@@ -103,6 +103,17 @@
     <div class="container fade-in">
         <h2><i class="fas fa-list-ul"></i> My Blood Requests</h2>
 
+        <% if (request.getParameter("msg") != null && request.getParameter("msg").equals("cancelled")) { %>
+            <div class="alert" style="background:#d4edda; color:#155724; padding:15px; border-radius:10px; margin-bottom:20px;">
+                Request cancelled successfully.
+            </div>
+        <% } %>
+        <% if (request.getParameter("msg") != null && request.getParameter("msg").equals("cancel_error")) { %>
+            <div class="alert" style="background:#f8d7da; color:#721c24; padding:15px; border-radius:10px; margin-bottom:20px;">
+                Failed to cancel request. It may đã be processed.
+            </div>
+        <% } %>
+
         <c:if test="${empty requests}">
             <div style="text-align: center; padding: 40px;">
                 <i class="fas fa-search-plus" style="font-size: 50px; color: #ccc;"></i>
