@@ -87,6 +87,27 @@
                     </table>
                 </div>
             </div>
+
+            <div class="section-title">📦 Blood Inventory Status</div>
+            <div class="card">
+                <div class="card-header">Current Stock Levels</div>
+                <div class="bar-chart">
+                    <c:forEach var="item" items="${inventory}">
+                        <div class="bar-row">
+                            <div class="bar-label">${item.bloodGroup}</div>
+                            <div class="bar-track">
+                                <div class="bar-fill ${item.stockQuantity < 5 ? 'orange' : (item.stockQuantity > 15 ? 'green' : 'blue')}" 
+                                     style="width: ${item.stockQuantity * 5}%">
+                                    ${item.stockQuantity} Units
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
+                    <c:if test="${empty inventory}">
+                         <p style="text-align: center; padding: 20px; color: var(--text-muted);">Inventory data not available.</p>
+                    </c:if>
+                </div>
+            </div>
         </div>
     </main>
 
