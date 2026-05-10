@@ -2,6 +2,7 @@ package com.blooddonationmanagementsystem.service;
 
 import com.blooddonationmanagementsystem.dao.DonationDAO;
 import com.blooddonationmanagementsystem.dao.InventoryDAO;
+import com.blooddonationmanagementsystem.dao.DonorDAO;
 import com.blooddonationmanagementsystem.model.Donation;
 
 import java.sql.SQLException;
@@ -14,6 +15,7 @@ public class DonationService {
 
     private final DonationDAO donationDAO = new DonationDAO();
     private final InventoryDAO inventoryDAO = new InventoryDAO();
+    private final DonorDAO donorDAO = new DonorDAO();
 
     public List<Donation> getDonationHistory(int userId) throws SQLException {
         return donationDAO.getDonationHistory(userId);
@@ -44,15 +46,24 @@ public class DonationService {
     }
 
     public boolean recordDonation(int userId, int requestId, int units, String date, int inventoryId) throws SQLException {
+        // If inventoryId is not provided (or <= 0), look it up based on donor's blood group
+        if (inventoryId <= 0) {
+            com.blooddonationmanagementsystem.model.Donor donor = donorDAO.getDonorByUserId(userId);
+            if (donor != null) {
+                inventoryId = inventoryDAO.getInventoryIdByBloodGroup(donor.getBloodGroup());
+            }
+        }
+
         Donation donation = new Donation(userId, requestId, units, date, inventoryId);
         donation.setStatus("completed");
         boolean recorded = donationDAO.recordDonation(donation);
-        if (recorded) {
-            // Update inventory
-            // Note: We need the blood group to update inventory. 
-            // For now, assume the DAO method handles incrementing by units.
-            // However, inventoryDAO.updateStock(bloodGroup, units) exists.
-            // Ideally we'd get blood group from inventoryId.
+        
+        if (recorded && inventoryId > 0) {
+            // Get blood group to update stock
+            String bloodGroup = inventoryDAO.getBloodGroupById(inventoryId);
+            if (bloodGroup != null) {
+                inventoryDAO.updateStock(bloodGroup, units);
+            }
         }
         return recorded;
     }
