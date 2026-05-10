@@ -96,6 +96,21 @@ public class DonorDAO {
         return donors;
     }
 
+    // Get donor by user ID
+    public Donor getDonorByUserId(int userId) throws SQLException {
+        String sql = "SELECT * FROM donors WHERE user_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapDonor(rs);
+                }
+            }
+        }
+        return null;
+    }
+
     // Map ResultSet row to Donor object
     private Donor mapDonor(ResultSet rs) throws SQLException {
         Donor donor = new Donor();

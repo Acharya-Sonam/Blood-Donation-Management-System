@@ -39,4 +39,23 @@ public class InventoryDAO {
             stmt.executeUpdate();
         }
     }
+    public int getInventoryIdByBloodGroup(String bloodGroup) throws SQLException {
+        String sql = "SELECT inventory_id FROM blood_inventory WHERE blood_group = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, bloodGroup);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next() ? rs.getInt("inventory_id") : -1;
+        }
+    }
+
+    public String getBloodGroupById(int inventoryId) throws SQLException {
+        String sql = "SELECT blood_group FROM blood_inventory WHERE inventory_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, inventoryId);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next() ? rs.getString("blood_group") : null;
+        }
+    }
 }
