@@ -106,21 +106,16 @@ public class PatientController extends HttpServlet{
             br.setQuantity(quantity);
             br.setUrgency(urgency);
 
-            // Check if patient already has a pending request for this blood group
-            if (bloodRequestDAO.hasPendingRequest(patientId, bloodGroup)) {
-                response.sendRedirect(request.getContextPath()
-                        + "/PatientController?action=requestForm&msg=duplicate");
-                return;
-            }
-
-            boolean success = bloodRequestDAO.submitRequest(br);
+            // Business logic moved to service
+            boolean success = bloodRequestService.submitRequest(br);
 
             if (success) {
                 response.sendRedirect(request.getContextPath()
                         + "/PatientController?action=myRequests&msg=success");
             } else {
+                // If it fails, it might be a duplicate or db error
                 response.sendRedirect(request.getContextPath()
-                        + "/PatientController?action=requestForm&msg=error");
+                        + "/PatientController?action=requestForm&msg=duplicate");
             }
 
         } else if (action.equals("updateStatus")) {
@@ -128,12 +123,12 @@ public class PatientController extends HttpServlet{
             int requestId  = Integer.parseInt(request.getParameter("requestId"));
             String status  = request.getParameter("status");
 
-            bloodRequestDAO.updateStatus(requestId, status);
+            bloodRequestService.updateRequestStatus(requestId, status);
             response.sendRedirect(request.getContextPath()
                     + "/PatientController?action=viewAllRequests");
         } else if (action.equals("cancelRequest")) {
             int requestId = Integer.parseInt(request.getParameter("requestId"));
-            boolean success = bloodRequestDAO.deleteRequest(requestId);
+            boolean success = bloodRequestService.cancelRequest(requestId);
             if (success) {
                 response.sendRedirect(request.getContextPath() + "/PatientController?action=myRequests&msg=cancelled");
             } else {
