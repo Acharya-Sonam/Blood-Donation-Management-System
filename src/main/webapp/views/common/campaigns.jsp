@@ -41,7 +41,7 @@
                     <p class="desc">Annual summer blood drive hosted by the Rotary Club. All blood types urgently needed.</p>
                 </div>
                 <div class="campaign-action">
-                    <a href="${pageContext.request.contextPath}/views/common/register.jsp" class="btn btn-primary">Register</a>
+                    <a href="${pageContext.request.contextPath}/register" class="btn btn-primary">Register</a>
                 </div>
             </div>
 
@@ -58,7 +58,7 @@
                     <p class="desc">Calling all students! Help us reach our goal of 500 pints donated this week.</p>
                 </div>
                 <div class="campaign-action">
-                    <a href="${pageContext.request.contextPath}/views/common/register.jsp" class="btn btn-primary">Register</a>
+                    <a href="${pageContext.request.contextPath}/register" class="btn btn-primary">Register</a>
                 </div>
             </div>
             
@@ -75,7 +75,7 @@
                     <p class="desc">Open to the public. Sponsored by leading tech firms in the valley.</p>
                 </div>
                 <div class="campaign-action">
-                    <a href="${pageContext.request.contextPath}/views/common/register.jsp" class="btn btn-primary">Register</a>
+                    <a href="${pageContext.request.contextPath}/register" class="btn btn-primary">Register</a>
                 </div>
             </div>
         </div>
