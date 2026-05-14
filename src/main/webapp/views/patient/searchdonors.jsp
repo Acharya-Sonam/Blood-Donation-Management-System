@@ -368,6 +368,7 @@
                 </div>
                 <button type="submit" class="btn-search">Search</button>
                 <a href="<%= request.getContextPath() %>/PatientController?action=searchDonors" class="btn-clear">Clear</a>
+                <a href="<%= request.getContextPath() %>/donor/dashboard" class="btn-clear" style="margin-left: 10px;">&larr; Back to Dashboard</a>
             </div>
         </form>
     </div>
