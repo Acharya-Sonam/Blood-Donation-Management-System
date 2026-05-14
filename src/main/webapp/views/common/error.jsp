@@ -26,7 +26,12 @@
                 <div style="background: rgba(230, 57, 70, 0.05); padding: 1rem; border-radius: 8px; border: 1px solid rgba(230, 57, 70, 0.2); text-align: left; margin-bottom: 2rem;">
                     <strong style="color: var(--clr-primary); font-size: 0.9rem;">Technical Details:</strong>
                     <pre style="font-size: 0.8rem; overflow-x: auto; color: #444; margin-top: 0.5rem; font-family: 'Courier New', Courier, monospace;">
-<%= exception.toString() %>
+<% 
+    java.io.StringWriter sw = new java.io.StringWriter();
+    java.io.PrintWriter pw = new java.io.PrintWriter(sw);
+    exception.printStackTrace(pw);
+    out.print(sw.toString());
+%>
                     </pre>
                 </div>
             <% } %>

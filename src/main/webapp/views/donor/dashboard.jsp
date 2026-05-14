@@ -1,139 +1,191 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.List, com.blooddonationmanagementsystem.model.BloodRequest" %>
+<%@ page import="java.util.List, com.blooddonationmanagementsystem.model.BloodRequest, com.blooddonationmanagementsystem.model.Donor" %>
 <%
     if (session == null || session.getAttribute("userId") == null) {
-        response.sendRedirect(request.getContextPath() + "/login");
+        response.sendRedirect(request.getContextPath() + "/views/auth/login.jsp");
         return;
     }
     List<BloodRequest> requests = (List<BloodRequest>) request.getAttribute("requests");
+    Donor donor = (Donor) request.getAttribute("donor");
+    Integer donationCount = (Integer) request.getAttribute("donationCount");
+    Boolean isEligible = (Boolean) request.getAttribute("isEligible");
+    String nextEligibleDate = (String) request.getAttribute("nextEligibleDate");
     String donorName = (String) session.getAttribute("name");
 %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Donor Dashboard – Blood Bridge</title>
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/admin.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; }
-        .navbar { background: #c0392b; color: white; padding: 14px 30px; display: flex; justify-content: space-between; align-items: center; }
-        .navbar .brand { font-size: 1.3rem; font-weight: bold; }
-        .navbar a { color: white; text-decoration: none; margin-left: 20px; font-size: 14px; }
-        .navbar a:hover { text-decoration: underline; }
-        .container { max-width: 980px; margin: 30px auto; padding: 0 20px; }
-        .welcome { background: white; border-radius: 10px; padding: 20px 25px; margin-bottom: 24px; box-shadow: 0 1px 5px rgba(0,0,0,0.08); }
-        .welcome h2 { color: #c0392b; font-size: 1.3rem; }
-        .welcome p { color: #666; margin-top: 5px; font-size: 14px; }
-        .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 30px; }
-        .card { background: white; border-radius: 10px; padding: 24px 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.07); border-top: 4px solid #c0392b; text-decoration: none; color: #333; transition: transform 0.15s; }
-        .card:hover { transform: translateY(-4px); }
-        .card .icon { font-size: 2rem; margin-bottom: 10px; }
-        .card h3 { font-size: 0.95rem; color: #222; }
-        .section-title { color: #c0392b; font-size: 1.1rem; font-weight: 600; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #f5f5f5; }
-        .table-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 1px 5px rgba(0,0,0,0.08); }
-        table { width: 100%; border-collapse: collapse; }
-        th { background: #c0392b; color: white; padding: 11px; text-align: left; font-size: 13px; }
-        td { padding: 11px; border-bottom: 1px solid #eee; font-size: 13px; }
-        tr:hover td { background: #fdf2f2; }
-        .btn-accept { padding: 6px 13px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; }
-        .btn-reject { padding: 6px 13px; background: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; margin-left: 5px; }
-        .urgent { color: #e67e22; font-weight: bold; }
-        .critical { color: #c0392b; font-weight: bold; }
-        .normal { color: #27ae60; }
-        .empty { text-align: center; color: #888; padding: 30px; font-size: 14px; }
+        .quick-search {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 28px;
+            border-top: 4px solid var(--red-primary);
+        }
+        .search-form {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+        }
+        .search-form .form-group {
+            flex: 1;
+        }
+        .search-form label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+        .search-form select, .search-form input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        .btn-search {
+            background: var(--red-primary);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-search:hover { background: var(--red-dark); }
+        
+        .eligibility-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .eligible { background: #eafaf1; color: #1e8449; }
+        .not-eligible { background: #fdedec; color: #cb4335; }
     </style>
 </head>
 <body>
 
-<div class="navbar">
-    <span class="brand">&#128149; Blood Bridge</span>
-    <div>
-        <a href="<%= request.getContextPath() %>/PatientController?action=searchDonors">&#128269; Search Donors</a>
-        <a href="<%= request.getContextPath() %>/views/donor/profile.jsp">My Profile</a>
-        <a href="<%= request.getContextPath() %>/views/donor/donationHistory.jsp">Donation History</a>
-        <a href="<%= request.getContextPath() %>/views/donor/wishlist.jsp">Wishlist</a>
-        <a href="<%= request.getContextPath() %>/logout">Logout</a>
-    </div>
-</div>
+    <jsp:include page="donor-sidebar.jsp" />
 
-<div class="container">
+    <main class="main-content">
+        <header class="topbar">
+            <h1>Donor Dashboard</h1>
+            <div class="topbar-right">
+                <span class="admin-badge">Verified Donor</span>
+                <div class="user-info">
+                    <strong><%= donorName != null ? donorName : "Donor" %></strong>
+                </div>
+            </div>
+        </header>
 
-    <div class="welcome">
-        <h2>Welcome, <%= donorName != null ? donorName : "Donor" %>! &#128075;</h2>
-        <p>Here are the active blood requests that need your help.</p>
-    </div>
+        <div class="page-body">
+            
+            <div class="section-title">📊 Your Statistics</div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🩸</div>
+                    <div class="stat-number"><%= donor != null ? donor.getBloodGroup() : "N/A" %></div>
+                    <div class="stat-label">Blood Group</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-number"><%= donationCount != null ? donationCount : 0 %></div>
+                    <div class="stat-label">Total Donations</div>
+                </div>
+                <div class="stat-card <%= (isEligible != null && isEligible) ? "blue" : "orange" %>">
+                    <div class="stat-icon"><%= (isEligible != null && isEligible) ? "👍" : "⏳" %></div>
+                    <div class="stat-number" style="font-size: 1.2rem; margin-top: 5px;">
+                        <%= (isEligible != null && isEligible) ? "Eligible Now" : "Next: " + (nextEligibleDate != null ? nextEligibleDate : "TBD") %>
+                    </div>
+                    <div class="stat-label">Eligibility Status</div>
+                </div>
+            </div>
 
-    <%-- Quick Action Cards --%>
-    <div class="cards">
-        <a class="card" href="<%= request.getContextPath() %>/PatientController?action=searchDonors">
-            <div class="icon">&#128269;</div>
-            <h3>Search Donors</h3>
-        </a>
-        <a class="card" href="<%= request.getContextPath() %>/views/donor/donationHistory.jsp">
-            <div class="icon">&#128203;</div>
-            <h3>Donation History</h3>
-        </a>
-        <a class="card" href="<%= request.getContextPath() %>/views/donor/profile.jsp">
-            <div class="icon">&#128100;</div>
-            <h3>My Profile</h3>
-        </a>
-        <a class="card" href="<%= request.getContextPath() %>/views/donor/wishlist.jsp">
-            <div class="icon">&#10084;</div>
-            <h3>Wishlist</h3>
-        </a>
-    </div>
+            <div class="section-title">🔍 Quick Donor Search</div>
+            <div class="quick-search">
+                <form action="<%= request.getContextPath() %>/donor/dashboard" method="get" class="search-form">
+                    <input type="hidden" name="action" value="searchDonors">
+                    <div class="form-group">
+                        <label>Blood Group</label>
+                        <select name="bloodGroup">
+                            <option value="">Any</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" name="location" placeholder="Enter city or area...">
+                    </div>
+                    <button type="submit" class="btn-search">Search Donors</button>
+                </form>
+            </div>
 
-    <%-- Pending Requests Table --%>
-    <div class="table-card">
-        <div class="section-title">&#128137; Pending Blood Requests</div>
-        <% if (requests == null || requests.isEmpty()) { %>
-        <p class="empty">No pending blood requests at the moment. Check back later!</p>
-        <% } else { %>
-        <table>
-            <tr>
-                <th>#</th>
-                <th>Patient Name</th>
-                <th>Blood Group</th>
-                <th>Quantity</th>
-                <th>Urgency</th>
-                <th>Request Date</th>
-                <th>Action</th>
-            </tr>
-            <%
-                int i = 1;
-                for (BloodRequest r : requests) {
-                    String urgencyClass = "Critical".equals(r.getUrgency()) ? "critical"
-                            : "Urgent".equals(r.getUrgency())   ? "urgent"
-                            : "normal";
-            %>
-            <tr>
-                <td><%= i++ %></td>
-                <td><%= r.getPatientName() %></td>
-                <td><b><%= r.getBloodGroup() %></b></td>
-                <td><%= r.getQuantity() %> unit(s)</td>
-                <td><span class="<%= urgencyClass %>"><%= r.getUrgency() %></span></td>
-                <td><%= r.getRequestDate() %></td>
-                <td>
-                    <form action="<%= request.getContextPath() %>/PatientController" method="post" style="display:inline;">
-                        <input type="hidden" name="action" value="updateStatus">
-                        <input type="hidden" name="requestId" value="<%= r.getId() %>">
-                        <input type="hidden" name="status" value="Approved">
-                        <button class="btn-accept" type="submit">Accept</button>
-                    </form>
-                    <form action="<%= request.getContextPath() %>/PatientController" method="post" style="display:inline;">
-                        <input type="hidden" name="action" value="updateStatus">
-                        <input type="hidden" name="requestId" value="<%= r.getId() %>">
-                        <input type="hidden" name="status" value="Rejected">
-                        <button class="btn-reject" type="submit">Reject</button>
-                    </form>
-                </td>
-            </tr>
-            <% } %>
-        </table>
-        <% } %>
-    </div>
-
-</div>
+            <div class="section-title">💉 Pending Blood Requests</div>
+            <div class="card">
+                <div class="card-header">Active Requests in the System</div>
+                <div class="table-wrap">
+                    <% if (requests == null || requests.isEmpty()) { %>
+                        <div style="padding: 40px; text-align: center; color: var(--text-muted);">
+                            <p>No pending blood requests at the moment. You're all caught up! 🌟</p>
+                        </div>
+                    <% } else { %>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Blood Group</th>
+                                    <th>Units</th>
+                                    <th>Urgency</th>
+                                    <th>Date</th>
+                                    <th style="text-align: center;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%
+                                    for (BloodRequest r : requests) {
+                                        String badgeClass = "Critical".equalsIgnoreCase(r.getUrgency()) ? "badge-rejected"
+                                                          : "Urgent".equalsIgnoreCase(r.getUrgency()) ? "badge-pending"
+                                                          : "badge-accepted";
+                                %>
+                                <tr>
+                                    <td><strong><%= r.getPatientName() != null ? r.getPatientName() : "Unknown" %></strong></td>
+                                    <td><span class="admin-badge" style="background: #fdf2f2; color: #c0392b;"><%= r.getBloodGroup() %></span></td>
+                                    <td><%= r.getQuantity() %> Unit(s)</td>
+                                    <td><span class="badge <%= badgeClass %>"><%= r.getUrgency() %></span></td>
+                                    <td><%= r.getRequestDate() %></td>
+                                    <td style="text-align: center;">
+                                        <form action="<%= request.getContextPath() %>/PatientController" method="post" style="display:inline;">
+                                            <input type="hidden" name="action" value="updateStatus">
+                                            <input type="hidden" name="requestId" value="<%= r.getId() %>">
+                                            <input type="hidden" name="status" value="Approved">
+                                            <button class="logout-btn" style="background: #27ae60; padding: 5px 12px; border: none; cursor: pointer;" type="submit">Accept</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </main>
 
 </body>
 </html>
+
