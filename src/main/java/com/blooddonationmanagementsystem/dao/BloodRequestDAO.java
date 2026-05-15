@@ -14,7 +14,7 @@ public class BloodRequestDAO {
 
     // Check if patient already has a pending request for the same blood group
     public boolean hasPendingRequest(int patientId, String bloodGroup) {
-        String sql = "SELECT COUNT(*) FROM blood_requests WHERE patient_id = ? AND blood_group = ? AND status = 'Pending'";
+        String sql = "SELECT COUNT(*) FROM blood_requests WHERE patient_id = ? AND blood_group = ? AND status = 'pending'";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -32,8 +32,8 @@ public class BloodRequestDAO {
 
     // Patient submits a new blood request
     public boolean submitRequest(BloodRequest request) throws SQLException {
-        String sql = "INSERT INTO blood_requests (patient_id, blood_group, units, urgency, status, request_date) "
-                   + "VALUES (?, ?, ?, ?, 'Pending', NOW())";
+        String sql = "INSERT INTO blood_requests (patient_id, blood_group, units_needed, urgency, status, request_date) "
+                   + "VALUES (?, ?, ?, LOWER(?), 'pending', NOW())";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -56,10 +56,10 @@ public class BloodRequestDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 BloodRequest r = new BloodRequest();
-                r.setId(rs.getInt("id"));
+                r.setId(rs.getInt("request_id"));
                 r.setPatientId(rs.getInt("patient_id"));
                 r.setBloodGroup(rs.getString("blood_group"));
-                r.setQuantity(rs.getInt("units"));
+                r.setQuantity(rs.getInt("units_needed"));
                 r.setUrgency(rs.getString("urgency"));
                 r.setStatus(rs.getString("status"));
                 r.setRequestDate(rs.getString("request_date"));
@@ -76,19 +76,19 @@ public class BloodRequestDAO {
         List<BloodRequest> list = new ArrayList<>();
         String sql = "SELECT br.*, p.full_name AS patient_name "
                    + "FROM blood_requests br "
-                   + "JOIN patients p ON br.patient_id = p.patient_id "
-                   + "WHERE br.status = 'Pending' "
-                   + "ORDER BY br.request_date DESC";
+                    + "JOIN patients p ON br.patient_id = p.patient_id "
+                    + "WHERE br.status = 'pending' "
+                    + "ORDER BY br.request_date DESC";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 BloodRequest r = new BloodRequest();
-                r.setId(rs.getInt("id"));
+                r.setId(rs.getInt("request_id"));
                 r.setPatientId(rs.getInt("patient_id"));
                 r.setBloodGroup(rs.getString("blood_group"));
-                r.setQuantity(rs.getInt("units"));
+                r.setQuantity(rs.getInt("units_needed"));
                 r.setUrgency(rs.getString("urgency"));
                 r.setStatus(rs.getString("status"));
                 r.setRequestDate(rs.getString("request_date"));
@@ -114,10 +114,10 @@ public class BloodRequestDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 BloodRequest r = new BloodRequest();
-                r.setId(rs.getInt("id"));
+                r.setId(rs.getInt("request_id"));
                 r.setPatientId(rs.getInt("patient_id"));
                 r.setBloodGroup(rs.getString("blood_group"));
-                r.setQuantity(rs.getInt("units"));
+                r.setQuantity(rs.getInt("units_needed"));
                 r.setUrgency(rs.getString("urgency"));
                 r.setStatus(rs.getString("status"));
                 r.setRequestDate(rs.getString("request_date"));
@@ -133,7 +133,7 @@ public class BloodRequestDAO {
     // Get count of requests grouped by blood group
     public java.util.Map<String, Integer> getRequestStatsByBloodGroup() {
         java.util.Map<String, Integer> stats = new java.util.HashMap<>();
-        String sql = "SELECT blood_group, COUNT(*) as count, SUM(units) as total_units FROM blood_requests GROUP BY blood_group";
+        String sql = "SELECT blood_group, COUNT(*) as count, SUM(units_needed) as total_units FROM blood_requests GROUP BY blood_group";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
@@ -148,7 +148,7 @@ public class BloodRequestDAO {
 
     // Donor accepts or rejects a request
     public boolean updateStatus(int requestId, String status) {
-        String sql = "UPDATE blood_requests SET status = ? WHERE id = ?";
+        String sql = "UPDATE blood_requests SET status = LOWER(?) WHERE request_id = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -164,7 +164,7 @@ public class BloodRequestDAO {
 
     // Patient cancels their own request
     public boolean deleteRequest(int requestId) {
-        String sql = "DELETE FROM blood_requests WHERE id = ? AND status = 'Pending'";
+        String sql = "DELETE FROM blood_requests WHERE request_id = ? AND status = 'pending'";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
