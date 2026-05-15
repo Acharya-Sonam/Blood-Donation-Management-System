@@ -224,6 +224,15 @@
                 </tbody>
             </table>
         </c:if>
+        <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 2px solid #f1f1f1;">
+            <a href="${pageContext.request.contextPath}/patient/dashboard"
+               style="display:inline-block; padding:12px 30px;
+                      background-color:#e74c3c; color:white;
+                      border-radius:25px; text-decoration:none;
+                      font-weight:600; font-size:15px;">
+                ← Return
+            </a>
+        </div>
     </div>
 </body>
 </html>

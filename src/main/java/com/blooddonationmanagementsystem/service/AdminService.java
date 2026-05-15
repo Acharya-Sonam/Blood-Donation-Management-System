@@ -104,4 +104,56 @@ public class AdminService {
     public java.util.Map<String, Integer> getRequestStats() {
         return bloodRequestDAO.getRequestStatsByBloodGroup();
     }
+
+    // Update user email
+    public void updateUserEmail(int userId, String email) throws SQLException {
+        userDAO.updateUserEmail(userId, email);
+    }
+    // ── DONOR MANAGEMENT ──────────────────────────────────────────────
+
+    // Get all donors
+    public List<com.blooddonationmanagementsystem.model.Donor> getAllDonors() throws SQLException {
+        return donorDAO.getAllDonors();
+    }
+
+    // Get donor by ID
+    public com.blooddonationmanagementsystem.model.Donor getDonorById(int donorId) throws SQLException {
+        return donorDAO.getDonorById(donorId);
+    }
+
+    // Update donor profile
+    public void updateDonor(int donorId, String fullName, String phone,
+                            String bloodGroup, String address) throws SQLException {
+        donorDAO.updateDonor(donorId, fullName, phone, bloodGroup, address);
+    }
+
+    // Delete donor profile
+    public void deleteDonor(int donorId) throws SQLException {
+        donorDAO.deleteDonor(donorId);
+    }
+
+// ── PATIENT MANAGEMENT ────────────────────────────────────────────
+
+    // Get all patients
+    public List<com.blooddonationmanagementsystem.model.Patient> getAllPatients() throws SQLException {
+        return patientDAO.getAllPatients();
+    }
+
+    // Get patient by ID
+    public com.blooddonationmanagementsystem.model.Patient getPatientById(int patientId) throws SQLException {
+        return patientDAO.getPatientById(patientId);
+    }
+
+    // Update patient profile
+    public void updatePatient(int patientId, String fullName, String phone,
+                              String bloodGroup, String address,
+                              String hospitalName) throws SQLException {
+        patientDAO.updatePatient(patientId, fullName, phone, bloodGroup, address, hospitalName);
+    }
+
+    // Delete patient profile
+    public void deletePatient(int patientId) throws SQLException {
+        patientDAO.deletePatient(patientId);
+    }
 }
+

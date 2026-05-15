@@ -125,4 +125,41 @@ public class DonorDAO {
         donor.setCreatedAt(rs.getString("created_at"));
         return donor;
     }
+    // Get donor by donor ID
+    public Donor getDonorById(int donorId) throws SQLException {
+        String sql = "SELECT * FROM donors WHERE donor_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, donorId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) return mapDonor(rs);
+            }
+        }
+        return null;
+    }
+
+    // Update donor profile
+    public void updateDonor(int donorId, String fullName, String phone,
+                            String bloodGroup, String address) throws SQLException {
+        String sql = "UPDATE donors SET full_name=?, phone=?, blood_group=?, address=? WHERE donor_id=?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, fullName);
+            stmt.setString(2, phone);
+            stmt.setString(3, bloodGroup);
+            stmt.setString(4, address);
+            stmt.setInt(5, donorId);
+            stmt.executeUpdate();
+        }
+    }
+
+    // Delete donor profile
+    public void deleteDonor(int donorId) throws SQLException {
+        String sql = "DELETE FROM donors WHERE donor_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, donorId);
+            stmt.executeUpdate();
+        }
+    }
 }

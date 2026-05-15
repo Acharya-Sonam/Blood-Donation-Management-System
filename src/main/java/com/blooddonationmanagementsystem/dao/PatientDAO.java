@@ -39,4 +39,44 @@ public class PatientDAO {
         p.setCreatedAt(rs.getString("created_at"));
         return p;
     }
+    // Get patient by patient ID
+    public Patient getPatientById(int patientId) throws SQLException {
+        String sql = "SELECT * FROM patients WHERE patient_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, patientId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) return mapPatient(rs);
+            }
+        }
+        return null;
+    }
+
+    // Update patient profile
+    public void updatePatient(int patientId, String fullName, String phone,
+                              String bloodGroup, String address,
+                              String hospitalName) throws SQLException {
+        String sql = "UPDATE patients SET full_name=?, phone=?, blood_group=?, " +
+                "address=?, hospital_name=? WHERE patient_id=?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, fullName);
+            stmt.setString(2, phone);
+            stmt.setString(3, bloodGroup);
+            stmt.setString(4, address);
+            stmt.setString(5, hospitalName);
+            stmt.setInt(6, patientId);
+            stmt.executeUpdate();
+        }
+    }
+
+    // Delete patient profile
+    public void deletePatient(int patientId) throws SQLException {
+        String sql = "DELETE FROM patients WHERE patient_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, patientId);
+            stmt.executeUpdate();
+        }
+    }
 }

@@ -202,11 +202,48 @@ public class UserDAO {
     }
 
     public void deleteUser(int userId) throws SQLException {
-        String sql = "DELETE FROM users WHERE user_id = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, userId);
-            stmt.executeUpdate();
+
+        Connection conn = DBConnection.getConnection();
+
+        try {
+
+            conn.setAutoCommit(false);
+
+            // Delete donor records
+            String donorSql = "DELETE FROM donors WHERE user_id=?";
+            PreparedStatement donorStmt = conn.prepareStatement(donorSql);
+            donorStmt.setInt(1, userId);
+            donorStmt.executeUpdate();
+
+            // Delete patient records
+            String patientSql = "DELETE FROM patients WHERE user_id=?";
+            PreparedStatement patientStmt = conn.prepareStatement(patientSql);
+            patientStmt.setInt(1, userId);
+            patientStmt.executeUpdate();
+
+            // Delete blood requests
+            String requestSql = "DELETE FROM blood_requests WHERE patient_id=?";
+            PreparedStatement requestStmt = conn.prepareStatement(requestSql);
+            requestStmt.setInt(1, userId);
+            requestStmt.executeUpdate();
+
+            // Finally delete user
+            String userSql = "DELETE FROM users WHERE user_id=?";
+            PreparedStatement userStmt = conn.prepareStatement(userSql);
+            userStmt.setInt(1, userId);
+            userStmt.executeUpdate();
+
+            conn.commit();
+
+        } catch (Exception e) {
+
+            conn.rollback();
+            throw e;
+
+        } finally {
+
+            conn.setAutoCommit(true);
+            conn.close();
         }
     }
 
@@ -265,5 +302,15 @@ public class UserDAO {
         }
         
         return user;
+    }
+    // Update user email
+    public void updateUserEmail(int userId, String email) throws SQLException {
+        String sql = "UPDATE users SET email = ? WHERE user_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            stmt.setInt(2, userId);
+            stmt.executeUpdate();
+        }
     }
 }
