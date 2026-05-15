@@ -114,14 +114,17 @@ public class PatientController extends HttpServlet {
                 br.setQuantity(quantity);
                 br.setUrgency(urgency);
 
-                boolean success = bloodRequestService.submitRequest(br);
-
-                if (success) {
-                    response.sendRedirect(request.getContextPath()
-                            + "/PatientController?action=myRequests&msg=success");
-                } else {
-                    // Fallback to form with error details
-                    request.setAttribute("errorMessage", "Failed to submit blood request. This could be due to an existing pending request or a database error.");
+                try {
+                    boolean success = bloodRequestService.submitRequest(br);
+                    if (success) {
+                        response.sendRedirect(request.getContextPath()
+                                + "/PatientController?action=myRequests&msg=success");
+                    } else {
+                        request.setAttribute("errorMessage", "Failed to submit request. Possible duplicate or database error.");
+                        request.getRequestDispatcher("/views/patient/requestBlood.jsp").forward(request, response);
+                    }
+                } catch (Exception e) {
+                    request.setAttribute("errorMessage", "Error: " + e.getMessage());
                     request.getRequestDispatcher("/views/patient/requestBlood.jsp").forward(request, response);
                 }
 

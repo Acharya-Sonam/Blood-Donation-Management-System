@@ -31,7 +31,7 @@ public class BloodRequestDAO {
     }
 
     // Patient submits a new blood request
-    public boolean submitRequest(BloodRequest request) {
+    public boolean submitRequest(BloodRequest request) throws SQLException {
         String sql = "INSERT INTO blood_requests (patient_id, blood_group, quantity, urgency, status, request_date) "
                    + "VALUES (?, ?, ?, ?, 'Pending', NOW())";
         try (Connection conn = DBConnection.getConnection();
@@ -42,10 +42,6 @@ public class BloodRequestDAO {
             ps.setInt(3, request.getQuantity());
             ps.setString(4, request.getUrgency());
             return ps.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-            return false;
         }
     }
 

@@ -8,7 +8,7 @@ public class BloodRequestService {
 
     private BloodRequestDAO bloodRequestDAO = new BloodRequestDAO();
 
-    public boolean submitRequest(BloodRequest request) {
+    public boolean submitRequest(BloodRequest request) throws java.sql.SQLException {
         return bloodRequestDAO.submitRequest(request);
     }
 
