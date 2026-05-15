@@ -502,6 +502,8 @@
 
 </div>
 
+<jsp:include page="../common/footer.jsp" />
+
 <script id="donorData" type="application/json">
 <% if (donors != null && !donors.isEmpty()) { %>
     [<% for (int i = 0; i < donors.size(); i++) {

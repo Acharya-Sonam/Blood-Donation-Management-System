@@ -162,6 +162,8 @@
         </form>
     </div>
 
+    <jsp:include page="../common/footer.jsp" />
+
     <script>
         // Simple animation
         document.querySelector('.container').style.opacity = 0;

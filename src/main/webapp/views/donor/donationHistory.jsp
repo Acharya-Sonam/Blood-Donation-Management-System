@@ -48,10 +48,6 @@
         </header>
 
         <div class="page-body">
-            <a href="${pageContext.request.contextPath}/donor/dashboard" class="back-link">
-                ← Back to Dashboard
-            </a>
-
             <div class="section-title">📊 Lifetime Impact</div>
             
             <div class="stats-grid">
@@ -112,8 +108,7 @@
                 </div>
             </div>
         </div>
+        <jsp:include page="../common/footer.jsp" />
     </main>
-
-    <jsp:include page="../common/footer.jsp" />
 </body>
 </html>

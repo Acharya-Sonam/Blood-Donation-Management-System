@@ -228,5 +228,7 @@
             </table>
         </c:if>
     </div>
+
+    <jsp:include page="../common/footer.jsp" />
 </body>
 </html>
