@@ -106,6 +106,12 @@
     <div class="container fade-in">
         <h2><i class="fas fa-heartbeat"></i> Request Blood</h2>
 
+        <% if (request.getAttribute("errorMessage") != null) { %>
+            <div class="alert alert-error">
+                <%= request.getAttribute("errorMessage") %>
+            </div>
+        <% } %>
+
         <% if (request.getParameter("msg") != null && request.getParameter("msg").equals("error")) { %>
             <div class="alert alert-error">
                 Something went wrong. Please try again.
