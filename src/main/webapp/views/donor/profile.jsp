@@ -33,12 +33,21 @@
         <div class="page-body">
             <div class="card" style="padding: 2rem;">
                 <h2>Profile Details</h2>
-                <p>Welcome, <%= donorName %>! Manage your profile settings here.</p>
-                <!-- Add form or profile info as needed -->
+                <p>Welcome, <%= donorName != null ? donorName : "Donor" %>! Manage your profile settings here.</p>
                 <div style="margin-top: 1rem;">
-                    <p><strong>Name:</strong> <%= donorName %></p>
+                    <p><strong>Name:</strong> <%= donorName != null ? donorName : "Donor" %></p>
                     <p><strong>Role:</strong> Verified Donor</p>
                 </div>
+                
+                <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;">
+                
+                <h3 style="color: #c0392b;">Danger Zone</h3>
+                <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Once you delete your account, there is no going back. Please be certain.</p>
+                <form action="<%= request.getContextPath() %>/profile/delete" method="POST" onsubmit="return confirm('Are you absolutely sure you want to delete your account? This action cannot be undone.');">
+                    <button type="submit" class="btn" style="background-color: #c0392b; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+                        Delete Account
+                    </button>
+                </form>
             </div>
         </div>
     </main>
