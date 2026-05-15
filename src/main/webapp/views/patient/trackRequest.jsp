@@ -28,7 +28,7 @@
 
         body {
             background: #f8f9fa;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
         .container {
@@ -146,6 +146,9 @@
     <jsp:include page="../common/navbar.jsp" />
 
     <div class="container fade-in">
+        <a href="${pageContext.request.contextPath}/patient/dashboard" style="text-decoration:none; color:var(--primary); font-weight:600; display:inline-block; margin-bottom:15px;">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
         <div class="header-section">
             <h2><i class="fas fa-history"></i> My Blood Requests</h2>
             <a href="PatientController?action=requestForm" style="text-decoration:none; color:var(--primary); font-weight:600;"><i class="fas fa-plus"></i> New Request</a>

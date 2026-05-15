@@ -18,7 +18,7 @@
 
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -104,6 +104,10 @@
     <jsp:include page="../common/navbar.jsp" />
 
     <div class="container fade-in">
+        <a href="${pageContext.request.contextPath}/patient/dashboard" class="back-btn" style="text-decoration: none; color: var(--primary); font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 20px;">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+        
         <h2><i class="fas fa-heartbeat"></i> Request Blood</h2>
 
         <% if (request.getAttribute("errorMessage") != null) { %>
