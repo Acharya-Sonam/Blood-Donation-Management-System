@@ -116,16 +116,15 @@ public class UserDAO {
     }
 
     public boolean patientPhoneExists(String phone) throws SQLException {
-
         String sql = "SELECT patient_id FROM patients WHERE phone = ?";
-
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setString(1, phone);
             ResultSet rs = stmt.executeQuery();
             return rs.next();
         }
+    }
+
     public int getPatientIdByUserId(int userId) throws SQLException {
         String sql = "SELECT patient_id FROM patients WHERE user_id = ?";
         try (Connection conn = DBConnection.getConnection();
