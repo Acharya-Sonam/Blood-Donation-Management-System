@@ -126,9 +126,20 @@ public class UserDAO {
             ResultSet rs = stmt.executeQuery();
             return rs.next();
         }
+    public int getPatientIdByUserId(int userId) throws SQLException {
+        String sql = "SELECT patient_id FROM patients WHERE user_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("patient_id");
+            }
+            return -1;
+        }
     }
 
-    // ── Admin / management operations ────────────────────────────────
+    //  Admin / management operations ────────────────────────────────
 
     public List<User> getAllUsers() throws SQLException {
         String sql = "SELECT u.*, COALESCE(d.full_name, p.full_name, 'Admin') AS name "

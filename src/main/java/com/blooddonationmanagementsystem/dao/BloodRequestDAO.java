@@ -76,7 +76,7 @@ public class BloodRequestDAO {
         List<BloodRequest> list = new ArrayList<>();
         String sql = "SELECT br.*, p.full_name AS patient_name "
                    + "FROM blood_requests br "
-                   + "JOIN patients p ON br.patient_id = p.user_id "
+                   + "JOIN patients p ON br.patient_id = p.patient_id "
                    + "WHERE br.status = 'Pending' "
                    + "ORDER BY br.request_date DESC";
         try (Connection conn = DBConnection.getConnection();
@@ -106,7 +106,7 @@ public class BloodRequestDAO {
         List<BloodRequest> list = new ArrayList<>();
         String sql = "SELECT br.*, p.full_name AS patient_name "
                    + "FROM blood_requests br "
-                   + "JOIN patients p ON br.patient_id = p.user_id "
+                   + "JOIN patients p ON br.patient_id = p.patient_id "
                    + "ORDER BY br.request_date DESC";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
