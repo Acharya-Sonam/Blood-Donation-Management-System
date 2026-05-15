@@ -3,6 +3,8 @@
    Admin Dashboard & Reports Styles
    ============================================================ */
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 :root {
     --red-primary:   #c0392b;
     --red-dark:      #922b21;
@@ -16,7 +18,7 @@
     --border:        #dfe6e9;
     --shadow:        0 2px 12px rgba(0,0,0,0.09);
     --radius:        10px;
-    --font:          'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font:          'Inter', sans-serif;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
