@@ -9,10 +9,6 @@ public class BloodRequestService {
     private BloodRequestDAO bloodRequestDAO = new BloodRequestDAO();
 
     public boolean submitRequest(BloodRequest request) {
-        // Business logic: check for duplicates
-        if (bloodRequestDAO.hasPendingRequest(request.getPatientId(), request.getBloodGroup())) {
-            return false;
-        }
         return bloodRequestDAO.submitRequest(request);
     }
 

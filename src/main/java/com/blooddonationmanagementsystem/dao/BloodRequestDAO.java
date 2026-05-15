@@ -78,9 +78,9 @@ public class BloodRequestDAO {
     // Get all pending requests (donors will see this)
     public List<BloodRequest> getAllPendingRequests() {
         List<BloodRequest> list = new ArrayList<>();
-        String sql = "SELECT br.*, u.name AS patient_name "
+        String sql = "SELECT br.*, p.full_name AS patient_name "
                    + "FROM blood_requests br "
-                   + "JOIN users u ON br.patient_id = u.id "
+                   + "JOIN patients p ON br.patient_id = p.user_id "
                    + "WHERE br.status = 'Pending' "
                    + "ORDER BY br.request_date DESC";
         try (Connection conn = DBConnection.getConnection();
@@ -108,9 +108,9 @@ public class BloodRequestDAO {
     // Get all requests (for admin reports)
     public List<BloodRequest> getAllRequests() {
         List<BloodRequest> list = new ArrayList<>();
-        String sql = "SELECT br.*, u.name AS patient_name "
+        String sql = "SELECT br.*, p.full_name AS patient_name "
                    + "FROM blood_requests br "
-                   + "JOIN users u ON br.patient_id = u.id "
+                   + "JOIN patients p ON br.patient_id = p.user_id "
                    + "ORDER BY br.request_date DESC";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {

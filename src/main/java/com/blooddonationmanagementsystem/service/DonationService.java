@@ -31,7 +31,7 @@ public class DonationService {
 
     public String getNextEligibleDate(int userId) throws SQLException {
         String lastDateStr = getLastDonationDate(userId);
-        if (lastDateStr == null) return LocalDate.now().toString();
+        if (lastDateStr == null || lastDateStr.length() < 10) return LocalDate.now().toString();
 
         LocalDate lastDate = LocalDate.parse(lastDateStr.substring(0, 10));
         return lastDate.plusMonths(3).toString();
@@ -39,7 +39,7 @@ public class DonationService {
 
     public boolean isEligibleToDonate(int userId) throws SQLException {
         String lastDateStr = getLastDonationDate(userId);
-        if (lastDateStr == null) return true;
+        if (lastDateStr == null || lastDateStr.length() < 10) return true;
 
         LocalDate lastDate = LocalDate.parse(lastDateStr.substring(0, 10));
         return ChronoUnit.MONTHS.between(lastDate, LocalDate.now()) >= 3;
