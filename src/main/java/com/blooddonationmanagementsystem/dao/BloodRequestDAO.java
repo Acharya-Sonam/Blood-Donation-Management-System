@@ -32,7 +32,7 @@ public class BloodRequestDAO {
 
     // Patient submits a new blood request
     public boolean submitRequest(BloodRequest request) throws SQLException {
-        String sql = "INSERT INTO blood_requests (patient_id, blood_group, quantity, urgency, status, request_date) "
+        String sql = "INSERT INTO blood_requests (patient_id, blood_group, units, urgency, status, request_date) "
                    + "VALUES (?, ?, ?, ?, 'Pending', NOW())";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -59,7 +59,7 @@ public class BloodRequestDAO {
                 r.setId(rs.getInt("id"));
                 r.setPatientId(rs.getInt("patient_id"));
                 r.setBloodGroup(rs.getString("blood_group"));
-                r.setQuantity(rs.getInt("quantity"));
+                r.setQuantity(rs.getInt("units"));
                 r.setUrgency(rs.getString("urgency"));
                 r.setStatus(rs.getString("status"));
                 r.setRequestDate(rs.getString("request_date"));
@@ -88,7 +88,7 @@ public class BloodRequestDAO {
                 r.setId(rs.getInt("id"));
                 r.setPatientId(rs.getInt("patient_id"));
                 r.setBloodGroup(rs.getString("blood_group"));
-                r.setQuantity(rs.getInt("quantity"));
+                r.setQuantity(rs.getInt("units"));
                 r.setUrgency(rs.getString("urgency"));
                 r.setStatus(rs.getString("status"));
                 r.setRequestDate(rs.getString("request_date"));
@@ -117,7 +117,7 @@ public class BloodRequestDAO {
                 r.setId(rs.getInt("id"));
                 r.setPatientId(rs.getInt("patient_id"));
                 r.setBloodGroup(rs.getString("blood_group"));
-                r.setQuantity(rs.getInt("quantity"));
+                r.setQuantity(rs.getInt("units"));
                 r.setUrgency(rs.getString("urgency"));
                 r.setStatus(rs.getString("status"));
                 r.setRequestDate(rs.getString("request_date"));
@@ -133,7 +133,7 @@ public class BloodRequestDAO {
     // Get count of requests grouped by blood group
     public java.util.Map<String, Integer> getRequestStatsByBloodGroup() {
         java.util.Map<String, Integer> stats = new java.util.HashMap<>();
-        String sql = "SELECT blood_group, COUNT(*) as count FROM blood_requests GROUP BY blood_group";
+        String sql = "SELECT blood_group, COUNT(*) as count, SUM(units) as total_units FROM blood_requests GROUP BY blood_group";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
