@@ -1,95 +1,107 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.blooddonationmanagementsystem.model.User" %>
 <%
     if (session == null || session.getAttribute("userId") == null) {
         response.sendRedirect(request.getContextPath() + "/login");
         return;
     }
-    java.lang.String patientName = (java.lang.String) session.getAttribute("name");
+    String patientName = (String) session.getAttribute("name");
 %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Dashboard – Blood Bridge</title>
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; }
-        .navbar {
-            background: #c0392b; color: white;
-            padding: 14px 30px;
-            display: flex; justify-content: space-between; align-items: center;
+        .welcome-card {
+            background: linear-gradient(135deg, #c0392b 0%, #96281b 100%);
+            border-radius: var(--radius);
+            padding: 40px;
+            color: white;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(192,57,43,0.2);
         }
-        .navbar .brand { font-size: 1.4rem; font-weight: bold; }
-        .navbar a { color: white; text-decoration: none; margin-left: 20px; }
-        .navbar a:hover { text-decoration: underline; }
-        .container { max-width: 960px; margin: 40px auto; padding: 0 20px; }
-        .welcome {
-            background: white; border-radius: 10px;
-            padding: 20px 25px; margin-bottom: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-        }
-        .welcome h2 { color: #c0392b; font-size: 1.4rem; }
-        .welcome p { color: #666; margin-top: 5px; font-size: 14px; }
-        .cards {
+        .welcome-card h2 { font-size: 2rem; font-weight: 800; margin-bottom: 10px; }
+        .welcome-card p { opacity: 0.9; font-size: 1.1rem; }
+
+        .action-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 20px;
         }
-        .card {
-            background: white; border-radius: 10px;
-            padding: 28px 20px; text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border-top: 4px solid #c0392b;
-            text-decoration: none; color: #333;
-            transition: transform 0.15s;
+        .action-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 30px 20px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-dark);
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-top: 4px solid var(--red-primary);
         }
-        .card:hover { transform: translateY(-4px); }
-        .card .icon { font-size: 2.2rem; margin-bottom: 12px; }
-        .card h3 { font-size: 1rem; color: #222; }
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        .action-card .icon { font-size: 2.5rem; margin-bottom: 15px; }
+        .action-card h3 { font-size: 1.1rem; font-weight: 700; }
+        .action-card p { font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; }
     </style>
 </head>
 <body>
 
-<div class="navbar">
-    <span class="brand">&#128149; Blood Bridge</span>
-    <div>
-        <a href="<%= request.getContextPath() %>/PatientController?action=requestForm">Request Blood</a>
-        <a href="<%= request.getContextPath() %>/PatientController?action=myRequests">My Requests</a>
-        <a href="<%= request.getContextPath() %>/logout">Logout</a>
-    </div>
-</div>
+    <jsp:include page="patient-sidebar.jsp" />
 
-<div class="container">
+    <main class="main-content">
+        <header class="topbar">
+            <h1>Patient Dashboard</h1>
+            <div class="topbar-right">
+                <span class="admin-badge">Verified Patient</span>
+                <div class="user-info">
+                    <strong><%= patientName != null ? patientName : "Patient" %></strong>
+                </div>
+            </div>
+        </header>
 
-    <div class="welcome">
-        <h2>Welcome, <%= patientName != null ? patientName : "Patient" %>! &#128075;</h2>
-        <p>What would you like to do today?</p>
-    </div>
+        <div class="page-body">
+            <div class="welcome-card">
+                <h2>Welcome back, <%= patientName %>! 👋</h2>
+                <p>How can we assist you today?</p>
+            </div>
 
-    <div class="cards">
+            <div class="section-title">🚀 Quick Actions</div>
+            <div class="action-cards">
+                <a href="<%= request.getContextPath() %>/PatientController?action=searchDonors" class="action-card">
+                    <div class="icon">🔍</div>
+                    <h3>Search Donors</h3>
+                    <p>Find available blood donors near you.</p>
+                </a>
 
-        <a class="card" href="<%= request.getContextPath() %>/PatientController?action=searchDonors">
-            <div class="icon">&#128269;</div>
-            <h3>Search Donors</h3>
-        </a>
+                <a href="<%= request.getContextPath() %>/PatientController?action=requestForm" class="action-card">
+                    <div class="icon">💉</div>
+                    <h3>Request Blood</h3>
+                    <p>Post a new blood request for a patient.</p>
+                </a>
 
-        <a class="card" href="<%= request.getContextPath() %>/PatientController?action=requestForm">
-            <div class="icon">&#128137;</div>
-            <h3>Request Blood</h3>
-        </a>
+                <a href="<%= request.getContextPath() %>/PatientController?action=myRequests" class="action-card">
+                    <div class="icon">📜</div>
+                    <h3>Track Requests</h3>
+                    <p>Check the status of your active requests.</p>
+                </a>
 
-        <a class="card" href="<%= request.getContextPath() %>/PatientController?action=myRequests">
-            <div class="icon">&#128203;</div>
-            <h3>Track Requests</h3>
-        </a>
-
-        <a class="card" href="<%= request.getContextPath() %>/views/patient/profile.jsp">
-            <div class="icon">&#128100;</div>
-            <h3>My Profile</h3>
-        </a>
-
-    </div>
-</div>
+                <a href="<%= request.getContextPath() %>/views/patient/profile.jsp" class="action-card">
+                    <div class="icon">👤</div>
+                    <h3>My Profile</h3>
+                    <p>Update your personal information.</p>
+                </a>
+            </div>
+        </div>
+        <jsp:include page="../common/footer.jsp" />
+    </main>
 
 </body>
 </html>
