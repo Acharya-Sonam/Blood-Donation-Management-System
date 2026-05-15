@@ -49,6 +49,12 @@ public class DonorController extends HttpServlet {
                 request.getRequestDispatcher("/views/patient/searchdonors.jsp")
                         .forward(request, response);
 
+            } else if (action.equals("viewRequests")) {
+                List<com.blooddonationmanagementsystem.model.BloodRequest> pendingRequests = requestService.getAllPendingRequests();
+                request.setAttribute("requests", pendingRequests);
+                request.getRequestDispatcher("/views/donor/viewrequests.jsp")
+                        .forward(request, response);
+
             } else {
                 // Fetch stats for donor dashboard
                 Donor donor = donorService.getDonorByUserId(userId);

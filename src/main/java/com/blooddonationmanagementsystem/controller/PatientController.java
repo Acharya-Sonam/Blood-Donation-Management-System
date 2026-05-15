@@ -146,7 +146,7 @@ public class PatientController extends HttpServlet {
 
                 bloodRequestService.updateRequestStatus(requestId, status);
                 response.sendRedirect(request.getContextPath()
-                        + "/PatientController?action=viewAllRequests");
+                        + "/donor/dashboard?action=viewRequests&msg=updated");
 
             } else if (action.equals("cancelRequest")) {
                 int requestId = Integer.parseInt(request.getParameter("requestId"));

@@ -17,6 +17,11 @@
                 </a>
             </li>
             <li>
+                <a href="${pageContext.request.contextPath}/donor/dashboard?action=viewRequests" class="${pageContext.request.requestURI.contains('viewrequests.jsp') ? 'active' : ''}">
+                    🩸 Blood Requests
+                </a>
+            </li>
+            <li>
                 <a href="${pageContext.request.contextPath}/donor/donationHistory" class="${pageContext.request.requestURI.contains('donationHistory') ? 'active' : ''}">
                     📜 Donation History
                 </a>
