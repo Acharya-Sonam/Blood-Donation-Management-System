@@ -191,13 +191,20 @@
                         </div>
 
                         <div class="action-group">
-                            <form action="<%= request.getContextPath() %>/PatientController" method="post" style="width: 100%; display: flex; gap: 10px;">
-                                <input type="hidden" name="action" value="updateStatus">
-                                <input type="hidden" name="requestId" value="<%= r.getId() %>">
-                                <input type="hidden" name="status" value="Approved">
-                                <button type="submit" class="btn-accept">Accept Request</button>
-                                <button type="button" class="btn-ignore" onclick="this.closest('.request-card-premium').style.opacity='0.5'">Ignore</button>
-                            </form>
+                            <% if ("pending".equalsIgnoreCase(r.getStatus())) { %>
+                                <form action="<%= request.getContextPath() %>/PatientController" method="post" style="width: 100%; display: flex; gap: 10px;">
+                                    <input type="hidden" name="action" value="updateStatus">
+                                    <input type="hidden" name="requestId" value="<%= r.getId() %>">
+                                    <input type="hidden" name="status" value="Approved">
+                                    <button type="submit" class="btn-accept">Accept Request</button>
+                                    <button type="button" class="btn-ignore" onclick="this.closest('.request-card-premium').style.opacity='0.5'">Ignore</button>
+                                </form>
+                            <% } else if ("approved".equalsIgnoreCase(r.getStatus())) { %>
+                                <a href="<%= request.getContextPath() %>/donor/donations?requestId=<%= r.getId() %>" 
+                                   class="btn-accept" style="text-align: center; text-decoration: none; background: #27ae60;">
+                                    ✓ Accepted - Donate Now
+                                </a>
+                            <% } %>
                         </div>
                     </div>
                 <% } %>

@@ -31,6 +31,7 @@
         .status-pending { background: #fef9e7; color: #d68910; }
         .status-accepted { background: #eafaf1; color: #1e8449; }
         .status-rejected { background: #fdedec; color: #cb4335; }
+        .status-fulfilled { background: #e8f4fd; color: #2980b9; }
         
         .btn-cancel {
             background: transparent; color: #cb4335; border: 1px solid #f5b7b1; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; transition: 0.2s;

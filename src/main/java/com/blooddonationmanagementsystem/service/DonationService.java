@@ -58,11 +58,19 @@ public class DonationService {
         donation.setStatus("completed");
         boolean recorded = donationDAO.recordDonation(donation);
         
-        if (recorded && inventoryId > 0) {
-            // Get blood group to update stock
-            String bloodGroup = inventoryDAO.getBloodGroupById(inventoryId);
-            if (bloodGroup != null) {
-                inventoryDAO.updateStock(bloodGroup, units);
+        if (recorded) {
+            // Update the blood request status to fulfilled if linked
+            if (requestId > 0) {
+                com.blooddonationmanagementsystem.dao.BloodRequestDAO brDAO = new com.blooddonationmanagementsystem.dao.BloodRequestDAO();
+                brDAO.updateStatus(requestId, "fulfilled");
+            }
+
+            if (inventoryId > 0) {
+                // Get blood group to update stock
+                String bloodGroup = inventoryDAO.getBloodGroupById(inventoryId);
+                if (bloodGroup != null) {
+                    inventoryDAO.updateStock(bloodGroup, units);
+                }
             }
         }
         return recorded;

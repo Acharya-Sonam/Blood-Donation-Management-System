@@ -57,7 +57,16 @@ public class DonationController extends HttpServlet {
                 boolean eligible = donationService.isEligibleToDonate(userId);
                 request.setAttribute("isEligible",   eligible);
                 request.setAttribute("nextEligible", donationService.getNextEligibleDate(userId));
- 
+
+                String requestIdParam = request.getParameter("requestId");
+                if (requestIdParam != null && !requestIdParam.isEmpty()) {
+                    int reqId = Integer.parseInt(requestIdParam);
+                    com.blooddonationmanagementsystem.dao.BloodRequestDAO brDAO = new com.blooddonationmanagementsystem.dao.BloodRequestDAO();
+                    // We might need a getRequestById method. I'll check if it exists.
+                    // Actually, I'll just pass the ID for now.
+                    request.setAttribute("linkedRequestId", reqId);
+                }
+
                 request.getRequestDispatcher("/views/donor/donations.jsp")
                        .forward(request, response);
             }
