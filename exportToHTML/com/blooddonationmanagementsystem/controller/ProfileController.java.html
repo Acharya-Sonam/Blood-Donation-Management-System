@@ -1,0 +1,68 @@
+<html>
+<head>
+<title>ProfileController.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ProfileController.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">blooddonationmanagementsystem</span><span class="s2">.</span><span class="s1">controller</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">blooddonationmanagementsystem</span><span class="s2">.</span><span class="s1">dao</span><span class="s2">.</span><span class="s1">UserDAO</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">ServletException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">WebServlet</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">HttpServlet</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">HttpServletRequest</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">HttpServletResponse</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">HttpSession</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">io</span><span class="s2">.</span><span class="s1">IOException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">sql</span><span class="s2">.</span><span class="s1">SQLException</span><span class="s2">;</span>
+
+<span class="s1">@WebServlet</span><span class="s2">(</span><span class="s3">&quot;/profile/delete&quot;</span><span class="s2">)</span>
+<span class="s0">public class </span><span class="s1">ProfileController </span><span class="s0">extends </span><span class="s1">HttpServlet </span><span class="s2">{</span>
+
+    <span class="s0">private final </span><span class="s1">UserDAO userDAO </span><span class="s2">= </span><span class="s0">new </span><span class="s1">UserDAO</span><span class="s2">();</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">doPost</span><span class="s2">(</span><span class="s1">HttpServletRequest request</span><span class="s2">, </span><span class="s1">HttpServletResponse response</span><span class="s2">)</span>
+            <span class="s0">throws </span><span class="s1">ServletException</span><span class="s2">, </span><span class="s1">IOException </span><span class="s2">{</span>
+
+        <span class="s1">HttpSession session </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getSession</span><span class="s2">(</span><span class="s0">false</span><span class="s2">);</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">session </span><span class="s2">== </span><span class="s0">null </span><span class="s2">|| </span><span class="s1">session</span><span class="s2">.</span><span class="s1">getAttribute</span><span class="s2">(</span><span class="s3">&quot;userId&quot;</span><span class="s2">) == </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s1">response</span><span class="s2">.</span><span class="s1">sendRedirect</span><span class="s2">(</span><span class="s1">request</span><span class="s2">.</span><span class="s1">getContextPath</span><span class="s2">() + </span><span class="s3">&quot;/login&quot;</span><span class="s2">);</span>
+            <span class="s0">return</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s0">int </span><span class="s1">userId </span><span class="s2">= (</span><span class="s0">int</span><span class="s2">) </span><span class="s1">session</span><span class="s2">.</span><span class="s1">getAttribute</span><span class="s2">(</span><span class="s3">&quot;userId&quot;</span><span class="s2">);</span>
+
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s4">// Delete user. Cascading should take care of donors/patients table if configured</span>
+            <span class="s4">// Otherwise, just delete the user, and the login will be prevented.</span>
+            <span class="s1">userDAO</span><span class="s2">.</span><span class="s1">deleteUser</span><span class="s2">(</span><span class="s1">userId</span><span class="s2">);</span>
+            
+            <span class="s4">// Invalidate session</span>
+            <span class="s1">session</span><span class="s2">.</span><span class="s1">invalidate</span><span class="s2">();</span>
+            
+            <span class="s4">// Redirect to home with a message</span>
+            <span class="s1">response</span><span class="s2">.</span><span class="s1">sendRedirect</span><span class="s2">(</span><span class="s1">request</span><span class="s2">.</span><span class="s1">getContextPath</span><span class="s2">() + </span><span class="s3">&quot;/login?logout=true&quot;</span><span class="s2">);</span>
+            
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">SQLException e</span><span class="s2">) {</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;errorMessage&quot;</span><span class="s2">, </span><span class="s3">&quot;Failed to delete account: &quot; </span><span class="s2">+ </span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">());</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">getRequestDispatcher</span><span class="s2">(</span><span class="s3">&quot;/views/common/error.jsp&quot;</span><span class="s2">).</span><span class="s1">forward</span><span class="s2">(</span><span class="s1">request</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

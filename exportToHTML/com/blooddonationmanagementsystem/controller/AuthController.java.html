@@ -1,0 +1,196 @@
+<html>
+<head>
+<title>AuthController.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+.s5 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+AuthController.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">blooddonationmanagementsystem</span><span class="s2">.</span><span class="s1">controller</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">blooddonationmanagementsystem</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">User</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">blooddonationmanagementsystem</span><span class="s2">.</span><span class="s1">service</span><span class="s2">.</span><span class="s1">AuthService</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">blooddonationmanagementsystem</span><span class="s2">.</span><span class="s1">service</span><span class="s2">.</span><span class="s1">AuthService</span><span class="s2">.</span><span class="s1">AuthException</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">ServletException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">WebServlet</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">HttpServlet</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">HttpServletRequest</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">HttpServletResponse</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">HttpSession</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">io</span><span class="s2">.</span><span class="s1">IOException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">sql</span><span class="s2">.</span><span class="s1">SQLException</span><span class="s2">;</span>
+
+<span class="s1">@WebServlet</span><span class="s2">(</span><span class="s1">urlPatterns </span><span class="s2">= {</span><span class="s3">&quot;/login&quot;</span><span class="s2">, </span><span class="s3">&quot;/register&quot;</span><span class="s2">, </span><span class="s3">&quot;/logout&quot;</span><span class="s2">})</span>
+<span class="s0">public class </span><span class="s1">AuthController </span><span class="s0">extends </span><span class="s1">HttpServlet </span><span class="s2">{</span>
+
+    <span class="s0">private </span><span class="s1">AuthService authService </span><span class="s2">= </span><span class="s0">new </span><span class="s1">AuthService</span><span class="s2">();</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">doGet</span><span class="s2">(</span><span class="s1">HttpServletRequest request</span><span class="s2">, </span><span class="s1">HttpServletResponse response</span><span class="s2">)</span>
+            <span class="s0">throws </span><span class="s1">ServletException</span><span class="s2">, </span><span class="s1">IOException </span><span class="s2">{</span>
+
+        <span class="s1">String path </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getServletPath</span><span class="s2">();</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s3">&quot;/login&quot;</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">path</span><span class="s2">)) {</span>
+            <span class="s4">// If already logged in, redirect to appropriate dashboard</span>
+            <span class="s1">HttpSession session </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getSession</span><span class="s2">(</span><span class="s0">false</span><span class="s2">);</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">session </span><span class="s2">!= </span><span class="s0">null </span><span class="s2">&amp;&amp; </span><span class="s1">session</span><span class="s2">.</span><span class="s1">getAttribute</span><span class="s2">(</span><span class="s3">&quot;user&quot;</span><span class="s2">) != </span><span class="s0">null</span><span class="s2">) {</span>
+                <span class="s1">redirectToDashboard</span><span class="s2">((</span><span class="s1">User</span><span class="s2">) </span><span class="s1">session</span><span class="s2">.</span><span class="s1">getAttribute</span><span class="s2">(</span><span class="s3">&quot;user&quot;</span><span class="s2">), </span><span class="s1">response</span><span class="s2">);</span>
+                <span class="s0">return</span><span class="s2">;</span>
+            <span class="s2">}</span>
+            <span class="s4">// Show login page</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">getRequestDispatcher</span><span class="s2">(</span><span class="s3">&quot;/views/auth/login.jsp&quot;</span><span class="s2">).</span><span class="s1">forward</span><span class="s2">(</span><span class="s1">request</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+
+        <span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s3">&quot;/register&quot;</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">path</span><span class="s2">)) {</span>
+            <span class="s4">// Show registration page</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">getRequestDispatcher</span><span class="s2">(</span><span class="s3">&quot;/views/auth/register.jsp&quot;</span><span class="s2">).</span><span class="s1">forward</span><span class="s2">(</span><span class="s1">request</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+
+        <span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s3">&quot;/logout&quot;</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">path</span><span class="s2">)) {</span>
+            <span class="s4">// Destroy session and go to login</span>
+            <span class="s1">handleLogout</span><span class="s2">(</span><span class="s1">request</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">doPost</span><span class="s2">(</span><span class="s1">HttpServletRequest request</span><span class="s2">, </span><span class="s1">HttpServletResponse response</span><span class="s2">)</span>
+            <span class="s0">throws </span><span class="s1">ServletException</span><span class="s2">, </span><span class="s1">IOException </span><span class="s2">{</span>
+
+        <span class="s1">String path </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getServletPath</span><span class="s2">();</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s3">&quot;/login&quot;</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">path</span><span class="s2">)) {</span>
+            <span class="s1">handleLogin</span><span class="s2">(</span><span class="s1">request</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+
+        <span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s3">&quot;/register&quot;</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">path</span><span class="s2">)) {</span>
+            <span class="s1">handleRegister</span><span class="s2">(</span><span class="s1">request</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">handleLogin</span><span class="s2">(</span><span class="s1">HttpServletRequest request</span><span class="s2">, </span><span class="s1">HttpServletResponse response</span><span class="s2">)</span>
+            <span class="s0">throws </span><span class="s1">ServletException</span><span class="s2">, </span><span class="s1">IOException </span><span class="s2">{</span>
+
+        <span class="s1">String email    </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;email&quot;</span><span class="s2">);</span>
+        <span class="s1">String password </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;password&quot;</span><span class="s2">);</span>
+
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s4">// Attempt login via service layer</span>
+            <span class="s1">User user </span><span class="s2">= </span><span class="s1">authService</span><span class="s2">.</span><span class="s1">login</span><span class="s2">(</span><span class="s1">email</span><span class="s2">, </span><span class="s1">password</span><span class="s2">);</span>
+
+            <span class="s4">// Create session and store user</span>
+            <span class="s1">HttpSession session </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getSession</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+            <span class="s1">session</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;user&quot;</span><span class="s2">, </span><span class="s1">user</span><span class="s2">);</span>
+            <span class="s1">session</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;userId&quot;</span><span class="s2">, </span><span class="s1">user</span><span class="s2">.</span><span class="s1">getUserId</span><span class="s2">());</span>
+            <span class="s1">session</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;role&quot;</span><span class="s2">, </span><span class="s1">user</span><span class="s2">.</span><span class="s1">getRole</span><span class="s2">());</span>
+            <span class="s1">session</span><span class="s2">.</span><span class="s1">setMaxInactiveInterval</span><span class="s2">(</span><span class="s5">30 </span><span class="s2">* </span><span class="s5">60</span><span class="s2">); </span><span class="s4">// 30 minutes</span>
+
+            <span class="s4">// Redirect to the correct dashboard based on role</span>
+            <span class="s1">redirectToDashboard</span><span class="s2">(</span><span class="s1">user</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">AuthException e</span><span class="s2">) {</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;errorMessage&quot;</span><span class="s2">, </span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">());</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;email&quot;</span><span class="s2">, </span><span class="s1">email</span><span class="s2">);</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">getRequestDispatcher</span><span class="s2">(</span><span class="s3">&quot;/views/auth/login.jsp&quot;</span><span class="s2">).</span><span class="s1">forward</span><span class="s2">(</span><span class="s1">request</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">SQLException e</span><span class="s2">) {</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;errorMessage&quot;</span><span class="s2">, </span><span class="s3">&quot;Database Error: &quot; </span><span class="s2">+ </span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">());</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;email&quot;</span><span class="s2">, </span><span class="s1">email</span><span class="s2">);</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">getRequestDispatcher</span><span class="s2">(</span><span class="s3">&quot;/views/auth/login.jsp&quot;</span><span class="s2">).</span><span class="s1">forward</span><span class="s2">(</span><span class="s1">request</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">handleRegister</span><span class="s2">(</span><span class="s1">HttpServletRequest request</span><span class="s2">, </span><span class="s1">HttpServletResponse response</span><span class="s2">)</span>
+            <span class="s0">throws </span><span class="s1">ServletException</span><span class="s2">, </span><span class="s1">IOException </span><span class="s2">{</span>
+
+        <span class="s1">String role         </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;role&quot;</span><span class="s2">);</span>
+        <span class="s1">String fullName     </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;fullName&quot;</span><span class="s2">);</span>
+        <span class="s1">String email        </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;email&quot;</span><span class="s2">);</span>
+        <span class="s1">String password     </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;password&quot;</span><span class="s2">);</span>
+        <span class="s1">String confirm      </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;confirmPassword&quot;</span><span class="s2">);</span>
+        <span class="s1">String phone        </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;phone&quot;</span><span class="s2">);</span>
+        <span class="s1">String dob          </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;dateOfBirth&quot;</span><span class="s2">);</span>
+        <span class="s1">String bloodGroup   </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;bloodGroup&quot;</span><span class="s2">);</span>
+        <span class="s1">String address      </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;address&quot;</span><span class="s2">);</span>
+
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s3">&quot;donor&quot;</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">role</span><span class="s2">)) {</span>
+                <span class="s4">// Register as donor</span>
+                <span class="s1">authService</span><span class="s2">.</span><span class="s1">registerDonor</span><span class="s2">(</span><span class="s1">fullName</span><span class="s2">, </span><span class="s1">email</span><span class="s2">, </span><span class="s1">password</span><span class="s2">,</span>
+                                          <span class="s1">confirm</span><span class="s2">, </span><span class="s1">phone</span><span class="s2">, </span><span class="s1">dob</span><span class="s2">, </span><span class="s1">bloodGroup</span><span class="s2">, </span><span class="s1">address</span><span class="s2">);</span>
+
+            <span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s3">&quot;patient&quot;</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">role</span><span class="s2">)) {</span>
+                <span class="s4">// Patient-only field</span>
+                <span class="s1">String hospitalName </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;hospitalName&quot;</span><span class="s2">);</span>
+                <span class="s1">authService</span><span class="s2">.</span><span class="s1">registerPatient</span><span class="s2">(</span><span class="s1">fullName</span><span class="s2">, </span><span class="s1">email</span><span class="s2">, </span><span class="s1">password</span><span class="s2">,</span>
+                                            <span class="s1">confirm</span><span class="s2">, </span><span class="s1">phone</span><span class="s2">, </span><span class="s1">dob</span><span class="s2">, </span><span class="s1">bloodGroup</span><span class="s2">,</span>
+                                            <span class="s1">address</span><span class="s2">, </span><span class="s1">hospitalName</span><span class="s2">);</span>
+            <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+                <span class="s4">// No role selected</span>
+                <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;errorMessage&quot;</span><span class="s2">, </span><span class="s3">&quot;Please select a registration type (Donor or Patient).&quot;</span><span class="s2">);</span>
+                <span class="s1">request</span><span class="s2">.</span><span class="s1">getRequestDispatcher</span><span class="s2">(</span><span class="s3">&quot;/views/auth/register.jsp&quot;</span><span class="s2">).</span><span class="s1">forward</span><span class="s2">(</span><span class="s1">request</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+                <span class="s0">return</span><span class="s2">;</span>
+            <span class="s2">}</span>
+
+            <span class="s1">response</span><span class="s2">.</span><span class="s1">sendRedirect</span><span class="s2">(</span><span class="s1">request</span><span class="s2">.</span><span class="s1">getContextPath</span><span class="s2">() + </span><span class="s3">&quot;/login?registered=true&quot;</span><span class="s2">);</span>
+
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">AuthException e</span><span class="s2">) {</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;errorMessage&quot;</span><span class="s2">, </span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">());</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;role&quot;</span><span class="s2">,       </span><span class="s1">role</span><span class="s2">);</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;fullName&quot;</span><span class="s2">,   </span><span class="s1">fullName</span><span class="s2">);</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;email&quot;</span><span class="s2">,      </span><span class="s1">email</span><span class="s2">);</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;phone&quot;</span><span class="s2">,      </span><span class="s1">phone</span><span class="s2">);</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;bloodGroup&quot;</span><span class="s2">, </span><span class="s1">bloodGroup</span><span class="s2">);</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;address&quot;</span><span class="s2">,    </span><span class="s1">address</span><span class="s2">);</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">getRequestDispatcher</span><span class="s2">(</span><span class="s3">&quot;/views/auth/register.jsp&quot;</span><span class="s2">).</span><span class="s1">forward</span><span class="s2">(</span><span class="s1">request</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">SQLException e</span><span class="s2">) {</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;errorMessage&quot;</span><span class="s2">, </span><span class="s3">&quot;Database Error: &quot; </span><span class="s2">+ </span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">());</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;role&quot;</span><span class="s2">,       </span><span class="s1">role</span><span class="s2">);</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;fullName&quot;</span><span class="s2">,   </span><span class="s1">fullName</span><span class="s2">);</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;email&quot;</span><span class="s2">,      </span><span class="s1">email</span><span class="s2">);</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;phone&quot;</span><span class="s2">,      </span><span class="s1">phone</span><span class="s2">);</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;bloodGroup&quot;</span><span class="s2">, </span><span class="s1">bloodGroup</span><span class="s2">);</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;address&quot;</span><span class="s2">,    </span><span class="s1">address</span><span class="s2">);</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">getRequestDispatcher</span><span class="s2">(</span><span class="s3">&quot;/views/auth/register.jsp&quot;</span><span class="s2">).</span><span class="s1">forward</span><span class="s2">(</span><span class="s1">request</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">handleLogout</span><span class="s2">(</span><span class="s1">HttpServletRequest request</span><span class="s2">, </span><span class="s1">HttpServletResponse response</span><span class="s2">)</span>
+            <span class="s0">throws </span><span class="s1">IOException </span><span class="s2">{</span>
+
+        <span class="s1">HttpSession session </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getSession</span><span class="s2">(</span><span class="s0">false</span><span class="s2">);</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">session </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s1">session</span><span class="s2">.</span><span class="s1">invalidate</span><span class="s2">(); </span><span class="s4">// destroy the session</span>
+        <span class="s2">}</span>
+        <span class="s1">response</span><span class="s2">.</span><span class="s1">sendRedirect</span><span class="s2">(</span><span class="s1">request</span><span class="s2">.</span><span class="s1">getContextPath</span><span class="s2">() + </span><span class="s3">&quot;/login?logout=true&quot;</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">redirectToDashboard</span><span class="s2">(</span><span class="s1">User user</span><span class="s2">, </span><span class="s1">HttpServletResponse response</span><span class="s2">)</span>
+            <span class="s0">throws </span><span class="s1">IOException </span><span class="s2">{</span>
+
+        <span class="s1">String context </span><span class="s2">= </span><span class="s3">&quot;&quot;</span><span class="s2">; </span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">user</span><span class="s2">.</span><span class="s1">isAdmin</span><span class="s2">()) {</span>
+            <span class="s1">response</span><span class="s2">.</span><span class="s1">sendRedirect</span><span class="s2">(</span><span class="s3">&quot;admin/dashboard&quot;</span><span class="s2">);</span>
+        <span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s1">user</span><span class="s2">.</span><span class="s1">isDonor</span><span class="s2">()) {</span>
+            <span class="s1">response</span><span class="s2">.</span><span class="s1">sendRedirect</span><span class="s2">(</span><span class="s3">&quot;donor/dashboard&quot;</span><span class="s2">);</span>
+        <span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s1">user</span><span class="s2">.</span><span class="s1">isPatient</span><span class="s2">()) {</span>
+            <span class="s1">response</span><span class="s2">.</span><span class="s1">sendRedirect</span><span class="s2">(</span><span class="s3">&quot;patient/dashboard&quot;</span><span class="s2">);</span>
+        <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+            <span class="s1">response</span><span class="s2">.</span><span class="s1">sendRedirect</span><span class="s2">(</span><span class="s3">&quot;login&quot;</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

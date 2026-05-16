@@ -1,0 +1,173 @@
+<html>
+<head>
+<title>PatientController.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+PatientController.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">blooddonationmanagementsystem</span><span class="s2">.</span><span class="s1">controller</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">io</span><span class="s2">.</span><span class="s1">IOException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">blooddonationmanagementsystem</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">BloodRequest</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">ServletException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">WebServlet</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">HttpServlet</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">HttpServletRequest</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">HttpServletResponse</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">HttpSession</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">blooddonationmanagementsystem</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">Donor</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">blooddonationmanagementsystem</span><span class="s2">.</span><span class="s1">service</span><span class="s2">.</span><span class="s1">PatientService</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">blooddonationmanagementsystem</span><span class="s2">.</span><span class="s1">service</span><span class="s2">.</span><span class="s1">BloodRequestService</span><span class="s2">;</span>
+
+<span class="s1">@WebServlet</span><span class="s2">({</span><span class="s3">&quot;/PatientController&quot;</span><span class="s2">, </span><span class="s3">&quot;/patient/dashboard&quot;</span><span class="s2">})</span>
+<span class="s0">public class </span><span class="s1">PatientController </span><span class="s0">extends </span><span class="s1">HttpServlet </span><span class="s2">{</span>
+
+    <span class="s1">BloodRequestService bloodRequestService </span><span class="s2">= </span><span class="s0">new </span><span class="s1">BloodRequestService</span><span class="s2">();</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">doGet</span><span class="s2">(</span><span class="s1">HttpServletRequest request</span><span class="s2">, </span><span class="s1">HttpServletResponse response</span><span class="s2">)</span>
+            <span class="s0">throws </span><span class="s1">ServletException</span><span class="s2">, </span><span class="s1">IOException </span><span class="s2">{</span>
+
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s4">// Session check</span>
+            <span class="s1">HttpSession session </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getSession</span><span class="s2">(</span><span class="s0">false</span><span class="s2">);</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">session </span><span class="s2">== </span><span class="s0">null </span><span class="s2">|| </span><span class="s1">session</span><span class="s2">.</span><span class="s1">getAttribute</span><span class="s2">(</span><span class="s3">&quot;userId&quot;</span><span class="s2">) == </span><span class="s0">null</span><span class="s2">) {</span>
+                <span class="s1">response</span><span class="s2">.</span><span class="s1">sendRedirect</span><span class="s2">(</span><span class="s1">request</span><span class="s2">.</span><span class="s1">getContextPath</span><span class="s2">() + </span><span class="s3">&quot;/views/auth/login.jsp&quot;</span><span class="s2">);</span>
+                <span class="s0">return</span><span class="s2">;</span>
+            <span class="s2">}</span>
+
+            <span class="s1">String action </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;action&quot;</span><span class="s2">);</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">action </span><span class="s2">== </span><span class="s0">null</span><span class="s2">) </span><span class="s1">action </span><span class="s2">= </span><span class="s3">&quot;&quot;</span><span class="s2">;</span>
+
+            <span class="s4">// Handle /patient/dashboard URL directly (no action parameter)</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">action</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">() &amp;&amp; </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getServletPath</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;/patient/dashboard&quot;</span><span class="s2">)) {</span>
+                <span class="s1">request</span><span class="s2">.</span><span class="s1">getRequestDispatcher</span><span class="s2">(</span><span class="s3">&quot;/views/patient/dashboard.jsp&quot;</span><span class="s2">)</span>
+                        <span class="s2">.</span><span class="s1">forward</span><span class="s2">(</span><span class="s1">request</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+                <span class="s0">return</span><span class="s2">;</span>
+            <span class="s2">}</span>
+
+            <span class="s4">// --- DIYA'S PART ---</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">action</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;requestForm&quot;</span><span class="s2">)) {</span>
+                <span class="s1">request</span><span class="s2">.</span><span class="s1">getRequestDispatcher</span><span class="s2">(</span><span class="s3">&quot;/views/patient/requestBlood.jsp&quot;</span><span class="s2">)</span>
+                        <span class="s2">.</span><span class="s1">forward</span><span class="s2">(</span><span class="s1">request</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+
+            <span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s1">action</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;myRequests&quot;</span><span class="s2">)) {</span>
+                <span class="s0">int </span><span class="s1">patientId </span><span class="s2">= (</span><span class="s0">int</span><span class="s2">) </span><span class="s1">session</span><span class="s2">.</span><span class="s1">getAttribute</span><span class="s2">(</span><span class="s3">&quot;userId&quot;</span><span class="s2">);</span>
+                <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">BloodRequest</span><span class="s2">&gt; </span><span class="s1">requests </span><span class="s2">= </span><span class="s1">bloodRequestService</span><span class="s2">.</span><span class="s1">getPatientRequests</span><span class="s2">(</span><span class="s1">patientId</span><span class="s2">);</span>
+                <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;requests&quot;</span><span class="s2">, </span><span class="s1">requests</span><span class="s2">);</span>
+                <span class="s1">request</span><span class="s2">.</span><span class="s1">getRequestDispatcher</span><span class="s2">(</span><span class="s3">&quot;/views/patient/trackRequest.jsp&quot;</span><span class="s2">)</span>
+                        <span class="s2">.</span><span class="s1">forward</span><span class="s2">(</span><span class="s1">request</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+
+            <span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s1">action</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;viewAllRequests&quot;</span><span class="s2">)) {</span>
+                <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">BloodRequest</span><span class="s2">&gt; </span><span class="s1">requests </span><span class="s2">= </span><span class="s1">bloodRequestService</span><span class="s2">.</span><span class="s1">getAllPendingRequests</span><span class="s2">();</span>
+                <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;requests&quot;</span><span class="s2">, </span><span class="s1">requests</span><span class="s2">);</span>
+                <span class="s1">request</span><span class="s2">.</span><span class="s1">getRequestDispatcher</span><span class="s2">(</span><span class="s3">&quot;/views/donor/viewrequests.jsp&quot;</span><span class="s2">)</span>
+                        <span class="s2">.</span><span class="s1">forward</span><span class="s2">(</span><span class="s1">request</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+
+                <span class="s4">// --- DIKSHYA'S PART (search donors) ---</span>
+            <span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s1">action</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;searchDonors&quot;</span><span class="s2">)) {</span>
+                <span class="s1">String bloodGroup </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;bloodGroup&quot;</span><span class="s2">);</span>
+                <span class="s1">String location   </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;location&quot;</span><span class="s2">);</span>
+
+                <span class="s1">PatientService patientService </span><span class="s2">= </span><span class="s0">new </span><span class="s1">PatientService</span><span class="s2">();</span>
+                <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Donor</span><span class="s2">&gt; </span><span class="s1">donors </span><span class="s2">= </span><span class="s1">patientService</span><span class="s2">.</span><span class="s1">searchDonors</span><span class="s2">(</span><span class="s1">bloodGroup</span><span class="s2">, </span><span class="s1">location</span><span class="s2">);</span>
+
+                <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;donors&quot;</span><span class="s2">, </span><span class="s1">donors</span><span class="s2">);</span>
+                <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;bloodGroup&quot;</span><span class="s2">, </span><span class="s1">bloodGroup</span><span class="s2">);</span>
+                <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;location&quot;</span><span class="s2">, </span><span class="s1">location</span><span class="s2">);</span>
+                <span class="s1">request</span><span class="s2">.</span><span class="s1">getRequestDispatcher</span><span class="s2">(</span><span class="s3">&quot;/views/patient/searchdonors.jsp&quot;</span><span class="s2">)</span>
+                        <span class="s2">.</span><span class="s1">forward</span><span class="s2">(</span><span class="s1">request</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+
+            <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+                <span class="s4">// Fallback — unknown action, go to patient dashboard</span>
+                <span class="s1">request</span><span class="s2">.</span><span class="s1">getRequestDispatcher</span><span class="s2">(</span><span class="s3">&quot;/views/patient/dashboard.jsp&quot;</span><span class="s2">)</span>
+                        <span class="s2">.</span><span class="s1">forward</span><span class="s2">(</span><span class="s1">request</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s1">e</span><span class="s2">.</span><span class="s1">printStackTrace</span><span class="s2">();</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;errorMessage&quot;</span><span class="s2">, </span><span class="s3">&quot;System Interrupted in PatientController: &quot; </span><span class="s2">+ </span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">());</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">getRequestDispatcher</span><span class="s2">(</span><span class="s3">&quot;/views/common/error.jsp&quot;</span><span class="s2">).</span><span class="s1">forward</span><span class="s2">(</span><span class="s1">request</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">doPost</span><span class="s2">(</span><span class="s1">HttpServletRequest request</span><span class="s2">, </span><span class="s1">HttpServletResponse response</span><span class="s2">)</span>
+            <span class="s0">throws </span><span class="s1">ServletException</span><span class="s2">, </span><span class="s1">IOException </span><span class="s2">{</span>
+
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s4">// Session check</span>
+            <span class="s1">HttpSession session </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getSession</span><span class="s2">(</span><span class="s0">false</span><span class="s2">);</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">session </span><span class="s2">== </span><span class="s0">null </span><span class="s2">|| </span><span class="s1">session</span><span class="s2">.</span><span class="s1">getAttribute</span><span class="s2">(</span><span class="s3">&quot;userId&quot;</span><span class="s2">) == </span><span class="s0">null</span><span class="s2">) {</span>
+                <span class="s1">response</span><span class="s2">.</span><span class="s1">sendRedirect</span><span class="s2">(</span><span class="s1">request</span><span class="s2">.</span><span class="s1">getContextPath</span><span class="s2">() + </span><span class="s3">&quot;/views/auth/login.jsp&quot;</span><span class="s2">);</span>
+                <span class="s0">return</span><span class="s2">;</span>
+            <span class="s2">}</span>
+
+            <span class="s1">String action </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;action&quot;</span><span class="s2">);</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">action </span><span class="s2">== </span><span class="s0">null</span><span class="s2">) </span><span class="s1">action </span><span class="s2">= </span><span class="s3">&quot;&quot;</span><span class="s2">;</span>
+
+            <span class="s4">// --- DIYA'S PART ---</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">action</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;submitRequest&quot;</span><span class="s2">)) {</span>
+                <span class="s0">int </span><span class="s1">patientId </span><span class="s2">= (</span><span class="s0">int</span><span class="s2">) </span><span class="s1">session</span><span class="s2">.</span><span class="s1">getAttribute</span><span class="s2">(</span><span class="s3">&quot;userId&quot;</span><span class="s2">);</span>
+                <span class="s1">String bloodGroup </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;bloodGroup&quot;</span><span class="s2">);</span>
+                <span class="s0">int </span><span class="s1">quantity      </span><span class="s2">= </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;quantity&quot;</span><span class="s2">));</span>
+                <span class="s1">String urgency    </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;urgency&quot;</span><span class="s2">);</span>
+
+                <span class="s1">BloodRequest br </span><span class="s2">= </span><span class="s0">new </span><span class="s1">BloodRequest</span><span class="s2">();</span>
+                <span class="s1">br</span><span class="s2">.</span><span class="s1">setPatientId</span><span class="s2">(</span><span class="s1">patientId</span><span class="s2">);</span>
+                <span class="s1">br</span><span class="s2">.</span><span class="s1">setBloodGroup</span><span class="s2">(</span><span class="s1">bloodGroup</span><span class="s2">);</span>
+                <span class="s1">br</span><span class="s2">.</span><span class="s1">setQuantity</span><span class="s2">(</span><span class="s1">quantity</span><span class="s2">);</span>
+                <span class="s1">br</span><span class="s2">.</span><span class="s1">setUrgency</span><span class="s2">(</span><span class="s1">urgency</span><span class="s2">);</span>
+
+                <span class="s0">boolean </span><span class="s1">success </span><span class="s2">= </span><span class="s1">bloodRequestService</span><span class="s2">.</span><span class="s1">submitRequest</span><span class="s2">(</span><span class="s1">br</span><span class="s2">);</span>
+
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">success</span><span class="s2">) {</span>
+                    <span class="s1">response</span><span class="s2">.</span><span class="s1">sendRedirect</span><span class="s2">(</span><span class="s1">request</span><span class="s2">.</span><span class="s1">getContextPath</span><span class="s2">()</span>
+                            <span class="s2">+ </span><span class="s3">&quot;/PatientController?action=myRequests&amp;msg=success&quot;</span><span class="s2">);</span>
+                <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+                    <span class="s1">response</span><span class="s2">.</span><span class="s1">sendRedirect</span><span class="s2">(</span><span class="s1">request</span><span class="s2">.</span><span class="s1">getContextPath</span><span class="s2">()</span>
+                            <span class="s2">+ </span><span class="s3">&quot;/PatientController?action=requestForm&amp;msg=duplicate&quot;</span><span class="s2">);</span>
+                <span class="s2">}</span>
+
+            <span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s1">action</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;updateStatus&quot;</span><span class="s2">)) {</span>
+                <span class="s0">int </span><span class="s1">requestId </span><span class="s2">= </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;requestId&quot;</span><span class="s2">));</span>
+                <span class="s1">String status </span><span class="s2">= </span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;status&quot;</span><span class="s2">);</span>
+
+                <span class="s1">bloodRequestService</span><span class="s2">.</span><span class="s1">updateRequestStatus</span><span class="s2">(</span><span class="s1">requestId</span><span class="s2">, </span><span class="s1">status</span><span class="s2">);</span>
+                <span class="s1">response</span><span class="s2">.</span><span class="s1">sendRedirect</span><span class="s2">(</span><span class="s1">request</span><span class="s2">.</span><span class="s1">getContextPath</span><span class="s2">()</span>
+                        <span class="s2">+ </span><span class="s3">&quot;/PatientController?action=viewAllRequests&quot;</span><span class="s2">);</span>
+
+            <span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s1">action</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;cancelRequest&quot;</span><span class="s2">)) {</span>
+                <span class="s0">int </span><span class="s1">requestId </span><span class="s2">= </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">request</span><span class="s2">.</span><span class="s1">getParameter</span><span class="s2">(</span><span class="s3">&quot;requestId&quot;</span><span class="s2">));</span>
+                <span class="s0">boolean </span><span class="s1">success </span><span class="s2">= </span><span class="s1">bloodRequestService</span><span class="s2">.</span><span class="s1">cancelRequest</span><span class="s2">(</span><span class="s1">requestId</span><span class="s2">);</span>
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">success</span><span class="s2">) {</span>
+                    <span class="s1">response</span><span class="s2">.</span><span class="s1">sendRedirect</span><span class="s2">(</span><span class="s1">request</span><span class="s2">.</span><span class="s1">getContextPath</span><span class="s2">()</span>
+                            <span class="s2">+ </span><span class="s3">&quot;/PatientController?action=myRequests&amp;msg=cancelled&quot;</span><span class="s2">);</span>
+                <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+                    <span class="s1">response</span><span class="s2">.</span><span class="s1">sendRedirect</span><span class="s2">(</span><span class="s1">request</span><span class="s2">.</span><span class="s1">getContextPath</span><span class="s2">()</span>
+                            <span class="s2">+ </span><span class="s3">&quot;/PatientController?action=myRequests&amp;msg=cancel_error&quot;</span><span class="s2">);</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s1">e</span><span class="s2">.</span><span class="s1">printStackTrace</span><span class="s2">();</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;errorMessage&quot;</span><span class="s2">, </span><span class="s3">&quot;System Interrupted in PatientController POST: &quot; </span><span class="s2">+ </span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">());</span>
+            <span class="s1">request</span><span class="s2">.</span><span class="s1">getRequestDispatcher</span><span class="s2">(</span><span class="s3">&quot;/views/common/error.jsp&quot;</span><span class="s2">).</span><span class="s1">forward</span><span class="s2">(</span><span class="s1">request</span><span class="s2">, </span><span class="s1">response</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>
