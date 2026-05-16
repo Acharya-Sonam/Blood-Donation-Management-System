@@ -159,7 +159,7 @@
                                 <input type="hidden" name="action" value="updateStatus">
                                 <input type="hidden" name="requestId" value="<%= r.getId() %>">
                                 <input type="hidden" name="status" value="Approved">
-                                <button class="logout-btn" style="background: #27ae60; padding: 5px 12px; border: none; cursor: pointer;" type="submit">Accept</button>
+                                <button class="btn-accept" style="padding: 5px 12px; font-size: 0.8rem; border:none; color:white; cursor:pointer;" type="submit">Accept</button>
                             </form>
                         </td>
                     </tr>
@@ -169,7 +169,7 @@
                 <% } %>
             </div>
         </div>
-
+        <jsp:include page="../common/footer.jsp" />
     </div>
 </main>
 

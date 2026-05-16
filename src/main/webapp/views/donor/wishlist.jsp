@@ -33,9 +33,9 @@
             <div class="card" style="padding: 2rem; text-align: center;">
                 <h2>Your Wishlist is Empty</h2>
                 <p>You haven't added any campaigns or donors to your wishlist yet.</p>
-                <a href="<%= request.getContextPath() %>/donor/dashboard" class="btn btn-primary" style="margin-top: 1rem;">Go to Dashboard</a>
             </div>
         </div>
+        <jsp:include page="../common/footer.jsp" />
     </main>
 </body>
 </html>

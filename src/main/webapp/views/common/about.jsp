@@ -55,133 +55,46 @@
             <div class="team-grid">
                 <!-- Member 1 -->
                 <div class="team-card">
-                    <img src="${pageContext.request.contextPath}/images/team/sonam_acharya.jpg" alt="Sonam Acharya" class="team-photo" onerror="this.src='https://ui-avatars.com/api/?name=Sonam+Acharya&background=E63946&color=fff&size=150'">
+                    <img src="${pageContext.request.contextPath}/team/sonam_acharya.jpg" alt="Sonam Acharya" class="team-photo" onerror="this.src='https://ui-avatars.com/api/?name=Sonam+Acharya&background=E63946&color=fff&size=150'">
                     <div class="team-info">
                         <h3>Sonam Acharya</h3>
-                        <p class="role">Authentication & Authorization System</p>
-                        
-                        <div class="team-details">
-                            <h4>Works on:</h4>
-                            <ul>
-                                <li>controller/AuthController.java</li>
-                                <li>service/AuthService.java</li>
-                                <li>dao/UserDao.java</li>
-                                <li>views/auth/</li>
-                            </ul>
-                            
-                            <h4>Responsibilities:</h4>
-                            <ul>
-                                <li>Login & Registration</li>
-                                <li>Role-based access</li>
-                                <li>Session management</li>
-                                <li>Logout & redirect handling</li>
-                            </ul>
-                        </div>
+                        <p class="role">CEO & Founder</p>
                     </div>
                 </div>
 
                 <!-- Member 2 -->
                 <div class="team-card">
-                    <img src="${pageContext.request.contextPath}/images/team/pema_tamang.jpg" alt="Pema Tamang" class="team-photo" onerror="this.src='https://ui-avatars.com/api/?name=Pema+Tamang&background=1D3557&color=fff&size=150'">
+                    <img src="${pageContext.request.contextPath}/team/pema_tamang.jpg" alt="Pema Tamang" class="team-photo" onerror="this.src='https://ui-avatars.com/api/?name=Pema+Tamang&background=1D3557&color=fff&size=150'">
                     <div class="team-info">
                         <h3>Pema Tamang</h3>
-                        <p class="role">User Management System</p>
-                        
-                        <div class="team-details">
-                            <h4>Works on:</h4>
-                            <ul>
-                                <li>controller/AdminController.java</li>
-                                <li>service/AdminService.java</li>
-                                <li>dao/UserDao.java</li>
-                                <li>views/admin/manageusers.jsp</li>
-                            </ul>
-                            
-                            <h4>Responsibilities:</h4>
-                            <ul>
-                                <li>Admin approval of users</li>
-                                <li>View/update/delete users</li>
-                                <li>Manage donor & patient profiles</li>
-                            </ul>
-                        </div>
+                        <p class="role">Backend Lead</p>
                     </div>
                 </div>
 
                 <!-- Member 3 -->
                 <div class="team-card">
-                    <img src="${pageContext.request.contextPath}/images/team/dikshya_rai.jpg" alt="Dikshya Rai" class="team-photo" onerror="this.src='https://ui-avatars.com/api/?name=Dikshya+Rai&background=457B9D&color=fff&size=150'">
+                    <img src="${pageContext.request.contextPath}/team/dikshya_rai.jpg" alt="Dikshya Rai" class="team-photo" onerror="this.src='https://ui-avatars.com/api/?name=Dikshya+Rai&background=457B9D&color=fff&size=150'">
                     <div class="team-info">
                         <h3>Dikshya Rai</h3>
-                        <p class="role">Donor Search System</p>
-                        
-                        <div class="team-details">
-                            <h4>Works on:</h4>
-                            <ul>
-                                <li>controller/PatientController.java</li>
-                                <li>service/PatientService.java</li>
-                                <li>dao/UserDao.java</li>
-                                <li>views/patient/searchdonors.jsp</li>
-                            </ul>
-                            
-                            <h4>Responsibilities:</h4>
-                            <ul>
-                                <li>Search donors by blood group</li>
-                                <li>Search donors by location</li>
-                                <li>Display donor list</li>
-                            </ul>
-                        </div>
+                        <p class="role">Frontend Lead</p>
                     </div>
                 </div>
 
                 <!-- Member 4 -->
                 <div class="team-card">
-                    <img src="${pageContext.request.contextPath}/images/team/diya_shiwakoti.jpg" alt="Diya Shiwakoti" class="team-photo" onerror="this.src='https://ui-avatars.com/api/?name=Diya+Shiwakoti&background=E63946&color=fff&size=150'">
+                    <img src="${pageContext.request.contextPath}/team/diya_siwakoti.jpg" alt="Diya Siwakoti" class="team-photo" onerror="this.src='https://ui-avatars.com/api/?name=Diya+Siwakoti&background=E63946&color=fff&size=150'">
                     <div class="team-info">
-                        <h3>Diya Shiwakoti</h3>
-                        <p class="role">Blood Request Management</p>
-                        
-                        <div class="team-details">
-                            <h4>Works on:</h4>
-                            <ul>
-                                <li>controller/PatientController.java</li>
-                                <li>dao/BloodRequestDao.java</li>
-                                <li>model/BloodRequest.java</li>
-                                <li>views/patient/request.jsp</li>
-                            </ul>
-                            
-                            <h4>Responsibilities:</h4>
-                            <ul>
-                                <li>Send blood request</li>
-                                <li>Accept/Reject request</li>
-                                <li>Track request status</li>
-                            </ul>
-                        </div>
+                        <h3>Diya Siwakoti</h3>
+                        <p class="role">UI/UX Designer</p>
                     </div>
                 </div>
 
                 <!-- Member 5 -->
                 <div class="team-card">
-                    <img src="${pageContext.request.contextPath}/images/team/nirjal_guragain.jpg" alt="Nirjal Guragain" class="team-photo" onerror="this.src='https://ui-avatars.com/api/?name=Nirjal+Guragain&background=1D3557&color=fff&size=150'">
+                    <img src="${pageContext.request.contextPath}/team/nirjal_guragain.jpg" alt="Nirjal Guragain" class="team-photo" onerror="this.src='https://ui-avatars.com/api/?name=Nirjal+Guragain&background=1D3557&color=fff&size=150'">
                     <div class="team-info">
                         <h3>Nirjal Guragain</h3>
-                        <p class="role">Admin Dashboard & Reports</p>
-                        
-                        <div class="team-details">
-                            <h4>Works on:</h4>
-                            <ul>
-                                <li>controller/AdminController.java</li>
-                                <li>service/AdminService.java</li>
-                                <li>dao/BloodRequestDao.java</li>
-                                <li>views/admin/dashboard.jsp</li>
-                            </ul>
-                            
-                            <h4>Responsibilities:</h4>
-                            <ul>
-                                <li>Admin dashboard UI</li>
-                                <li>Monitor system activity</li>
-                                <li>Generate reports</li>
-                                <li>View statistics</li>
-                            </ul>
-                        </div>
+                        <p class="role">Full Stack Developer</p>
                     </div>
                 </div>
 

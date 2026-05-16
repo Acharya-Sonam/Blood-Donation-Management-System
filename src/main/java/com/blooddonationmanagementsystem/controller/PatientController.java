@@ -48,7 +48,10 @@ public class PatientController extends HttpServlet {
                         .forward(request, response);
 
             } else if (action.equals("myRequests")) {
-                int patientId = (int) session.getAttribute("userId");
+                int userId = (int) session.getAttribute("userId");
+                com.blooddonationmanagementsystem.dao.UserDAO userDAO = new com.blooddonationmanagementsystem.dao.UserDAO();
+                int patientId = userDAO.getPatientIdByUserId(userId);
+                
                 List<BloodRequest> requests = bloodRequestService.getPatientRequests(patientId);
                 request.setAttribute("requests", requests);
                 request.getRequestDispatcher("/views/patient/trackRequest.jsp")
@@ -103,10 +106,19 @@ public class PatientController extends HttpServlet {
 
             // --- DIYA'S PART ---
             if (action.equals("submitRequest")) {
-                int patientId = (int) session.getAttribute("userId");
+                int userId = (int) session.getAttribute("userId");
                 String bloodGroup = request.getParameter("bloodGroup");
                 int quantity      = Integer.parseInt(request.getParameter("quantity"));
                 String urgency    = request.getParameter("urgency");
+
+                com.blooddonationmanagementsystem.dao.UserDAO userDAO = new com.blooddonationmanagementsystem.dao.UserDAO();
+                int patientId = userDAO.getPatientIdByUserId(userId);
+                
+                if (patientId == -1) {
+                    request.setAttribute("errorMessage", "Error: Patient profile not found for this user.");
+                    request.getRequestDispatcher("/views/patient/requestBlood.jsp").forward(request, response);
+                    return;
+                }
 
                 BloodRequest br = new BloodRequest();
                 br.setPatientId(patientId);
@@ -114,14 +126,18 @@ public class PatientController extends HttpServlet {
                 br.setQuantity(quantity);
                 br.setUrgency(urgency);
 
-                boolean success = bloodRequestService.submitRequest(br);
-
-                if (success) {
-                    response.sendRedirect(request.getContextPath()
-                            + "/PatientController?action=myRequests&msg=success");
-                } else {
-                    response.sendRedirect(request.getContextPath()
-                            + "/PatientController?action=requestForm&msg=duplicate");
+                try {
+                    boolean success = bloodRequestService.submitRequest(br);
+                    if (success) {
+                        response.sendRedirect(request.getContextPath()
+                                + "/PatientController?action=myRequests&msg=success");
+                    } else {
+                        request.setAttribute("errorMessage", "Failed to submit request. Possible duplicate or database error.");
+                        request.getRequestDispatcher("/views/patient/requestBlood.jsp").forward(request, response);
+                    }
+                } catch (Exception e) {
+                    request.setAttribute("errorMessage", "Error: " + e.getMessage());
+                    request.getRequestDispatcher("/views/patient/requestBlood.jsp").forward(request, response);
                 }
 
             } else if (action.equals("updateStatus")) {
@@ -130,7 +146,7 @@ public class PatientController extends HttpServlet {
 
                 bloodRequestService.updateRequestStatus(requestId, status);
                 response.sendRedirect(request.getContextPath()
-                        + "/PatientController?action=viewAllRequests");
+                        + "/donor/dashboard?action=viewRequests&msg=updated");
 
             } else if (action.equals("cancelRequest")) {
                 int requestId = Integer.parseInt(request.getParameter("requestId"));

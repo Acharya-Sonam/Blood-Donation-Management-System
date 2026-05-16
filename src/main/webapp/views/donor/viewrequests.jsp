@@ -1,139 +1,219 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.util.List, com.blooddonationmanagementsystem.model.BloodRequest" %>
+<%
+    if (session == null || session.getAttribute("userId") == null) {
+        response.sendRedirect(request.getContextPath() + "/views/auth/login.jsp");
+        return;
+    }
+    List<BloodRequest> requests = (List<BloodRequest>) request.getAttribute("requests");
+    String donorName = (String) session.getAttribute("name");
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Blood Requests - BloodBridge</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Available Requests – Blood Bridge</title>
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/admin.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css">
     <style>
-        :root {
-            --primary: #e74c3c;
-            --dark: #2c3e50;
-            --success: #27ae60;
-            --danger: #e74c3c;
-            --info: #3498db;
+        .request-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+            margin-top: 20px;
         }
-
-        body { background: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
-
-        .header {
+        .request-card-premium {
             background: white;
-            padding: 20px 40px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--red-primary);
+            transition: transform 0.2s;
+            position: relative;
+            overflow: hidden;
         }
-
-        .container {
-            max-width: 1100px;
-            margin: 30px auto;
-            padding: 0 20px;
+        .request-card-premium:hover {
+            transform: translateY(-5px);
         }
-
-        .request-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 6px solid var(--info);
-            transition: 0.3s;
-        }
-
-        .request-card:hover { transform: scale(1.01); }
-
-        .urgency-Critical { border-left-color: var(--danger); }
-        .urgency-Urgent { border-left-color: #f39c12; }
-
-        .info-group h4 { margin: 0; color: var(--dark); font-size: 1.2rem; }
-        .info-group p { margin: 5px 0; color: #666; font-size: 0.9rem; }
-
-        .blood-badge {
-            background: var(--primary);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 6px;
+        .urgency-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
             font-weight: 700;
+            text-transform: uppercase;
+        }
+        .urgency-critical { background: #fdf2f2; color: #c0392b; border: 1px solid #f5c6cb; }
+        .urgency-urgent { background: #fff9e6; color: #f39c12; border: 1px solid #ffeeba; }
+        .urgency-normal { background: #eafaf1; color: #1e8449; border: 1px solid #c3e6cb; }
+
+        .patient-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .patient-avatar {
+            width: 50px;
+            height: 50px;
+            background: #f0f2f5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .patient-details h3 {
+            font-size: 1.1rem;
+            margin: 0;
+            color: var(--text-dark);
+        }
+        .patient-details p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 2px 0 0;
         }
 
-        .actions { display: flex; gap: 10px; }
+        .request-specs {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-top: 1px solid #f0f2f5;
+            border-bottom: 1px solid #f0f2f5;
+            margin-bottom: 20px;
+        }
+        .spec-item {
+            text-align: center;
+        }
+        .spec-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 4px;
+        }
+        .spec-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .blood-group-large {
+            color: var(--red-primary);
+        }
 
-        .btn-action {
-            padding: 10px 20px;
-            border-radius: 8px;
+        .action-group {
+            display: flex;
+            gap: 12px;
+        }
+        .btn-accept {
+            flex: 2;
+            background: var(--red-primary);
+            color: white;
             border: none;
+            padding: 10px;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            transition: background 0.2s;
         }
-
-        .btn-accept { background: var(--success); color: white; }
-        .btn-accept:hover { background: #219150; }
-
-        .btn-reject { background: #eee; color: #333; }
-        .btn-reject:hover { background: #ddd; }
+        .btn-accept:hover { background: var(--red-dark); }
+        
+        .btn-ignore {
+            flex: 1;
+            background: #f0f2f5;
+            color: var(--text-dark);
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <jsp:include page="../common/navbar.jsp" />
 
-    <div class="header">
-        <h2><i class="fas fa-handholding-heart"></i> Patient Blood Requests</h2>
-        <span class="status-badge" style="background:var(--primary); color:white; border:none;">
-            ${requests.size()} Pending Requests
-        </span>
-    </div>
+<jsp:include page="donor-sidebar.jsp" />
 
-    <div class="container">
-        <c:if test="${empty requests}">
-            <div style="text-align:center; padding:50px; background:white; border-radius:15px;">
-                <i class="fas fa-check-circle" style="font-size:60px; color:var(--success);"></i>
-                <h3 style="margin-top:20px;">No Pending Requests Found</h3>
-                <p>All blood requests are currently fulfilled. Great job!</p>
+<main class="main-content">
+    <header class="topbar">
+        <h1>Available Blood Requests</h1>
+        <div class="topbar-right">
+            <span class="admin-badge">Real-time Feed</span>
+            <div class="user-info">
+                <strong><%= donorName != null ? donorName : "Donor" %></strong>
             </div>
-        </c:if>
+        </div>
+    </header>
 
-        <c:forEach var="req" items="${requests}">
-            <div class="request-card urgency-${req.urgency}">
-                <div class="info-group">
-                    <h4>${req.patientName}'s Request</h4>
-                    <p><i class="fas fa-tint"></i> Blood Group: <span class="blood-badge">${req.bloodGroup}</span></p>
-                    <p><i class="fas fa-cubes"></i> Quantity: ${req.quantity} Units</p>
-                    <p><i class="fas fa-clock"></i> Requested on: ${req.requestDate}</p>
-                    <p><i class="fas fa-exclamation-circle"></i> Urgency: <strong>${req.urgency}</strong></p>
-                </div>
-
-                <div class="actions">
-                    <form action="PatientController" method="POST">
-                        <input type="hidden" name="action" value="updateStatus">
-                        <input type="hidden" name="requestId" value="${req.id}">
-                        <input type="hidden" name="status" value="Accepted">
-                        <button type="submit" class="btn-action btn-accept">
-                            <i class="fas fa-check"></i> Accept
-                        </button>
-                    </form>
-
-                    <form action="PatientController" method="POST">
-                        <input type="hidden" name="action" value="updateStatus">
-                        <input type="hidden" name="requestId" value="${req.id}">
-                        <input type="hidden" name="status" value="Rejected">
-                        <button type="submit" class="btn-action btn-reject">
-                            <i class="fas fa-times"></i> Reject
-                        </button>
-                    </form>
-                </div>
+    <div class="page-body">
+        <div class="section-title">🩸 Helping Hands Needed</div>
+        
+        <% if (requests == null || requests.isEmpty()) { %>
+            <div class="card" style="padding: 60px; text-align: center;">
+                <div style="font-size: 4rem; margin-bottom: 20px;">🌟</div>
+                <h3>No Pending Requests</h3>
+                <p style="color: var(--text-muted); max-width: 400px; margin: 10px auto;">Great news! All patients have been attended to. Check back later for new requests.</p>
+                <a href="<%= request.getContextPath() %>/donor/dashboard" class="btn-find-donor" style="display:inline-block; margin-top: 20px;">Back to Dashboard</a>
             </div>
-        </c:forEach>
+        <% } else { %>
+            <div class="request-grid">
+                <% for (BloodRequest r : requests) { 
+                    String urgencyClass = r.getUrgency().toLowerCase();
+                %>
+                    <div class="request-card-premium">
+                        <span class="urgency-badge urgency-<%= urgencyClass %>">
+                            <%= r.getUrgency() %>
+                        </span>
+                        
+                        <div class="patient-info">
+                            <div class="patient-avatar">👤</div>
+                            <div class="patient-details">
+                                <h3><%= r.getPatientName() != null ? r.getPatientName() : "Anonymous Patient" %></h3>
+                                <p>Requested on <%= r.getRequestDate() %></p>
+                            </div>
+                        </div>
+
+                        <div class="request-specs">
+                            <div class="spec-item">
+                                <span class="spec-label">Blood Group</span>
+                                <span class="spec-value blood-group-large"><%= r.getBloodGroup() %></span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Quantity</span>
+                                <span class="spec-value"><%= r.getQuantity() %> Units</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Status</span>
+                                <span class="spec-value" style="color: #f39c12;"><%= r.getStatus() %></span>
+                            </div>
+                        </div>
+
+                        <div class="action-group">
+                            <% if ("pending".equalsIgnoreCase(r.getStatus())) { %>
+                                <form action="<%= request.getContextPath() %>/PatientController" method="post" style="width: 100%; display: flex; gap: 10px;">
+                                    <input type="hidden" name="action" value="updateStatus">
+                                    <input type="hidden" name="requestId" value="<%= r.getId() %>">
+                                    <input type="hidden" name="status" value="Approved">
+                                    <button type="submit" class="btn-accept">Accept Request</button>
+                                    <button type="button" class="btn-ignore" onclick="this.closest('.request-card-premium').style.opacity='0.5'">Ignore</button>
+                                </form>
+                            <% } else if ("approved".equalsIgnoreCase(r.getStatus())) { %>
+                                <a href="<%= request.getContextPath() %>/donor/donations?requestId=<%= r.getId() %>" 
+                                   class="btn-accept" style="text-align: center; text-decoration: none; background: #27ae60;">
+                                    ✓ Accepted - Donate Now
+                                </a>
+                            <% } %>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        <% } %>
+
+        <jsp:include page="../common/footer.jsp" />
     </div>
+</main>
+
 </body>
 </html>

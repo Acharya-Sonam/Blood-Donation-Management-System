@@ -31,7 +31,7 @@ public class DonationService {
 
     public String getNextEligibleDate(int userId) throws SQLException {
         String lastDateStr = getLastDonationDate(userId);
-        if (lastDateStr == null) return LocalDate.now().toString();
+        if (lastDateStr == null || lastDateStr.length() < 10) return LocalDate.now().toString();
 
         LocalDate lastDate = LocalDate.parse(lastDateStr.substring(0, 10));
         return lastDate.plusMonths(3).toString();
@@ -39,7 +39,7 @@ public class DonationService {
 
     public boolean isEligibleToDonate(int userId) throws SQLException {
         String lastDateStr = getLastDonationDate(userId);
-        if (lastDateStr == null) return true;
+        if (lastDateStr == null || lastDateStr.length() < 10) return true;
 
         LocalDate lastDate = LocalDate.parse(lastDateStr.substring(0, 10));
         return ChronoUnit.MONTHS.between(lastDate, LocalDate.now()) >= 3;
@@ -58,11 +58,19 @@ public class DonationService {
         donation.setStatus("completed");
         boolean recorded = donationDAO.recordDonation(donation);
         
-        if (recorded && inventoryId > 0) {
-            // Get blood group to update stock
-            String bloodGroup = inventoryDAO.getBloodGroupById(inventoryId);
-            if (bloodGroup != null) {
-                inventoryDAO.updateStock(bloodGroup, units);
+        if (recorded) {
+            // Update the blood request status to fulfilled if linked
+            if (requestId > 0) {
+                com.blooddonationmanagementsystem.dao.BloodRequestDAO brDAO = new com.blooddonationmanagementsystem.dao.BloodRequestDAO();
+                brDAO.updateStatus(requestId, "fulfilled");
+            }
+
+            if (inventoryId > 0) {
+                // Get blood group to update stock
+                String bloodGroup = inventoryDAO.getBloodGroupById(inventoryId);
+                if (bloodGroup != null) {
+                    inventoryDAO.updateStock(bloodGroup, units);
+                }
             }
         }
         return recorded;
