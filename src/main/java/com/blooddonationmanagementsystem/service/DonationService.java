@@ -18,15 +18,21 @@ public class DonationService {
     private final DonorDAO donorDAO = new DonorDAO();
 
     public List<Donation> getDonationHistory(int userId) throws SQLException {
-        return donationDAO.getDonationHistory(userId);
+        com.blooddonationmanagementsystem.model.Donor donor = donorDAO.getDonorByUserId(userId);
+        if (donor == null) return new java.util.ArrayList<>();
+        return donationDAO.getDonationHistory(donor.getDonorId());
     }
 
     public int getDonationCount(int userId) throws SQLException {
-        return donationDAO.getDonationCount(userId);
+        com.blooddonationmanagementsystem.model.Donor donor = donorDAO.getDonorByUserId(userId);
+        if (donor == null) return 0;
+        return donationDAO.getDonationCount(donor.getDonorId());
     }
 
     public String getLastDonationDate(int userId) throws SQLException {
-        return donationDAO.getLastDonationDate(userId);
+        com.blooddonationmanagementsystem.model.Donor donor = donorDAO.getDonorByUserId(userId);
+        if (donor == null) return null;
+        return donationDAO.getLastDonationDate(donor.getDonorId());
     }
 
     public String getNextEligibleDate(int userId) throws SQLException {
@@ -46,15 +52,19 @@ public class DonationService {
     }
 
     public boolean recordDonation(int userId, int requestId, int units, String date, int inventoryId) throws SQLException {
-        // If inventoryId is not provided (or <= 0), look it up based on donor's blood group
-        if (inventoryId <= 0) {
-            com.blooddonationmanagementsystem.model.Donor donor = donorDAO.getDonorByUserId(userId);
-            if (donor != null) {
-                inventoryId = inventoryDAO.getInventoryIdByBloodGroup(donor.getBloodGroup());
-            }
+        com.blooddonationmanagementsystem.model.Donor donor = donorDAO.getDonorByUserId(userId);
+        if (donor == null) {
+            throw new SQLException("Donor profile not found for user ID: " + userId);
         }
 
-        Donation donation = new Donation(userId, requestId, units, date, inventoryId);
+        int donorId = donor.getDonorId();
+
+        // If inventoryId is not provided (or <= 0), look it up based on donor's blood group
+        if (inventoryId <= 0) {
+            inventoryId = inventoryDAO.getInventoryIdByBloodGroup(donor.getBloodGroup());
+        }
+
+        Donation donation = new Donation(donorId, requestId, units, date, inventoryId);
         donation.setStatus("completed");
         boolean recorded = donationDAO.recordDonation(donation);
         
