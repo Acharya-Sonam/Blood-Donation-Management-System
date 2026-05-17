@@ -41,7 +41,8 @@ public class AuthService {
 
     //  DONOR REGISTRATION
 
-    public void registerDonor(String fullName, String email, String password,String confirm, String phone, String dob,String bloodGroup, String address)
+    public void registerDonor(String fullName, String email, String password,
+    String confirm, String phone, String dob,String bloodGroup, String address)
             throws SQLException, AuthException {
 
         if (!ValidationUtil.isNotEmpty(fullName)) {
@@ -74,24 +75,18 @@ public class AuthService {
         if (!ValidationUtil.isValidBloodGroup(bloodGroup)) {
             throw new AuthException("Please select a valid blood group.");
         }
-
-
         if (userDAO.emailExists(email.trim())) {
             throw new AuthException("An account with this email already exists.");
         }
         if (userDAO.donorPhoneExists(phone.trim())) {
             throw new AuthException("A donor account with this phone number already exists.");
         }
-
         String hashedPassword = PasswordUtil.hash(password);
-
         // Insert into users table and get the new user_id
         int userId = userDAO.insertUser(email.trim(), hashedPassword, "donor");
-
         if (userId == -1) {
             throw new AuthException("Registration failed. Please try again.");
         }
-
         // Build Donor object and insert into donors table
         Donor donor = new Donor(userId, fullName.trim(), phone.trim(),dob, bloodGroup.trim(), address);
         userDAO.insertDonor(donor);

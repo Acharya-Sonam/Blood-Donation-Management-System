@@ -14,11 +14,9 @@ import java.io.IOException;
 
 @WebFilter("/*")
 public class AuthFilter implements Filter {
-
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
-
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
                          FilterChain chain) throws IOException, ServletException {
@@ -35,19 +33,16 @@ public class AuthFilter implements Filter {
             chain.doFilter(request, response);
             return;
         }
-
         // Check for active session 
         HttpSession session = request.getSession(false);
         boolean isLoggedIn  = (session != null && session.getAttribute("user") != null);
-
         if (isLoggedIn) {
             // Session is valid 
             chain.doFilter(request, response);
         } else {
             // No session 
             response.sendRedirect(contextPath + "/login");
-        }
-    }
+        }}
 
     @Override
     public void destroy() {

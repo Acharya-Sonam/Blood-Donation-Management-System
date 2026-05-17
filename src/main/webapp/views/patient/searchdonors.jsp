@@ -471,6 +471,15 @@
                 <div class="info-icon">&#128222;</div>
                 <div class="info-text">Phone: <strong><%= d.getPhone() %></strong></div>
             </div>
+            <c:if test="${!empty d.donorId}">
+                <form action="${pageContext.request.contextPath}/PatientController" method="post" style="margin-top:8px;">
+                    <input type="hidden" name="action" value="addToWishlist"/>
+                    <input type="hidden" name="donorId" value="<%= d.getId() %>"/>
+                    <button type="submit" class="btn-clear" style="background:#e0f7fa; color:#006064; border:1px solid #b2ebf2;">
+                        <i class="fas fa-heart"></i> Add to Wishlist
+                    </button>
+                </form>
+            </c:if>
             <% if (d.getLastDonation() != null && !d.getLastDonation().isEmpty()) { %>
             <div class="donor-info">
                 <div class="info-icon">&#128197;</div>
