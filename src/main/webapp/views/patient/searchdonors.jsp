@@ -303,6 +303,15 @@
                         <% } %>
                     </div>
                 </div>
+                <% if (d.getDonorId() > 0) { %>
+                    <form action="<%= request.getContextPath() %>/PatientController" method="post" style="margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px;">
+                        <input type="hidden" name="action" value="addToWishlist"/>
+                        <input type="hidden" name="donorId" value="<%= d.getDonorId() %>"/>
+                        <button type="submit" class="btn-clear" style="background: #fdf2f2; color: #c0392b; border: 1px solid #f5c6cb; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; padding: 8px 12px; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                            ❤️ Add to Wishlist
+                        </button>
+                    </form>
+                <% } %>
             </div>
             <% } %>
         </div>
