@@ -97,7 +97,7 @@ Copy the compiled `.war` from the `target/` directory directly into your Tomcat 
 
 ## 👥 Developers & Board Members
 
-* **Sonam Acharya** — *CEO & Founder*
+* **Sonam Acharya** — *Leader & Full Stack Developer*
 * **Pema Tamang** — *Backend Lead*
 * **Dikshya Rai** — *Frontend Lead*
 * **Diya Siwakoti** — *UI/UX Designer*

@@ -58,7 +58,7 @@
                     <img src="${pageContext.request.contextPath}/team/sonam_acharya.jpg" alt="Sonam Acharya" class="team-photo" onerror="this.src='https://ui-avatars.com/api/?name=Sonam+Acharya&background=E63946&color=fff&size=150'">
                     <div class="team-info">
                         <h3>Sonam Acharya</h3>
-                        <p class="role">CEO & Founder</p>
+                        <p class="role">Leader & Full Stack Developer</p>
                     </div>
                 </div>
 
