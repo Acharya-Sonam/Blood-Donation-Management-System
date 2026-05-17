@@ -75,6 +75,9 @@ public class AuthService {
         if (!ValidationUtil.isValidBloodGroup(bloodGroup)) {
             throw new AuthException("Please select a valid blood group.");
         }
+        if (!ValidationUtil.isNotEmpty(address)) {
+            throw new AuthException("Address is required.");
+        }
         if (userDAO.emailExists(email.trim())) {
             throw new AuthException("An account with this email already exists.");
         }
@@ -126,6 +129,12 @@ public class AuthService {
         }
         if (!ValidationUtil.isValidBloodGroup(bloodGroup)) {
             throw new AuthException("Please select a valid blood group.");
+        }
+        if (!ValidationUtil.isNotEmpty(address)) {
+            throw new AuthException("Address is required.");
+        }
+        if (!ValidationUtil.isNotEmpty(hospitalName)) {
+            throw new AuthException("Hospital name is required for patients.");
         }
 
         if (userDAO.emailExists(email.trim())) {
