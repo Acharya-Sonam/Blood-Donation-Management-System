@@ -73,7 +73,7 @@
 
                 <!-- Member 3 -->
                 <div class="team-card">
-                    <img src="${pageContext.request.contextPath}/team/dikshya_rai.jpg" alt="Dikshya Rai" class="team-photo" onerror="this.src='https://ui-avatars.com/api/?name=Dikshya+Rai&background=457B9D&color=fff&size=150'">
+                    <img src="${pageContext.request.contextPath}/team/dikshya_rai.jpeg" alt="Dikshya Rai" class="team-photo" onerror="this.src='https://ui-avatars.com/api/?name=Dikshya+Rai&background=457B9D&color=fff&size=150'">
                     <div class="team-info">
                         <h3>Dikshya Rai</h3>
                         <p class="role">Frontend Lead</p>
