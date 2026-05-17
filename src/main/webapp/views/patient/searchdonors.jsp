@@ -148,6 +148,12 @@
 
     <div class="page-body">
 
+        <% if (request.getParameter("msg") != null && request.getParameter("msg").equals("wishlist_success")) { %>
+            <div class="alert alert-success" style="background: #eafaf1; border: 1px solid #c3e6cb; color: #1e8449; padding: 15px; border-radius: 8px; margin-bottom: 24px; font-weight: 500;">
+                ❤️ Donor added to your wishlist successfully! View them anytime in the <a href="<%= request.getContextPath() %>/PatientController?action=wishlist" style="color: #1e8449; font-weight: 700; text-decoration: underline;">Wishlist page</a>.
+            </div>
+        <% } %>
+
         <div class="page-header-integrated">
             <h1>Find a Hero</h1>
             <p>Search and connect with verified blood donors across the country.</p>

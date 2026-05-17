@@ -159,7 +159,7 @@
                                 <input type="hidden" name="action" value="updateStatus">
                                 <input type="hidden" name="requestId" value="<%= r.getId() %>">
                                 <input type="hidden" name="status" value="Approved">
-                                <button class="btn-accept" style="padding: 5px 12px; font-size: 0.8rem; border:none; color:white; cursor:pointer;" type="submit">Accept</button>
+                                <button class="btn-accept" style="background: #27ae60; color: white; padding: 6px 14px; font-size: 0.8rem; font-weight: 600; border: none; border-radius: 6px; cursor: pointer; transition: background 0.2s;" type="submit">Accept</button>
                             </form>
                         </td>
                     </tr>

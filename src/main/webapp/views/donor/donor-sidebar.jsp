@@ -31,11 +31,6 @@
                     👤 My Profile
                 </a>
             </li>
-            <li>
-                <a href="${pageContext.request.contextPath}/views/donor/wishlist.jsp" class="${pageContext.request.requestURI.contains('wishlist.jsp') ? 'active' : ''}">
-                    ❤️ Wishlist
-                </a>
-            </li>
             <li class="sidebar-footer">
                 <a href="${pageContext.request.contextPath}/logout" class="logout-btn">🚪 Logout</a>
             </li>

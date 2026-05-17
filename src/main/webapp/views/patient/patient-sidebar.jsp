@@ -27,6 +27,11 @@
                 </a>
             </li>
             <li>
+                <a href="${pageContext.request.contextPath}/PatientController?action=wishlist" class="${pageContext.request.requestURI.contains('wishlist') || param.action eq 'wishlist' ? 'active' : ''}">
+                    ❤️ Wishlist
+                </a>
+            </li>
+            <li>
                 <a href="${pageContext.request.contextPath}/views/patient/profile.jsp" class="${pageContext.request.requestURI.contains('profile') ? 'active' : ''}">
                     👤 My Profile
                 </a>

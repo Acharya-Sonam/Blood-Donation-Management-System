@@ -1,6 +1,7 @@
 package com.blooddonationmanagementsystem.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.servlet.ServletException;
@@ -77,14 +78,10 @@ public class PatientController extends HttpServlet {
                 request.getRequestDispatcher("/views/patient/dashboard.jsp")
                         .forward(request, response);
 
-                // ── DIYA: wishlist ────────────────────────────────────
-            } else if (action.equals("addToWishlist")) {
-                int donorId   = Integer.parseInt(request.getParameter("donorId"));
-                int patientId = (int) session.getAttribute("userId");
-                // TODO: Implement WishlistService to persist wishlist
-                // For now: redirect with success flag
-                response.sendRedirect(request.getContextPath()
-                        + "/PatientController?action=searchDonors&msg=wishlist_success");
+                // ── DIYA: wishlist view ──────────────────────────────
+            } else if (action.equals("wishlist")) {
+                request.getRequestDispatcher("/views/patient/wishlist.jsp")
+                        .forward(request, response);
 
                 // ── DIYA: request donation from specific donor ─────────
             } else if (action.equals("requestDonation")) {
@@ -241,6 +238,46 @@ public class PatientController extends HttpServlet {
                     response.sendRedirect(request.getContextPath()
                             + "/PatientController?action=myRequests&msg=cancel_error");
                 }
+
+            } else if (action.equals("addToWishlist")) {
+                int donorId = Integer.parseInt(request.getParameter("donorId"));
+                
+                List<Donor> wishlist = (List<Donor>) session.getAttribute("wishlist");
+                if (wishlist == null) {
+                    wishlist = new ArrayList<>();
+                }
+                
+                boolean exists = false;
+                for (Donor d : wishlist) {
+                    if (d.getDonorId() == donorId) {
+                        exists = true;
+                        break;
+                    }
+                }
+                
+                if (!exists) {
+                    com.blooddonationmanagementsystem.dao.DonorDAO donorDAO = new com.blooddonationmanagementsystem.dao.DonorDAO();
+                    Donor donor = donorDAO.getDonorById(donorId);
+                    if (donor != null) {
+                        wishlist.add(donor);
+                    }
+                }
+                
+                session.setAttribute("wishlist", wishlist);
+                response.sendRedirect(request.getContextPath()
+                        + "/PatientController?action=searchDonors&msg=wishlist_success");
+
+            } else if (action.equals("removeFromWishlist")) {
+                int donorId = Integer.parseInt(request.getParameter("donorId"));
+                
+                List<Donor> wishlist = (List<Donor>) session.getAttribute("wishlist");
+                if (wishlist != null) {
+                    wishlist.removeIf(d -> d.getDonorId() == donorId);
+                    session.setAttribute("wishlist", wishlist);
+                }
+                
+                response.sendRedirect(request.getContextPath()
+                        + "/PatientController?action=wishlist&msg=removed");
 
             } else {
                 // Unknown POST action — return to dashboard
